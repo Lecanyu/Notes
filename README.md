@@ -1,4 +1,6 @@
-# My personal Notes
+# Personal Notes
+
+Check [here](https://lecanyu.github.io/Notes/) for the website
 
 These notes are used to record something for reviewing. It created by [Jekyll](https://jekyllrb.com/) with Mathjax supporting. The template comes from a course note [cs228-notes](https://ermongroup.github.io/cs228-notes/). Have a look its github source [code](https://github.com/ermongroup/cs228-notes) or check the "template" directory to understand how to use this template.
 
