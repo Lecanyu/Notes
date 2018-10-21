@@ -1,1 +1,25 @@
-theme: jekyll-theme-cayman
+baseurl: /Notes
+title: Notes
+subtitle: Personal notes (memorandum).
+author: Canyu Le
+simple_search: http://google.com/search
+description: Personal notes (memorandum).
+name: Notes
+markdown_ext: "markdown,mkdown,mkdn,mkd,md"
+permalink: /articles/:short_year/:title
+timezone: America/New_York
+excerpt_separator: <!--more-->  # you can specify your own separator, of course.
+exclude: ['Gemfile', 'Gemfile.lock', 'Rakefile', 'README.md']
+post:
+  template: _post.txt
+  extension: md
+page:
+  template: _page.txt
+  extension: md
+editor: gvim
+git:
+  branch: master
+transfer:
+  command: rsync
+  settings: -av
+  source: _site/
