@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Contents
+title: Notes
 ---
 These notes were recorded various important points for personal reviewing. It usually only contains the brief descriptions. The published version will be released in the future. {% sidenote 1 'This is a simple testing example.'%}
 
