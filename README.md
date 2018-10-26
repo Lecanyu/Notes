@@ -1,4 +1,4 @@
-# Personal Notes
+# Notes
 
 Check [here](https://lecanyu.github.io/Notes/) for the website
 
