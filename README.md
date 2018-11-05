@@ -7,4 +7,8 @@ These notes are used to record something for reviewing. It created by [Jekyll](h
 
 Note: since github doesn't support 3rd plugins like Mathjax, you should compile the source code (i.e. the .md files) to .html in your local machine. And then, copy all files in \_site directory to docs directory. Remember to modify the repository settings -> GitHub Pages -> Source -> master branch /docs folder
 
+Command for Compiling and viewing
 
+```
+jekyll serve
+```

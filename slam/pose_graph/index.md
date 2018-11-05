@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Memorandum
+title: Pose graph
 ---
 
 ## under construction
