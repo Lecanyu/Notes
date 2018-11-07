@@ -4,9 +4,9 @@ title: Notes
 ---
 These notes were recorded various important points for personal reviewing. It only contains the brief descriptions. {% sidenote 1 'This is a simple testing example.'%}
 
-## English
+## Linear Algbera
 
-1. [Words and sentences](english/words/): My vocabulary and sentence records.
+1. [Miscellaneous](linear_algebra/miscellaneous): Some knowledge points for quick review.
 
 ## Machine Learning
 
@@ -35,3 +35,7 @@ These notes were recorded various important points for personal reviewing. It on
 1. [Concepts](data_structure/concepts/): An introduction about the concepts of data structure.
  
 1. [Structures](data_structure/structures/): Various data structure (e.g. stack, graph). 
+
+## English
+
+1. [Words and sentences](english/words/): My vocabulary and sentence records.

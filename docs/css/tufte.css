@@ -38,7 +38,7 @@
   margin-bottom: 15px; }
 
 .highlight {
-  background: #fffff8; }
+  background: #F7F7F7; }
   .highlight .c {
     color: #998;
     font-style: italic; }
@@ -506,7 +506,7 @@ div.table-wrapper {
   font-size: 1rem; }
 
 pre, pre code, p pre code {
-  width: 52.5%;
+  width: 100%;
   padding-left: 2.5%;
   overflow-x: auto; }
 
