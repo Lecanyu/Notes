@@ -127,6 +127,160 @@ A = V \Sigma V^T
 <p>where <script type="math/tex">A</script> usually is a covariance matrix which is a symmetrical matrix. <script type="math/tex">V</script> is composed by a series of eigen vectors which are mutually orthonormal. <script type="math/tex">\Sigma</script> is corresponding eigen value.</p>
 
 <h2 id="covariance-matrix">Covariance matrix</h2>
+<p>Variance measure the convergence property within a series data</p>
+<div class="mathblock"><script type="math/tex; mode=display">
+\frac{1}{n} \sum (x-\bar x)^2
+</script></div>
+
+<p>Covariance measure the correlation property between two series data</p>
+<div class="mathblock"><script type="math/tex; mode=display">
+\frac{1}{n} \sum (x-\bar x)(y-\bar y)
+</script></div>
+
+<p>Covariance matrix measure the variance and covariance in n series/dimension data. For example, we have a sample of data as below</p>
+
+<p><label for="Table-ID4" class="margin-toggle"> ⊕</label><input type="checkbox" id="Table-ID4" class="margin-toggle" /><span class="marginnote">Table 1: a simple statistic for demonstration. </span></p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"><strong>Height</strong></th>
+      <th style="text-align: center"><strong>Weight</strong></th>
+      <th><strong>Grade</strong></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">Boy1</td>
+      <td style="text-align: center">170cm</td>
+      <td style="text-align: center">50kg</td>
+      <td>80</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">Boy2</td>
+      <td style="text-align: center">…</td>
+      <td style="text-align: center">…</td>
+      <td>…</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">Boy3</td>
+      <td style="text-align: center">…</td>
+      <td style="text-align: center">…</td>
+      <td>…</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>We can use a matrix <script type="math/tex">A</script> to represent this data. 
+Then the covariance matrix should be <script type="math/tex">A^T A</script>.</p>
+
+<p><script type="math/tex">A^T A(0, 0), A^T A(1, 1), A^T A(2, 2)</script> is the variance in height, weight, grade dimension, respectively.</p>
+
+<p><script type="math/tex">A^T A(0, 1)</script> is the covariance between height and weight dimensions. Other element in <script type="math/tex">A^T A</script> can be interpreted in the same way.</p>
+
+<h2 id="the-solutions-of-linear-equations">The solutions of linear equations</h2>
+<p>Suppose we have linear equations:</p>
+<div class="mathblock"><script type="math/tex; mode=display">
+Ax = b  \quad \textsf{(Non-homogeneous linear equations)}\\
+Ax = 0 \quad \textsf{(Homogeneous linear equations)}
+</script></div>
+<p>where <script type="math/tex">A</script> is <script type="math/tex">m</script> rows and <script type="math/tex">n</script> cols.</p>
+
+<p>We need to analyze the rank of matrix and its augmented matrix to figure out whether there is solution or not.</p>
+
+<p>First, we can decompose <script type="math/tex">Ax</script> to</p>
+<div class="mathblock"><script type="math/tex; mode=display">
+Ax = \sum_i^n x_iA_{col_i}
+</script></div>
+<p>It means the linear equations can be seen as linear combination of column vectors of matrix <script type="math/tex">A</script>.</p>
+
+<h3 id="-non-homogeneous-linear-equations">* Non-homogeneous linear equations</h3>
+
+<p>It is intuitive to see that if <script type="math/tex">R(A, b) > R(A)</script>, <script type="math/tex">b</script> is linearly independent with <script type="math/tex">A</script>.
+It is impossible to find a vector combination to represent <script type="math/tex">b</script>. 
+In other words, there is no solution. <label for="1" class="margin-toggle sidenote-number"></label><input type="checkbox" id="1" class="margin-toggle" /><span class="sidenote"><script type="math/tex">R(A)</script> means the rank of matrix A. </span></p>
+
+<p>When <script type="math/tex">R(A, b) = R(A)</script>, we can know <script type="math/tex">b</script> is linearly dependent with <script type="math/tex">A</script>. 
+So if <script type="math/tex">% <![CDATA[
+R(A, b) = R(A) < n %]]></script>, <script type="math/tex">Ax=b</script> has infinite solutions; 
+if <script type="math/tex">R(A, b) = R(A) = n</script>, the equations has only one solution.</p>
+
+<h3 id="-homogeneous-linear-equations">* Homogeneous linear equations</h3>
+
+<p>Homogeneous case is similar with non-homogeneous. 
+Since <script type="math/tex">b=\boldsymbol{0}</script>, if <script type="math/tex">R(A) = n</script> (full ranked), there is only zero solution. 
+If <script type="math/tex">A</script> is not full ranked, we can find a linear combination of colunm vectors to represent the linear dependent ones. Therefore, there are infinite solutions.</p>
+
+<h2 id="matrix-decomposition">Matrix decomposition</h2>
+<h3 id="-lu-decomposition">* LU decomposition</h3>
+<p>When matrix <script type="math/tex">A</script> is invertible, then we can decompose <script type="math/tex">A = LU</script>. We usually have two different composition:</p>
+<ol>
+  <li><script type="math/tex">L</script> is lower unit triangular matrix (diagonal elements are 1) and <script type="math/tex">U</script> is a upper triangular matrix;</li>
+  <li><script type="math/tex">L</script> is lower triangular matrix and <script type="math/tex">U</script> is an upper unit triangular matrix</li>
+</ol>
+
+<h3 id="-cholesky-llt-decomposition">* Cholesky (LLT) decomposition</h3>
+<p>When matrix <script type="math/tex">A</script> is a hermitian positive-definite matrix, then we can decompose <script type="math/tex">A=LL^T</script>, where <script type="math/tex">L</script> is lower triangular matrix</p>
+
+<h3 id="-cholesky-variant-ldlt-decomposition">* Cholesky variant (LDLT) decomposition</h3>
+<p>It is the same with cholesky, but we don’t want to calculate the square root, which slow down the calculation and lose accuracy. 
+So we can decompose <script type="math/tex">A=LDL^T</script> instead, where <script type="math/tex">L</script> is lower unit triangular matrix and <script type="math/tex">D</script> is diagonal matrix</p>
+
+<p>(LLT and LDLT has been introduced in <a href="https://en.wikipedia.org/wiki/Cholesky_decomposition">HERE</a>)</p>
+
+<h2 id="solving-linear-least-squares-systems">Solving linear least squares systems</h2>
+<p>There are three typical ways to solve linear least square system (SVD, QR factorization, Cholesky decomposition).</p>
+
+<p>Check <a href="https://eigen.tuxfamily.org/dox/group__LeastSquares.html">here</a> for Eigen library code.</p>
+
+<h3 id="-an-example">* An example</h3>
+<p>I’d like to use a simple example to explain the Cholesky approach.</p>
+
+<p>Suppose we have 12 sample points on the 3D plane of equation <script type="math/tex">z = 2x+3y</script> (with some noise). 
+We can write these samples into a matrix.</p>
+<div class="mathblock"><script type="math/tex; mode=display">
+A = 
+\begin{pmatrix}
+x_1 & y_1 \\
+x_2 & y_2 \\
+... & ... \\
+x_{12} & y_{12}
+\end{pmatrix} 
+\quad
+b = 
+\begin{pmatrix}
+2x_1+3y_1+noise_1 \\
+2x_2+3y_2+noise_2 \\
+...  \\
+2x_{12}+3y_{12}+noise_{12}
+\end{pmatrix} 
+</script></div>
+
+<p>We want to calculate the coefficient <script type="math/tex">x=\begin{pmatrix} a\\ b \end{pmatrix}</script>, 
+such that</p>
+<div class="mathblock"><script type="math/tex; mode=display">
+    \arg \min_x ||Ax-b||^2
+</script></div>
+
+<p>If we calculate the partial derivation w.r.t <script type="math/tex">a,b</script>, and let the partial derivations equal to 0.
+We will have below linear equation.</p>
+<div class="mathblock"><script type="math/tex; mode=display">
+    A^T Ax=A^T b
+</script></div>
+<p>The solution of above equation is equivalent to the optimal estimation a, b. (it is easy to derive and prove).</p>
+
+<p>To solve <script type="math/tex">A^T Ax=A^Tb</script>, we can apply Cholesky decomposition, but if <script type="math/tex">A^TA</script> is ill-conditioned <label for="2" class="margin-toggle sidenote-number"></label><input type="checkbox" id="2" class="margin-toggle" /><span class="sidenote">Check <a href="https://en.wikipedia.org/wiki/Condition_number">here</a> for more details about ill-condition  </span>
+(e.g. <script type="math/tex">A^TA</script> is not invertible), it will lead to problems.</p>
+
+<h2 id="pseudoinverse-matrix">Pseudoinverse matrix</h2>
+<p>Pseudoinverse matrix has two types:</p>
+<ol>
+  <li>Left pseudoinverse matrix.</li>
+  <li>Right pseudo inverse matrix.</li>
+</ol>
+
+<p>For more details, check <a href="https://www.qiujiawei.com/linear-algebra-16/">HERE</a>.</p>
 
 
 
