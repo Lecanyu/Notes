@@ -8,9 +8,13 @@ These notes were recorded various important points for personal reviewing. It on
 
 1. [Miscellaneous](linear_algebra/miscellaneous): Some knowledge points for quick review.
 
+
+
 ## Machine Learning
 
 1. [Miscellaneous](machine_learning/miscellaneous): Basic knowledge points for quick review.
+
+2. [Attention neural network](machine_learning/attention_neural_network): Some concepts and principles about attention neural network for quick review.
 
 ## SLAM
 
