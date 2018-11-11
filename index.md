@@ -16,6 +16,8 @@ These notes were recorded various important points for personal reviewing. It on
 
 2. [Attention neural network](machine_learning/attention_neural_network): Some concepts and principles about attention neural network for quick review.
 
+3. [Reinforcement learning](machine_learning/reinforcement_learning): Some important knowledge points about RL.
+
 ## SLAM
 
 1. [Pose graph](slam/pose_graph): The optimization on pose graph.

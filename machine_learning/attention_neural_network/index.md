@@ -3,7 +3,7 @@ layout: post
 title: Attention neural network
 ---
 
-## Motivation
+## ***Motivation***
 
 When input data are massive and noisy, it may not be a good idea to directly train a model from the whole of original data. Because it is difficult for models to capture the meaningful information behind the massive data.
 
@@ -12,7 +12,7 @@ For example, in my previous work on jigsaw puzzle solving, it is important to tr
 Generally, human's perceptual system also focus on some particular areas to obtain information.
 
 
-## Soft selection and hard selection
+## ***Soft selection and hard selection***
 
 Researchers have realized the importance of attention, and they have proposed two approaches to fulfill attention mechanism. 
 
@@ -37,19 +37,47 @@ In image captioning, the complete network structure can be below picture.
 
 The attention model (purple blocks) is the selection layer. $$h_1, h_2, ..., h_{k-1}$$ is the input $$c$$ in above two pictures.
 
+LSTM are recurrent neural network modules, which convert the feature map into captions.
+
 The intuition is that the attention model picks some input from feature map vector $$y_1, y_2, ..., y_n$$ (because softmax is easily dominated by the maximum one). 
 
-If you have difficult to understand, check [HERE](https://blog.heuritech.com/2016/01/20/attention-mechanism/).
+If you have difficult to understand, go to the original introduction [HERE](https://blog.heuritech.com/2016/01/20/attention-mechanism/).
 
 
-## Some insights about Structured Attention Networks 
+## ***Some insights about Structured Attention Networks*** 
 
 Here I'd like to tell some insights about the paper "Structured Attention Networks". {% sidenote 2 'Kim, Yoon, et al. [Structured attention networks](https://arxiv.org/pdf/1702.00887.pdf). ICLR 2017'%}
 
 The key contribution in this paper is that the authors use a CRF to model the attention layer.
 
+In this paper, the author use below formulation to generalize the attention framework.
 
-***Now my understanding may be wrong. I need to further read and double check.***
+{% math %}
+c = \mathbb{E}_{z \sim p(z|x,q)}[f(x,z)] = \sum_{i=1}^n p(z=i|x, q) x_i 
+\quad \textsf{(original version in paper)} \\
+
+z = \mathbb{E}_{s \sim p(s|y, c)}[f(y, s)] = \sum_{i=1}^n p(s=i|y, c)y_i
+\quad \textsf{(use annotations in above pictures)} \\
+
+{% endmath %}
+
+For consistency, I will use the same annotation in above pictures to explain.
+The $$s\sim p(s|y,c)$$ is the attention distribution. It assigns different weights to the input $$y_i$$. $$c$$ is the so-called query, which is the output $$h_1, h_2, ..., h_{k-1}$$ in above network structure (i.e. the medium output of RNN). $$f(y, s)$$ is annotation function which generate a output by combining original input $$y$$ and attention distribution $$s$$. In above example, the $$f(y, s) = ys$$.
+
+In this paper, the authors proposed that we can apply a CRF to describe the relationship among all of $$y, s$$. As the figure showing below, the red box can be substituded by a CRF. Therefore, we will have 
+{% math %}
+z = \mathbb{E}_{s \sim p(s|y, c)}[f(y, s)] = \sum_C \mathbb{E}_{s \sim p(s_C|y, c)}[f_C(y, s_C)]
+{% endmath %}
+where the $$C$$ indicates the maximum clique.
+The above example can be seen as a special case of this model, since the CRF allows the dependence between different $$s_i$$. Hence, it is more robust to describe the real probabilistic distribution.
+
+
+
+{% maincolumn 'assets/machine_learning/structured_attention_network.png'%}
+
+
+
+***Note: now my understanding may be wrong. I need to further read and double check.***
 
 
 

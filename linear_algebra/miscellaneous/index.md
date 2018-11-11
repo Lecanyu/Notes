@@ -3,7 +3,7 @@ layout: post
 title: Miscellaneous (linear algebra)
 ---
 
-## Singular value decomposition (SVD)
+## ***Singular value decomposition (SVD)***
 {% math %}
 A = U \Sigma V^T
 {% endmath %}
@@ -48,7 +48,7 @@ int main()
 {% endhighlight %}
 
 
-## Principle component analysis (PCA)
+## ***Principle component analysis (PCA)***
 {% math %}
 A = V \Sigma V^T
 {% endmath %}
@@ -57,7 +57,7 @@ where $$A$$ usually is a covariance matrix which is a symmetrical matrix. $$V$$ 
 
 
 
-## Covariance matrix
+## ***Covariance matrix***
 Variance measure the convergence property within a series data
 {% math %}
 \frac{1}{n} \sum (x-\bar x)^2
@@ -88,7 +88,7 @@ $$A^T A(0, 0), A^T A(1, 1), A^T A(2, 2)$$ is the variance in height, weight, gra
 $$A^T A(0, 1)$$ is the covariance between height and weight dimensions. Other element in $$A^T A$$ can be interpreted in the same way.
 
 
-## The solutions of linear equations
+## ***The solutions of linear equations***
 Suppose we have linear equations:
 {% math %}
 Ax = b  \quad \textsf{(Non-homogeneous linear equations)}\\
@@ -122,7 +122,7 @@ Since $$b=\boldsymbol{0}$$, if $$R(A) = n $$ (full ranked), there is only zero s
 If $$A$$ is not full ranked, we can find a linear combination of colunm vectors to represent the linear dependent ones. Therefore, there are infinite solutions.
 
 
-## Matrix decomposition
+## ***Matrix decomposition***
 ### * LU decomposition
 When matrix $$A$$ is invertible, then we can decompose $$A = LU$$. We usually have two different composition: 
 1. $$L$$ is lower unit triangular matrix (diagonal elements are 1) and $$U$$ is a upper triangular matrix; 
@@ -185,7 +185,7 @@ To solve $$A^T Ax=A^Tb$$, we can apply Cholesky decomposition, but if $$A^TA$$ i
 (e.g. $$A^TA$$ is not invertible), it will lead to problems.
 
 
-## Pseudoinverse matrix
+## ***Pseudoinverse matrix***
 Pseudoinverse matrix has two types:
 1. Left pseudoinverse matrix.
 2. Right pseudo inverse matrix.
