@@ -77,7 +77,7 @@
 </script>
 
 
-<h2 id="motivation">Motivation</h2>
+<h2 id="motivation"><strong><em>Motivation</em></strong></h2>
 
 <p>When input data are massive and noisy, it may not be a good idea to directly train a model from the whole of original data. Because it is difficult for models to capture the meaningful information behind the massive data.</p>
 
@@ -85,7 +85,7 @@
 
 <p>Generally, human’s perceptual system also focus on some particular areas to obtain information.</p>
 
-<h2 id="soft-selection-and-hard-selection">Soft selection and hard selection</h2>
+<h2 id="soft-selection-and-hard-selection"><strong><em>Soft selection and hard selection</em></strong></h2>
 
 <p>Researchers have realized the importance of attention, and they have proposed two approaches to fulfill attention mechanism.</p>
 
@@ -113,17 +113,42 @@
 
 <p>The attention model (purple blocks) is the selection layer. <script type="math/tex">h_1, h_2, ..., h_{k-1}</script> is the input <script type="math/tex">c</script> in above two pictures.</p>
 
+<p>LSTM are recurrent neural network modules, which convert the feature map into captions.</p>
+
 <p>The intuition is that the attention model picks some input from feature map vector <script type="math/tex">y_1, y_2, ..., y_n</script> (because softmax is easily dominated by the maximum one).</p>
 
-<p>If you have difficult to understand, check <a href="https://blog.heuritech.com/2016/01/20/attention-mechanism/">HERE</a>.</p>
+<p>If you have difficult to understand, go to the original introduction <a href="https://blog.heuritech.com/2016/01/20/attention-mechanism/">HERE</a>.</p>
 
-<h2 id="some-insights-about-structured-attention-networks">Some insights about Structured Attention Networks</h2>
+<h2 id="some-insights-about-structured-attention-networks"><strong><em>Some insights about Structured Attention Networks</em></strong></h2>
 
 <p>Here I’d like to tell some insights about the paper “Structured Attention Networks”. <label for="2" class="margin-toggle sidenote-number"></label><input type="checkbox" id="2" class="margin-toggle" /><span class="sidenote">Kim, Yoon, et al. <a href="https://arxiv.org/pdf/1702.00887.pdf">Structured attention networks</a>. ICLR 2017 </span></p>
 
 <p>The key contribution in this paper is that the authors use a CRF to model the attention layer.</p>
 
-<p><strong><em>Now my understanding may be wrong. I need to further read and double check.</em></strong></p>
+<p>In this paper, the author use below formulation to generalize the attention framework.</p>
+
+<div class="mathblock"><script type="math/tex; mode=display">
+c = \mathbb{E}_{z \sim p(z|x,q)}[f(x,z)] = \sum_{i=1}^n p(z=i|x, q) x_i 
+\quad \textsf{(original version in paper)} \\
+
+z = \mathbb{E}_{s \sim p(s|y, c)}[f(y, s)] = \sum_{i=1}^n p(s=i|y, c)y_i
+\quad \textsf{(use annotations in above pictures)} \\
+
+</script></div>
+
+<p>For consistency, I will use the same annotation in above pictures to explain.
+The <script type="math/tex">s\sim p(s|y,c)</script> is the attention distribution. It assigns different weights to the input <script type="math/tex">y_i</script>. <script type="math/tex">c</script> is the so-called query, which is the output <script type="math/tex">h_1, h_2, ..., h_{k-1}</script> in above network structure (i.e. the medium output of RNN). <script type="math/tex">f(y, s)</script> is annotation function which generate a output by combining original input <script type="math/tex">y</script> and attention distribution <script type="math/tex">s</script>. In above example, the <script type="math/tex">f(y, s) = ys</script>.</p>
+
+<p>In this paper, the authors proposed that we can apply a CRF to describe the relationship among all of <script type="math/tex">y, s</script>. As the figure showing below, the red box can be substituded by a CRF. Therefore, we will have</p>
+<div class="mathblock"><script type="math/tex; mode=display">
+z = \mathbb{E}_{s \sim p(s|y, c)}[f(y, s)] = \sum_C \mathbb{E}_{s \sim p(s_C|y, c)}[f_C(y, s_C)]
+</script></div>
+<p>where the <script type="math/tex">C</script> indicates the maximum clique.
+The above example can be seen as a special case of this model, since the CRF allows the dependence between different <script type="math/tex">s_i</script>. Hence, it is more robust to describe the real probabilistic distribution.</p>
+
+<figure><figcaption></figcaption><img src="/Notes/assets/machine_learning/structured_attention_network.png" /></figure>
+
+<p><strong><em>Note: now my understanding may be wrong. I need to further read and double check.</em></strong></p>
 
 
 

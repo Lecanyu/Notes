@@ -77,7 +77,7 @@
 </script>
 
 
-<h2 id="singular-value-decomposition-svd">Singular value decomposition (SVD)</h2>
+<h2 id="singular-value-decomposition-svd"><strong><em>Singular value decomposition (SVD)</em></strong></h2>
 <div class="mathblock"><script type="math/tex; mode=display">
 A = U \Sigma V^T
 </script></div>
@@ -119,14 +119,14 @@ A = U \Sigma V^T
     <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
 <span class="p">}</span></code></pre></figure>
 
-<h2 id="principle-component-analysis-pca">Principle component analysis (PCA)</h2>
+<h2 id="principle-component-analysis-pca"><strong><em>Principle component analysis (PCA)</em></strong></h2>
 <div class="mathblock"><script type="math/tex; mode=display">
 A = V \Sigma V^T
 </script></div>
 
 <p>where <script type="math/tex">A</script> usually is a covariance matrix which is a symmetrical matrix. <script type="math/tex">V</script> is composed by a series of eigen vectors which are mutually orthonormal. <script type="math/tex">\Sigma</script> is corresponding eigen value.</p>
 
-<h2 id="covariance-matrix">Covariance matrix</h2>
+<h2 id="covariance-matrix"><strong><em>Covariance matrix</em></strong></h2>
 <p>Variance measure the convergence property within a series data</p>
 <div class="mathblock"><script type="math/tex; mode=display">
 \frac{1}{n} \sum (x-\bar x)^2
@@ -179,7 +179,7 @@ Then the covariance matrix should be <script type="math/tex">A^T A</script>.</p>
 
 <p><script type="math/tex">A^T A(0, 1)</script> is the covariance between height and weight dimensions. Other element in <script type="math/tex">A^T A</script> can be interpreted in the same way.</p>
 
-<h2 id="the-solutions-of-linear-equations">The solutions of linear equations</h2>
+<h2 id="the-solutions-of-linear-equations"><strong><em>The solutions of linear equations</em></strong></h2>
 <p>Suppose we have linear equations:</p>
 <div class="mathblock"><script type="math/tex; mode=display">
 Ax = b  \quad \textsf{(Non-homogeneous linear equations)}\\
@@ -212,7 +212,7 @@ if <script type="math/tex">R(A, b) = R(A) = n</script>, the equations has only o
 Since <script type="math/tex">b=\boldsymbol{0}</script>, if <script type="math/tex">R(A) = n</script> (full ranked), there is only zero solution. 
 If <script type="math/tex">A</script> is not full ranked, we can find a linear combination of colunm vectors to represent the linear dependent ones. Therefore, there are infinite solutions.</p>
 
-<h2 id="matrix-decomposition">Matrix decomposition</h2>
+<h2 id="matrix-decomposition"><strong><em>Matrix decomposition</em></strong></h2>
 <h3 id="-lu-decomposition">* LU decomposition</h3>
 <p>When matrix <script type="math/tex">A</script> is invertible, then we can decompose <script type="math/tex">A = LU</script>. We usually have two different composition:</p>
 <ol>
@@ -273,7 +273,7 @@ We will have below linear equation.</p>
 <p>To solve <script type="math/tex">A^T Ax=A^Tb</script>, we can apply Cholesky decomposition, but if <script type="math/tex">A^TA</script> is ill-conditioned <label for="2" class="margin-toggle sidenote-number"></label><input type="checkbox" id="2" class="margin-toggle" /><span class="sidenote">Check <a href="https://en.wikipedia.org/wiki/Condition_number">here</a> for more details about ill-condition  </span>
 (e.g. <script type="math/tex">A^TA</script> is not invertible), it will lead to problems.</p>
 
-<h2 id="pseudoinverse-matrix">Pseudoinverse matrix</h2>
+<h2 id="pseudoinverse-matrix"><strong><em>Pseudoinverse matrix</em></strong></h2>
 <p>Pseudoinverse matrix has two types:</p>
 <ol>
   <li>Left pseudoinverse matrix.</li>
