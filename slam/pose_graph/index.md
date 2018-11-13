@@ -3,12 +3,6 @@ layout: post
 title: Pose graph
 ---
 
-## under construction
+Will write something here to introduce my understanding about pose graph optimization.
 
-## write some equations for testing
-
-aaaa bbbb ccc $$\sum_i^N a_i$$ dddd xxxx, or you can use this {%m%} \Pi_i^N \frac{1}{i} {%em%}
-
-{% math %}
-\sum_i^N a_i
-{% endmath %}
+A intuitive tutorial can be found [HERE](https://blog.csdn.net/heyijia0327/article/details/47428553).

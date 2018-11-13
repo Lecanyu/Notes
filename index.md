@@ -29,7 +29,9 @@ These notes were recorded various important points for personal reviewing. It on
 
 3. [Graph simiplification](slam/graph_simplification): Simplify the dense pose graph.
 
-4. [Point cloud registration](slam/registration_opt): Introduce the optimization problem in solving least square.
+4. [Point cloud registration](slam/registration_opt): Introduce the optimization problem in solving least square. It includes a general introduction about Non-linear optimization (Gauss Newton and Levenberg-Marquardt methods).
+
+5. [Lie group and Lie algebra](slam/lie_algebra): An intuitive introduction about Lie algebra.
 
 
 ## Algorithms
