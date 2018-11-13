@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Reinforcement learning</title>
+  <meta name="description" content="Personal notes (memorandum).">
+
+
+  <link rel="stylesheet" href="/Notes/css/tufte.css">	
+  
+
+  <!-- Google Fonts loaded here depending on setting in _data/options.yml true loads font, blank does not-->
+  
+    <link href='//fonts.googleapis.com/css?family=Lato:400,400italic' rel='stylesheet' type='text/css'>
+  
+  <!-- Load up MathJax script if needed ... specify in /_data/options.yml file-->
+  
+    <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+  <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-75587219-1', 'auto');
+  ga('send', 'pageview');
+
+  </script>
+
+  <link rel="canonical" href="http://localhost:4000/Notes/machine_learning/reinforcement_learning_points/">
+  <link rel="alternate" type="application/rss+xml" title="Notes" href="http://localhost:4000/Notes/feed.xml" />
+</head>
+
+  <body>
+    <!--- Header and nav template site-wide -->
+<header>
+    <nav class="group">
+        <a href="/Notes/">Contents</a>
+		<a href="https://lecanyu.github.io/">Resume</a>
+		<a href="https://github.com/Lecanyu/Notes">Github</a>
+	</nav>
+</header>
+
+    <article class="group">
+      <h1>Reinforcement learning</h1>
+<p class="subtitle"></p>
+
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    TeX: {
+      Macros: {
+        e: "\\epsilon",
+        xti: "x^{(i)}",
+        yti: "y^{(i)}",
+        bfy: "{\\bf y}",
+        bfx: "{\\bf x}",
+        bfg: "{\\bf g}",
+        bfbeta: "{\\bf \\beta}",
+        tp: "\\tilde p",
+        pt: "p_\\theta",
+        Exp: "{\\mathbb{E}}",
+        Ind: "{\\mathbb{I}}",
+        KL: "{\\mathbb{KL}}",
+        Dc: "{\\mathcal{D}}",
+        Tc: "{\\mathcal{T}}",
+        Xc: "{\\mathcal{X}}",
+        note: ["\\textcolor{blue}{[NOTE: #1]}",1]
+      }
+    }
+  });
+</script>
+
+
+<h2 id="the-difference-of-several-concepts-terminologies">The difference of several concepts (terminologies)</h2>
+
+<ol>
+  <li>
+    <p>On-policy vs Off-policy</p>
+
+    <p>Off-policy is the training target of a policy is different from the behavior policy like <script type="math/tex">\epsilon</script>-greedy (more exploration).</p>
+
+    <p>On policy is the training target of a policy is exact the same with the behavior policy. (less exploration).</p>
+
+    <p>On-policy can usually converge faster than off-policy.</p>
+  </li>
+  <li>
+    <p>Model-based vs Model-free</p>
+
+    <p>Model-based: there are descriptions about the environment, such as the probabilistic distribution of rewards.</p>
+
+    <p>Model-free: No explicit descriptions about the environment where the agents operate.</p>
+  </li>
+  <li>
+    <p>Exploration vs Exploitation</p>
+
+    <p>Exploration: explore unknown area. It may be beneficial in the long term. Typically, exploration is necessary when there is always uncertainy about the accuracy of the action-value estimates.</p>
+
+    <p>Exploitation: greedily choose current best action. It is usually a local optimal action.</p>
+  </li>
+  <li>
+    <p>Value function based methods vs Evolutionary methods</p>
+
+    <p>Value function based methods are trying to explore the value of a particular state, and then take advantage of the value function to take an action.</p>
+
+    <p>Evolutionary methods are simply ergodic strategies. It attempts every possible policy and evaluates its rewards. Hence, it only works when policy space is sufficiently small, or can be structured (i.e. the good policy can be easy to find).</p>
+  </li>
+  <li>
+    <p>Reward vs Value</p>
+
+    <p>reward is immediate, but value need to evaluate the reward in the future.</p>
+  </li>
+  <li>
+    <p>Temporal difference (TD) learning</p>
+
+    <p>TD learning has below format</p>
+
+    <div class="mathblock"><script type="math/tex; mode=display">
+ V(s) \gets V(s) + \alpha [r(s) + V(s^{'}) - V(s)]
+ </script></div>
+    <p>where <script type="math/tex">s</script> is current state, <script type="math/tex">s^{'}</script> is the next state; <script type="math/tex">V(\cdot)</script> is value function. <script type="math/tex">\alpha</script> indicates the learning rate (update rate).</p>
+
+    <p>This update rule is temporal-difference learning, because its changes are based on a difference, <script type="math/tex">V(s^{'}) - V(s)</script>, between estimates at two different times.</p>
+
+    <p>The renowed Q-learning is an off-policy TD learning method.</p>
+  </li>
+  <li>
+    <p>Evaluative feedback vs instructive feedback</p>
+
+    <p>Purely evaluative feedback indicates how good the action taken was, but not whether it was the best or the worst action possible.</p>
+
+    <p>Purely instructive feedback, on the other hand, indicates the correct action to take, independently of the action actually taken.</p>
+
+    <p>In one word, evaluative feedback depends entirely on the action taken, whereas instructive feedback is independent of the action taken. (i.e. evaluative feedback is based on partial information, whereas instructive feedback can only be made under full information).</p>
+  </li>
+  <li>
+    <p>Three fundamental classes of methods for solving finite markov decision problems.</p>
+
+    <p><strong>Dynamic programming</strong></p>
+
+    <p>This kinds of methods are well developed mathematically, but require a complete and accurate model of the environment</p>
+
+    <p><strong>Monte Carlo methods</strong></p>
+
+    <p>Monte Carlo methods don’t require a model and are conceptually simple, but are not well suited for step-by-step incremental computation</p>
+
+    <p><strong>Temporal-difference learning</strong></p>
+
+    <p>Temporal-difference methods require no model and are fully incremental, but are more complex to analyze.</p>
+  </li>
+</ol>
+
+
+
+
+    </article>
+    <span class="print-footer">Reinforcement learning - Canyu Le</span>
+    <footer>
+  <hr class="slender">
+  <!-- <ul class="footer&#45;links"> -->
+  <!--   <li><a href="mailto:hate@spam.net"><span class="icon&#45;mail"></span></a></li>     -->
+  <!--    -->
+  <!--     <li> -->
+  <!--       <a href="//www.twitter.com/twitter_handle"><span class="icon-twitter"></span></a> -->
+  <!--     </li> -->
+  <!--    -->
+  <!--     <li> -->
+  <!--       <a href="//plus.google.com/+googlePlusName"><span class="icon-googleplus"></span></a> -->
+  <!--     </li> -->
+  <!--    -->
+  <!--     <li> -->
+  <!--       <a href="//github.com/GithubHandle"><span class="icon-github"></span></a> -->
+  <!--     </li> -->
+  <!--    -->
+  <!--     <li> -->
+  <!--       <a href="//www.flickr.com/photos/FlickrUserID"><span class="icon-flickr"></span></a> -->
+  <!--     </li> -->
+  <!--    -->
+  <!--     <li> -->
+  <!--       <a href="/feed"><span class="icon-feed"></span></a> -->
+  <!--     </li> -->
+  <!--      -->
+  <!-- </ul> -->
+<div class="credits">
+<!-- <span>&#38;copy; 2018 <!&#45;&#45; &#38;#38;nbsp;&#38;#38;nbsp;CANYU LE &#45;&#45;></span></br> <br> -->
+<span>Site created with <a href="//jekyllrb.com">Jekyll</a> using the <a href="//github.com/clayh53/tufte-jekyll">Tufte theme</a>. &copy; 2018</span> 
+</div>  
+</footer>
+
+  </body>
+</html>

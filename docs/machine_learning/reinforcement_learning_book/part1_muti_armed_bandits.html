@@ -5,7 +5,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Notes</title>
+  <title>Multi-armed Bandits</title>
   <meta name="description" content="Personal notes (memorandum).">
 
 
@@ -32,7 +32,7 @@
 
   </script>
 
-  <link rel="canonical" href="http://localhost:4000/Notes/">
+  <link rel="canonical" href="http://localhost:4000/Notes/machine_learning/reinforcement_learning_book/part1_muti_armed_bandits">
   <link rel="alternate" type="application/rss+xml" title="Notes" href="http://localhost:4000/Notes/feed.xml" />
 </head>
 
@@ -47,7 +47,7 @@
 </header>
 
     <article class="group">
-      <h1>Notes</h1>
+      <h1>Multi-armed bandits</h1>
 <p class="subtitle"></p>
 
 
@@ -77,89 +77,65 @@
 </script>
 
 
-<p>These notes were recorded various important points for personal reviewing. It only contains the brief descriptions. <label for="1" class="margin-toggle sidenote-number"></label><input type="checkbox" id="1" class="margin-toggle" /><span class="sidenote">This is a simple testing example. </span></p>
+<h2 id="action-value-estimation">Action-value estimation</h2>
 
-<h2 id="linear-algbera">Linear Algbera</h2>
+<p>The action-value function usually can be updated according to below equation:</p>
 
-<ol>
-  <li><a href="linear_algebra/miscellaneous">Miscellaneous</a>: Some knowledge points for quick review.</li>
-</ol>
+<div class="mathblock"><script type="math/tex; mode=display">
+Q_{new}(A) \gets Q_{old}(A) + \alpha_{n}[Q_{target}(A) - Q_{old}(A)]
+</script></div>
+<p>The learning rate <script type="math/tex">\alpha_n</script> here has been treated as the function w.r.t. update times <script type="math/tex">n</script>.</p>
 
-<h2 id="machine-learning">Machine Learning</h2>
+<p><script type="math/tex">Q_{new}(A)</script> can converge when below two conditions are satisfied.</p>
 
-<ol>
-  <li>
-    <p><a href="machine_learning/miscellaneous">Miscellaneous</a>: Basic knowledge points for quick review.</p>
-  </li>
-  <li>
-    <p><a href="machine_learning/attention_neural_network">Attention neural network</a>: Some concepts and principles about attention neural network for quick review.</p>
-  </li>
-  <li>
-    <p><a href="machine_learning/reinforcement_learning_points">Reinforcement learning quick points</a>: Some important knowledge points about RL.</p>
-  </li>
-  <li>
-    <p><a href="machine_learning/reinforcement_learning_book">The review of RL book</a>: My notes about the book “Reinforcement Learning: An Introducation” by Richard S. Sutton and Andrew G. Barto, Nov 5, 2017.</p>
-  </li>
-</ol>
+<div class="mathblock"><script type="math/tex; mode=display">
+\sum_{n=1}^\infty \alpha_n = \infty \\
+\sum_{n=1}^\infty \alpha_n^2 < \infty
+</script></div>
 
-<h2 id="slam">SLAM</h2>
+<p>The first condition is required to guarantee that the steps are large enough to eventually overcome any initial conditions or random fluctuations.</p>
+
+<p>The second condition guarantees that eventually the steps become small enough to assure convergence.</p>
+
+<p>Note that <script type="math/tex">\alpha</script> usually is set to a constant in many practical RL problems, which violates the second condition. Hence, the <script type="math/tex">Q_{new}</script> won’t converge. However, this actually can be a desirable property in highly nonstationary environment (i.e. the true state-value can be changed after sampling each time).</p>
+
+<h2 id="several-exploration-strategies">Several exploration strategies</h2>
 
 <ol>
   <li>
-    <p><a href="slam/pose_graph">Pose graph</a>: The optimization on pose graph.</p>
+    <p><script type="math/tex">\epsilon</script>-greedy</p>
   </li>
   <li>
-    <p><a href="slam/bundle_adjustment">Bundle adjustment</a>: The optimization for bundle adjustment.</p>
+    <p>Upper confidence bound (UCB)</p>
+
+    <p>This method is adopted in recent AlphaGo monte carlo tree search.</p>
+
+    <p>The action will be taken according to below rule</p>
+
+    <div class="mathblock"><script type="math/tex; mode=display">
+ a = \mathop{\arg\min}_{a} [Q_t(a) + c \sqrt \frac{\ln t}{N_t(a)}]
+ </script></div>
+    <p>where <script type="math/tex">Q_t(a)</script> is the action-value result at time step <script type="math/tex">t</script>. <script type="math/tex">N_t(a)</script> denotes the number of times that action <script type="math/tex">a</script> has been selected prior to time <script type="math/tex">t</script>.</p>
+
+    <p>The idea of this action selection is that each time <script type="math/tex">a</script> is selected, the uncertainty of action <script type="math/tex">a</script> is presumbly reduced, and thus the probability of selecting <script type="math/tex">a</script> will decrease.</p>
   </li>
   <li>
-    <p><a href="slam/graph_simplification">Graph simiplification</a>: Simplify the dense pose graph.</p>
+    <p>Optimistic initial values</p>
+
+    <p>Setting a larger initial estimates can encourage exploring automatically in some special cases.</p>
   </li>
   <li>
-    <p><a href="slam/registration_opt">Point cloud registration</a>: Introduce the optimization problem in solving least square. It includes a general introduction about Non-linear optimization (Gauss Newton and Levenberg-Marquardt methods).</p>
-  </li>
-  <li>
-    <p><a href="slam/lie_algebra">Lie group and Lie algebra</a>: An intuitive introduction about Lie algebra.</p>
+    <p>Gradient bandit algorithm</p>
+
+    <p>Directly define a numerical preference for each action selection.</p>
   </li>
 </ol>
 
-<h2 id="algorithms">Algorithms</h2>
-
-<ol>
-  <li>
-    <p><a href="algorithm/dp/">Dynamic programming</a>: An introduction about the dynamic programming algorithm.</p>
-  </li>
-  <li>
-    <p><a href="algorithm/graph_algorithm/">Graph algorithm</a>: An introduction about graph-related algorithms.</p>
-  </li>
-  <li>
-    <p><a href="algorithm/sorting_and_searching/">Sorting and searching</a>: An introduction about sorting and searching algorithms.</p>
-  </li>
-  <li>
-    <p><a href="algorithm/string_and_array/">String and array</a>: An introduction about string and array related algorithms.</p>
-  </li>
-</ol>
-
-<h2 id="data-structure">Data Structure</h2>
-
-<ol>
-  <li>
-    <p><a href="data_structure/concepts/">Concepts</a>: An introduction about the concepts of data structure.</p>
-  </li>
-  <li>
-    <p><a href="data_structure/structures/">Structures</a>: Various data structure (e.g. stack, graph).</p>
-  </li>
-</ol>
-
-<h2 id="english">English</h2>
-
-<ol>
-  <li><a href="english/words/">Words and sentences</a>: My vocabulary and sentence records.</li>
-</ol>
 
 
 
     </article>
-    <span class="print-footer">Notes - Canyu Le</span>
+    <span class="print-footer">Multi-armed Bandits - Canyu Le</span>
     <footer>
   <hr class="slender">
   <!-- <ul class="footer&#45;links"> -->

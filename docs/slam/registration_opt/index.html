@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Point cloud registration</title>
+  <meta name="description" content="Personal notes (memorandum).">
+
+
+  <link rel="stylesheet" href="/Notes/css/tufte.css">	
+  
+
+  <!-- Google Fonts loaded here depending on setting in _data/options.yml true loads font, blank does not-->
+  
+    <link href='//fonts.googleapis.com/css?family=Lato:400,400italic' rel='stylesheet' type='text/css'>
+  
+  <!-- Load up MathJax script if needed ... specify in /_data/options.yml file-->
+  
+    <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+  <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-75587219-1', 'auto');
+  ga('send', 'pageview');
+
+  </script>
+
+  <link rel="canonical" href="http://localhost:4000/Notes/slam/registration_opt/">
+  <link rel="alternate" type="application/rss+xml" title="Notes" href="http://localhost:4000/Notes/feed.xml" />
+</head>
+
+  <body>
+    <!--- Header and nav template site-wide -->
+<header>
+    <nav class="group">
+        <a href="/Notes/">Contents</a>
+		<a href="https://lecanyu.github.io/">Resume</a>
+		<a href="https://github.com/Lecanyu/Notes">Github</a>
+	</nav>
+</header>
+
+    <article class="group">
+      <h1>Point cloud registration</h1>
+<p class="subtitle"></p>
+
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    TeX: {
+      Macros: {
+        e: "\\epsilon",
+        xti: "x^{(i)}",
+        yti: "y^{(i)}",
+        bfy: "{\\bf y}",
+        bfx: "{\\bf x}",
+        bfg: "{\\bf g}",
+        bfbeta: "{\\bf \\beta}",
+        tp: "\\tilde p",
+        pt: "p_\\theta",
+        Exp: "{\\mathbb{E}}",
+        Ind: "{\\mathbb{I}}",
+        KL: "{\\mathbb{KL}}",
+        Dc: "{\\mathcal{D}}",
+        Tc: "{\\mathcal{T}}",
+        Xc: "{\\mathcal{X}}",
+        note: ["\\textcolor{blue}{[NOTE: #1]}",1]
+      }
+    }
+  });
+</script>
+
+
+<p>In this post, I mainly address the least square optimization problem in point cloud registration.</p>
+
+<div class="mathblock"><script type="math/tex; mode=display">
+\mathbf{T^*} = \mathop{\arg\min}_{\mathbf{T^*}}\sum_{(p,q)\in\mathcal{K}} || \mathbf{p} - \mathbf{T}\mathbf{q} ||^2
+</script></div>
+<p>where <script type="math/tex">\mathbf{p}, \mathbf{q}</script> are the correspondence point pair in two point cloud pieces. <script type="math/tex">\mathbf{T}</script> is rigid transformation matrix.</p>
+
+<p>Generally, there are two approaches to solve this problem (These two methods have been widely used in various non-linear optimization).</p>
+
+<p>I briefly summarize some important points here. <label for="1," class="margin-toggle sidenote-number"></label><input type="checkbox" id="1," class="margin-toggle" /><span class="sidenote">Please refer to <a href="https://blog.csdn.net/kfqcome/article/details/9358853">here</a> for the detail of close-form derivation, and <a href="https://zhuanlan.zhihu.com/p/33413665">here</a> for iterative solution. </span></p>
+
+<h2 id="close-form-solution">Close-form solution</h2>
+
+<p>The optimal translation is</p>
+<div class="mathblock"><script type="math/tex; mode=display">
+\mathbf{t^*} = \mathbf{\bar q} - R\mathbf{\bar p}
+</script></div>
+<p>where <script type="math/tex">\mathbf{\bar q}, \mathbf{\bar p}</script> are the mean of correspondence points. <script type="math/tex">R</script> is rotation matrix.</p>
+
+<p>The optimal rotation is</p>
+<div class="mathblock"><script type="math/tex; mode=display">
+R = VU^T
+</script></div>
+<p>where <script type="math/tex">V, U</script> is the SVD two component results of a matrix, which is composed by normalized correspondence points (see <a href="https://blog.csdn.net/kfqcome/article/details/9358853">derivation</a> for the detail).</p>
+
+<p>Note that the SVD here is not applied for solving least square (the least square here is different from conventional format, check my previous post in <a href="../../linear_algebra/miscellaneous">linear algebra section</a>).</p>
+
+<p>Besides, the solution <script type="math/tex">R = VU^T</script> may not be a true rotation matrix, because the derivation process is to solve the optimal orthodox matrix. Hence, <script type="math/tex">R</script> may be a reflect matrix (the determinant of <script type="math/tex">R</script> is -1). 
+<label for="2," class="margin-toggle sidenote-number"></label><input type="checkbox" id="2," class="margin-toggle" /><span class="sidenote">the determinant of orthodox matrix <script type="math/tex">X</script> either equals to 1 or -1 (this can be proved from <script type="math/tex">XX^T=I</script> and det(<script type="math/tex">X</script>)det(<script type="math/tex">X^T</script>)=1), whereas det(rotation matrix)=1, det(reflect matrix)=-1 </span>
+In this case, rotation matrix should be modified as below, so that we can gurantee the det(<script type="math/tex">R</script>)=1 (the reasons and details in above <em>derivation</em> link).</p>
+
+<div class="mathblock"><script type="math/tex; mode=display">
+R = V 
+\begin{pmatrix}
+1 & & & & &  \\
+ & 1 & & & &  \\
+ & & ... & & &  \\
+ & & & & 1 &  \\
+  & & & &  & -1 \\
+\end{pmatrix} 
+U^T
+</script></div>
+
+<h2 id="iterative-solution-gauss-newton-method">Iterative solution (Gauss Newton method)</h2>
+<p>There is another solution which is a more flexible and general format.</p>
+
+<p>We represent the rigid transformation matrix into a vector <script type="math/tex">\xi = (\theta_x, \theta_y, \theta_z, x, y, z)</script> that collates rotation and translation components.</p>
+
+<p>Suppose we have <script type="math/tex">n</script> pairs correspondence points. We define the error function</p>
+<div class="mathblock"><script type="math/tex; mode=display">
+f(\xi) = 
+\begin{pmatrix}
+p_1 - Tq_1 \\
+p_2 - Tq_2 \\
+... \\
+p_n - Tq_n \\
+\end{pmatrix}_{3n\times 1}
+</script></div>
+<p>Note that we discard the last element in <script type="math/tex">p-Tq</script> after calculation, and <script type="math/tex">\xi</script> is included in <script type="math/tex">T</script>.
+The original objective is <script type="math/tex">\min ||f(\xi)||^2</script></p>
+
+<p>Given a tiny disturbance <script type="math/tex">\Delta \xi</script>, and apply Taylor expansion.</p>
+<div class="mathblock"><script type="math/tex; mode=display">
+f(\xi + \Delta \xi) \approx f(\xi) + J(\xi) \Delta \xi
+</script></div>
+<p>Where <script type="math/tex">J</script> is the Jacobian matrix <label for="3," class="margin-toggle sidenote-number"></label><input type="checkbox" id="3," class="margin-toggle" /><span class="sidenote">first order is called Jacobian, and second order is called Hessian </span>.</p>
+
+<p>Our target now is to find a best iteration direction <script type="math/tex">\Delta \xi</script>, which make the minimum <script type="math/tex">\lVert f(\xi + \Delta \xi)\rVert^2</script>. In other word, we have</p>
+<div class="mathblock"><script type="math/tex; mode=display">
+\Delta \xi^* = \mathop{\arg\min_{\Delta \xi}} \frac{1}{2} \lVert f(\xi)+J\Delta \xi \rVert^2
+</script></div>
+<p>calculate derivation w.r.t. <script type="math/tex">\Delta \xi</script>, and make the derivation equals to 0. We have</p>
+
+<div class="mathblock"><script type="math/tex; mode=display"> 
+J(\xi)^T J(\xi) \Delta \xi = -J(\xi)^T f(\xi)
+</script></div>
+<p>since <script type="math/tex">\xi</script> is a initial guess, we can calculate <script type="math/tex">\Delta \xi</script> (i.e. this equation tells us how to update <script type="math/tex">\xi</script>).</p>
+
+<p>Note that <script type="math/tex">J^T J</script> is Hessian matrix <script type="math/tex">H</script> too.
+<label for="4," class="margin-toggle sidenote-number"></label><input type="checkbox" id="4," class="margin-toggle" /><span class="sidenote">Pose graph optimization also uses this method to optimize.  </span></p>
+
+<div class="mathblock"><script type="math/tex; mode=display"> 
+H(\xi) \Delta \xi = -J(\xi)^T f(\xi)
+</script></div>
+
+<p>Note that we cannot directly apply add to update <script type="math/tex">\xi</script> because of the rotation component. One alternative way is to update <script type="math/tex">T</script> as below (because <script type="math/tex">\Delta \xi</script> is tiny, we have <script type="math/tex">\sin\theta \approx \theta</script>, <script type="math/tex">\cos\theta \approx 0</script>).</p>
+<div class="mathblock"><script type="math/tex; mode=display">
+T_k \approx 
+\begin{pmatrix}
+1 & -\theta_z & \theta_y & x \\
+\theta_z & 1 & -\theta_x & y \\
+-\theta_y & \theta_x & 1 & z \\
+0 & 0 & 0 & 1 \\
+\end{pmatrix}
+\times T_{k-1}
+</script></div>
+
+<h2 id="iterative-solution-levenberg-marquardt-method">Iterative solution (Levenberg-Marquardt method)</h2>
+
+<p>LM is similar with Newton method, but it controls a maximum bound for update step. Therefore, it is usually more robust than Newton method.</p>
+
+<p>Please refer to <a href="https://zhuanlan.zhihu.com/p/33413665">here</a> for the detailed introduction.</p>
+
+
+
+
+    </article>
+    <span class="print-footer">Point cloud registration - Canyu Le</span>
+    <footer>
+  <hr class="slender">
+  <!-- <ul class="footer&#45;links"> -->
+  <!--   <li><a href="mailto:hate@spam.net"><span class="icon&#45;mail"></span></a></li>     -->
+  <!--    -->
+  <!--     <li> -->
+  <!--       <a href="//www.twitter.com/twitter_handle"><span class="icon-twitter"></span></a> -->
+  <!--     </li> -->
+  <!--    -->
+  <!--     <li> -->
+  <!--       <a href="//plus.google.com/+googlePlusName"><span class="icon-googleplus"></span></a> -->
+  <!--     </li> -->
+  <!--    -->
+  <!--     <li> -->
+  <!--       <a href="//github.com/GithubHandle"><span class="icon-github"></span></a> -->
+  <!--     </li> -->
+  <!--    -->
+  <!--     <li> -->
+  <!--       <a href="//www.flickr.com/photos/FlickrUserID"><span class="icon-flickr"></span></a> -->
+  <!--     </li> -->
+  <!--    -->
+  <!--     <li> -->
+  <!--       <a href="/feed"><span class="icon-feed"></span></a> -->
+  <!--     </li> -->
+  <!--      -->
+  <!-- </ul> -->
+<div class="credits">
+<!-- <span>&#38;copy; 2018 <!&#45;&#45; &#38;#38;nbsp;&#38;#38;nbsp;CANYU LE &#45;&#45;></span></br> <br> -->
+<span>Site created with <a href="//jekyllrb.com">Jekyll</a> using the <a href="//github.com/clayh53/tufte-jekyll">Tufte theme</a>. &copy; 2018</span> 
+</div>  
+</footer>
+
+  </body>
+</html>

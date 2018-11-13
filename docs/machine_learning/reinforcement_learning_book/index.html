@@ -5,7 +5,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Notes</title>
+  <title>Reinforcement learning book review</title>
   <meta name="description" content="Personal notes (memorandum).">
 
 
@@ -32,7 +32,7 @@
 
   </script>
 
-  <link rel="canonical" href="http://localhost:4000/Notes/">
+  <link rel="canonical" href="http://localhost:4000/Notes/machine_learning/reinforcement_learning_book/">
   <link rel="alternate" type="application/rss+xml" title="Notes" href="http://localhost:4000/Notes/feed.xml" />
 </head>
 
@@ -47,7 +47,7 @@
 </header>
 
     <article class="group">
-      <h1>Notes</h1>
+      <h1>Reinforcement learning book review</h1>
 <p class="subtitle"></p>
 
 
@@ -77,89 +77,54 @@
 </script>
 
 
-<p>These notes were recorded various important points for personal reviewing. It only contains the brief descriptions. <label for="1" class="margin-toggle sidenote-number"></label><input type="checkbox" id="1" class="margin-toggle" /><span class="sidenote">This is a simple testing example. </span></p>
+<p>I’ll organize my notes in the same way with book “Reinforcement Learning: An Introducation” by Richard S. Sutton and Andrew G. Barto, Nov 5, 2017.</p>
 
-<h2 id="linear-algbera">Linear Algbera</h2>
+<p>These notes are written for helping me quickly review relevant knowledge and some important insights.</p>
 
-<ol>
-  <li><a href="linear_algebra/miscellaneous">Miscellaneous</a>: Some knowledge points for quick review.</li>
-</ol>
+<h2 id="introduction">Introduction</h2>
 
-<h2 id="machine-learning">Machine Learning</h2>
+<p>This chapter primarily introduce some basic concepts and history about RL.</p>
 
-<ol>
-  <li>
-    <p><a href="machine_learning/miscellaneous">Miscellaneous</a>: Basic knowledge points for quick review.</p>
-  </li>
-  <li>
-    <p><a href="machine_learning/attention_neural_network">Attention neural network</a>: Some concepts and principles about attention neural network for quick review.</p>
-  </li>
-  <li>
-    <p><a href="machine_learning/reinforcement_learning_points">Reinforcement learning quick points</a>: Some important knowledge points about RL.</p>
-  </li>
-  <li>
-    <p><a href="machine_learning/reinforcement_learning_book">The review of RL book</a>: My notes about the book “Reinforcement Learning: An Introducation” by Richard S. Sutton and Andrew G. Barto, Nov 5, 2017.</p>
-  </li>
-</ol>
-
-<h2 id="slam">SLAM</h2>
+<h2 id="part-1-tabular-solution-methods">Part 1, Tabular Solution Methods</h2>
 
 <ol>
   <li>
-    <p><a href="slam/pose_graph">Pose graph</a>: The optimization on pose graph.</p>
-  </li>
-  <li>
-    <p><a href="slam/bundle_adjustment">Bundle adjustment</a>: The optimization for bundle adjustment.</p>
-  </li>
-  <li>
-    <p><a href="slam/graph_simplification">Graph simiplification</a>: Simplify the dense pose graph.</p>
-  </li>
-  <li>
-    <p><a href="slam/registration_opt">Point cloud registration</a>: Introduce the optimization problem in solving least square. It includes a general introduction about Non-linear optimization (Gauss Newton and Levenberg-Marquardt methods).</p>
-  </li>
-  <li>
-    <p><a href="slam/lie_algebra">Lie group and Lie algebra</a>: An intuitive introduction about Lie algebra.</p>
-  </li>
-</ol>
+    <p><a href="part1_muti_armed_bandits">Multi-armed Bandits</a></p>
 
-<h2 id="algorithms">Algorithms</h2>
+    <p>This chapter mainly discuss the different methods for exploiting and explorating. It uses multi-armed bandits as a concrete example to compare the performance of those methods.</p>
 
-<ol>
-  <li>
-    <p><a href="algorithm/dp/">Dynamic programming</a>: An introduction about the dynamic programming algorithm.</p>
-  </li>
-  <li>
-    <p><a href="algorithm/graph_algorithm/">Graph algorithm</a>: An introduction about graph-related algorithms.</p>
-  </li>
-  <li>
-    <p><a href="algorithm/sorting_and_searching/">Sorting and searching</a>: An introduction about sorting and searching algorithms.</p>
-  </li>
-  <li>
-    <p><a href="algorithm/string_and_array/">String and array</a>: An introduction about string and array related algorithms.</p>
-  </li>
-</ol>
+    <p>Besides, it introduces a convergence condition about the action-value update.</p>
 
-<h2 id="data-structure">Data Structure</h2>
-
-<ol>
-  <li>
-    <p><a href="data_structure/concepts/">Concepts</a>: An introduction about the concepts of data structure.</p>
+    <p>(Heads up: since in this multi-armed bandits example the decision is made based on the previous rewards, its action-value function is formulated from past rewards instead of future).</p>
   </li>
   <li>
-    <p><a href="data_structure/structures/">Structures</a>: Various data structure (e.g. stack, graph).</p>
+    <p><a href="part1_finite_MDP">Finite Markov Decision Processes</a></p>
+
+    <p>This chapter gives the formal definition of RL, such as MDP, action-value function, state-value function, policy.</p>
+
+    <p>Moreover, it gives the Bellman equation to describe state-value and action-value including the optimal formulations as below.</p>
+
+    <div class="mathblock"><script type="math/tex; mode=display">
+  v_*(s) = \max_a \mathbb{E}[R_{t+1}+\gamma v_*(S_{t+1})| S_t=s, A_t=a] \\
+  = \max_a \sum_{s^{'}, r} p(s^{'}, r|s, a)[r+\gamma v_*(s^{'})] \\ 
+
+  q_*(s,a) = \mathbb{E}[R_{t+1}+\gamma \max_{a^{'}} q_*(S_{t+1}, a^{'})| S_t=s, A_t=a] \\
+  = \sum_{s^{'}, r}p(s^{'}, r|s, a)[r+\gamma \max_{a^{'}}q_*(s^{'}, a^{'})]
+  </script></div>
+
+    <p>(In this chapter, it focus on future rewards with a discount ratio.)</p>
   </li>
-</ol>
+  <li>
+    <p><a href="part1_DP">Dynamic Programming</a></p>
 
-<h2 id="english">English</h2>
-
-<ol>
-  <li><a href="english/words/">Words and sentences</a>: My vocabulary and sentence records.</li>
+    <p>This chapter introduces how to find optimal policy by dynamic programming. This method only works when the environment is well-defined (i.e. model-based).</p>
+  </li>
 </ol>
 
 
 
     </article>
-    <span class="print-footer">Notes - Canyu Le</span>
+    <span class="print-footer">Reinforcement learning book review - Canyu Le</span>
     <footer>
   <hr class="slender">
   <!-- <ul class="footer&#45;links"> -->
