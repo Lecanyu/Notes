@@ -114,3 +114,12 @@ LM is similar with Newton method, but it controls a maximum bound for update ste
 
 Please refer to [here](https://zhuanlan.zhihu.com/p/33413665) for the detailed introduction.
 
+
+## An extension, Lagrange Multipler Method
+Lagrange multiple method has been widely used in various optimization with constraints problems.
+
+This method has very intuitive geometry (the tangent lines at optimal point must be parallel) explanation about why it works. Check [HERE](http://www.cnblogs.com/maybe2030/p/4946256.html) for the details.
+
+
+
+
