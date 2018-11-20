@@ -33,7 +33,7 @@ where $$V, U$$ is the SVD two component results of a matrix, which is composed b
 Note that the SVD here is not applied for solving least square (the least square here is different from conventional format, check my previous post in [linear algebra section](../../linear_algebra/miscellaneous)).
 
 Besides, the solution $$R = VU^T$$ may not be a true rotation matrix, because the derivation process is to solve the optimal orthodox matrix. Hence, $$R$$ may be a reflect matrix (the determinant of $$R$$ is -1). 
-{%sidenote 2, 'the determinant of orthodox matrix $$X$$ either equals to 1 or -1 (this can be proved from $$XX^T=I$$ and det($$X$$)det($$X^T$$)=1), whereas det(rotation matrix)=1, det(reflect matrix)=-1'%}
+{%sidenote 2, 'the determinant of orthodox matrix $$X$$ either equals to 1 or -1 (this can be proved from $$XX^T=I$$ and det($$X$$)det($$X^T$$)=1), but det(rotation matrix)=1, det(reflect matrix)=-1'%}
 In this case, rotation matrix should be modified as below, so that we can gurantee the det($$R$$)=1 (the reasons and details in above *derivation* link).
 
 {% math %}

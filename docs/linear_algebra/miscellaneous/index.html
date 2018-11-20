@@ -127,7 +127,7 @@ A = V \Sigma V^T
 <p>where <script type="math/tex">A</script> usually is a covariance matrix which is a symmetrical matrix. <script type="math/tex">V</script> is composed by a series of eigen vectors which are mutually orthonormal. <script type="math/tex">\Sigma</script> is corresponding eigen value.</p>
 
 <h2 id="covariance-matrix"><strong><em>Covariance matrix</em></strong></h2>
-<p>Variance measure the convergence property within a series data</p>
+<p>Variance measure the concentration property within a series data</p>
 <div class="mathblock"><script type="math/tex; mode=display">
 \frac{1}{n} \sum (x-\bar x)^2
 </script></div>
@@ -221,7 +221,8 @@ If <script type="math/tex">A</script> is not full ranked, we can find a linear c
 </ol>
 
 <h3 id="-cholesky-llt-decomposition">* Cholesky (LLT) decomposition</h3>
-<p>When matrix <script type="math/tex">A</script> is a hermitian positive-definite matrix, then we can decompose <script type="math/tex">A=LL^T</script>, where <script type="math/tex">L</script> is lower triangular matrix</p>
+<p>When matrix <script type="math/tex">A</script> is a hermitian positive-definite matrix, then we can decompose <script type="math/tex">A=LL^T</script>, where <script type="math/tex">L</script> is lower triangular matrix
+<label for="2," class="margin-toggle sidenote-number"></label><input type="checkbox" id="2," class="margin-toggle" /><span class="sidenote">The main application of matrix decomposition is to solve Ax=b linear system. Decomposition is significant faster than directly calculating inverse matrix.  </span></p>
 
 <h3 id="-cholesky-variant-ldlt-decomposition">* Cholesky variant (LDLT) decomposition</h3>
 <p>It is the same with cholesky, but we don’t want to calculate the square root, which slow down the calculation and lose accuracy. 
@@ -229,7 +230,7 @@ So we can decompose <script type="math/tex">A=LDL^T</script> instead, where <scr
 
 <p>(LLT and LDLT has been introduced in <a href="https://en.wikipedia.org/wiki/Cholesky_decomposition">HERE</a>)</p>
 
-<h2 id="solving-linear-least-squares-systems">Solving linear least squares systems</h2>
+<h2 id="solving-linear-least-squares-systems"><strong><em>Solving linear least squares systems</em></strong></h2>
 <p>There are three typical ways to solve linear least square system (SVD, QR factorization, Cholesky decomposition).</p>
 
 <p>Check <a href="https://eigen.tuxfamily.org/dox/group__LeastSquares.html">here</a> for Eigen library code.</p>
@@ -263,7 +264,7 @@ such that</p>
     \arg \min_x ||Ax-b||^2
 </script></div>
 
-<p>If we calculate the partial derivation w.r.t <script type="math/tex">a,b</script>, and let the partial derivations equal to 0.
+<p>If we calculate the partial derivation w.r.t. <script type="math/tex">a,b</script>, and let the partial derivations equal to 0.
 We will have below linear equation.</p>
 <div class="mathblock"><script type="math/tex; mode=display">
     A^T Ax=A^T b

@@ -58,7 +58,7 @@ where $$A$$ usually is a covariance matrix which is a symmetrical matrix. $$V$$ 
 
 
 ## ***Covariance matrix***
-Variance measure the convergence property within a series data
+Variance measure the concentration property within a series data
 {% math %}
 \frac{1}{n} \sum (x-\bar x)^2
 {% endmath %}
@@ -131,6 +131,7 @@ When matrix $$A$$ is invertible, then we can decompose $$A = LU$$. We usually ha
 
 ### * Cholesky (LLT) decomposition
 When matrix $$A$$ is a hermitian positive-definite matrix, then we can decompose $$A=LL^T$$, where $$L$$ is lower triangular matrix
+{% sidenote 2, 'The main application of matrix decomposition is to solve Ax=b linear system. Decomposition is significant faster than directly calculating inverse matrix. '%}
 
 
 ### * Cholesky variant (LDLT) decomposition
@@ -140,7 +141,7 @@ So we can decompose $$A=LDL^T$$ instead, where $$L$$ is lower unit triangular ma
 (LLT and LDLT has been introduced in [HERE](https://en.wikipedia.org/wiki/Cholesky_decomposition))
 
 
-## Solving linear least squares systems
+## ***Solving linear least squares systems***
 There are three typical ways to solve linear least square system (SVD, QR factorization, Cholesky decomposition). 
 
 Check [here](https://eigen.tuxfamily.org/dox/group__LeastSquares.html) for Eigen library code.
@@ -174,7 +175,7 @@ such that
     \arg \min_x ||Ax-b||^2
 {% endmath %}
 
-If we calculate the partial derivation w.r.t $$a,b$$, and let the partial derivations equal to 0.
+If we calculate the partial derivation w.r.t. $$a,b$$, and let the partial derivations equal to 0.
 We will have below linear equation.
 {% math %}
     A^T Ax=A^T b

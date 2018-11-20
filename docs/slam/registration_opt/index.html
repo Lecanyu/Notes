@@ -105,7 +105,7 @@ R = VU^T
 <p>Note that the SVD here is not applied for solving least square (the least square here is different from conventional format, check my previous post in <a href="../../linear_algebra/miscellaneous">linear algebra section</a>).</p>
 
 <p>Besides, the solution <script type="math/tex">R = VU^T</script> may not be a true rotation matrix, because the derivation process is to solve the optimal orthodox matrix. Hence, <script type="math/tex">R</script> may be a reflect matrix (the determinant of <script type="math/tex">R</script> is -1). 
-<label for="2," class="margin-toggle sidenote-number"></label><input type="checkbox" id="2," class="margin-toggle" /><span class="sidenote">the determinant of orthodox matrix <script type="math/tex">X</script> either equals to 1 or -1 (this can be proved from <script type="math/tex">XX^T=I</script> and det(<script type="math/tex">X</script>)det(<script type="math/tex">X^T</script>)=1), whereas det(rotation matrix)=1, det(reflect matrix)=-1 </span>
+<label for="2," class="margin-toggle sidenote-number"></label><input type="checkbox" id="2," class="margin-toggle" /><span class="sidenote">the determinant of orthodox matrix <script type="math/tex">X</script> either equals to 1 or -1 (this can be proved from <script type="math/tex">XX^T=I</script> and det(<script type="math/tex">X</script>)det(<script type="math/tex">X^T</script>)=1), but det(rotation matrix)=1, det(reflect matrix)=-1 </span>
 In this case, rotation matrix should be modified as below, so that we can gurantee the det(<script type="math/tex">R</script>)=1 (the reasons and details in above <em>derivation</em> link).</p>
 
 <div class="mathblock"><script type="math/tex; mode=display">
@@ -179,6 +179,11 @@ T_k \approx
 <p>LM is similar with Newton method, but it controls a maximum bound for update step. Therefore, it is usually more robust than Newton method.</p>
 
 <p>Please refer to <a href="https://zhuanlan.zhihu.com/p/33413665">here</a> for the detailed introduction.</p>
+
+<h2 id="an-extension-lagrange-multipler-method">An extension, Lagrange Multipler Method</h2>
+<p>Lagrange multiple method has been widely used in various optimization with constraints problems.</p>
+
+<p>This method has very intuitive geometry (the tangent lines at optimal point must be parallel) explanation about why it works. Check <a href="http://www.cnblogs.com/maybe2030/p/4946256.html">HERE</a> for the details.</p>
 
 
 
