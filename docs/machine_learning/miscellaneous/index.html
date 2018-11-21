@@ -291,20 +291,61 @@ Comparing with cross-entropy, KL-divergence measures the absolute difference. Wh
 
 <p>maximize likelihood =&gt; solve the parameters in linear classification.</p>
 
-<p>(unclear)</p>
+<p>The key here is that sigmoid function normalize raw result into 0 and 1. Then we can construct below likelihood.</p>
+
+<div class="mathblock"><script type="math/tex; mode=display">
+\max P(w|Y) <=> \max P(Y|X, w) = \Pi_{i=1}^n f^{y_i}(x_i; w)(1-f(x_i;w))^{1-y_i}
+</script></div>
+
+<p>Apply logarithm on both side.</p>
+<div class="mathblock"><script type="math/tex; mode=display">
+\log P(y|x, w) = \sum_{i=1}^n y_i\log f(x_i;w) + (1-y_i)\log (1-f(x_i; w))
+</script></div>
+
+<p>This is equivalent to cross-entropy. And then we can apply gradient descend to optimization.</p>
+
+<p>Check <a href="https://tech.meituan.com/intro_to_logistic_regression.html">here</a> for details.</p>
 
 <h2 id="support-vector-machine-and-core-function">Support Vector Machine and Core function</h2>
 <p>Will do</p>
 
 <h2 id="kalman-filter">Kalman filter</h2>
-<p>Will do</p>
+<p>It is a algorithm for accurately estimating or predicting based on multiple observed data.</p>
+
+<p>A classic example is SLAM in which we have multiple data collecting sensors like odometry, IMU and visual features. The Kalman filter is to solve how to reliably combine all sensor data and estimate a accurate pose.</p>
 
 <h2 id="cross-entropy-instead-of-mean-square-error-mse-as-the-loss-function-in-classification">Cross-entropy instead of mean square error (MSE) as the loss function in classification?</h2>
 <p>when we do classification, we usually apply softmax (this is an important premise) to normalize the output value to 0-1. 
 In this case, the gradient of MSE loss will be prone to 0 when the prediction is closed to 0 or 1. This will lead to slow convergence.
-On the contrary, the gradient of cross-entropy is linear with the prediction changing. When the prediction is closed to the label, the gradient will be small and vice versa</p>
+On the contrary, the gradient of cross-entropy is linear with the prediction changing. When the prediction is closed to the label, the gradient will be small and vice versa.</p>
 
-<p>(unclear).</p>
+<h3 id="-cross-entropy">* Cross-entropy</h3>
+<div class="mathblock"><script type="math/tex; mode=display">
+p(x_i) = softmax(x_i) = \frac{e^{x_i}}{\sum_i e^{x_i}} \\
+f(x) = -\sum_i y_i \log p(x_i)
+</script></div>
+<p>where <script type="math/tex">f(x)</script> is the objective cross-entropy function. To minimize it, we calculate the gradient w.r.t. <script type="math/tex">x_i</script></p>
+
+<div class="mathblock"><script type="math/tex; mode=display"> 
+\frac{\partial f(x)}{\partial x_i} = - \frac{y_i}{p(x_i)}p^{'}(x_i) \\ 
+p^{'}(x_i) = \frac{\partial p(x_i)}{\partial x_i} = p(x_i) - p^2(x_i)
+</script></div>
+<p>So we have</p>
+<div class="mathblock"><script type="math/tex; mode=display">
+\frac{\partial f(x)}{\partial x_i} = - \frac{y_i}{p(x_i)}p^{'}(x_i) = -y_i (1-p(x_i))
+</script></div>
+<p>When <script type="math/tex">p(x_i)</script> is closed to 1, the gradient will be prone to 0. (Remember that we use one-hot encoding to represent <script type="math/tex">\mathbf{y}, \mathbf{x}</script>)</p>
+
+<h3 id="-mse">* MSE</h3>
+<div class="mathblock"><script type="math/tex; mode=display">
+f(x) = \sum_i (y_i - p(x_i))^2 \\ 
+\frac{\partial f(x)}{\partial x_i} = 2(y_i - p(x_i))(-p^{'}(x_i)) = -2(y_i - p(x_i))(p(x_i) - p^2(x_i))
+</script></div>
+<p>So we have the gradient</p>
+<div class="mathblock"><script type="math/tex; mode=display">
+\frac{\partial f(x)}{\partial x_i} = -2p(x_i)(1-p(x_i))(y_i - p(x_i))
+</script></div>
+<p>When <script type="math/tex">p(x_i)</script> is closed to 0 and 1, the gradient will be closed to 0. This is not desirable and will slow down the learning process. Because if <script type="math/tex">y_i = 1, p(x_i) = 0</script>, we hope the learning step is large, but the gradient is 0.</p>
 
 <h2 id="the-property-of-softmax">The property of softmax</h2>
 <ol>
@@ -313,13 +354,16 @@ On the contrary, the gradient of cross-entropy is linear with the prediction cha
 </ol>
 
 <h2 id="covariance-and-correlation-coefficients">Covariance and correlation coefficients</h2>
-<p>Represent linear correlation</p>
+<p>Covariance is a measure of how two variables change together, but its magnitude is unbounded, so it is difficult to interpret. By dividing covariance by the product of the two standard deviations, one can calculate the normalized version of the statistic. This is the correlation coefficient.</p>
 <ol>
-  <li>Covariance: represent the unnormalized correlation</li>
-  <li>Correlation coefficient: represent the normalized correlation</li>
+  <li>Covariance: represent the unnormalized correlation.</li>
+  <li>Correlation coefficient: represent the normalized correlation.</li>
 </ol>
+<div class="mathblock"><script type="math/tex; mode=display">
+\rho_{xy} = \frac{Cov(x, y)}{\sigma_x \sigma_y}
+</script></div>
 
-<p>(unclear)</p>
+<p>Refer to <a href="https://www.investopedia.com/terms/c/correlationcoefficient.asp">here</a> for details.</p>
 
 <h2 id="normal-distribution-and-multivariate-normal-distribution">Normal distribution and multivariate normal distribution</h2>
 <ul>
@@ -350,7 +394,7 @@ cov(x_n, x_1) & cov(x_n, x_2) & ... & cov(x_{n}, x_{n})  \\
 \end{pmatrix} 
 </script></div>
 
-<p>(unclear, need to find the original introducation)</p>
+<p>Refer to <a href="https://en.wikipedia.org/wiki/Multivariate_normal_distribution">here</a> for details.</p>
 
 
 
