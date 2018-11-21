@@ -213,7 +213,21 @@ sigmoid function $$f(x; w)=\frac{1}{1+e^{-wx}}$$: convert linear classification 
 
 maximize likelihood => solve the parameters in linear classification. 
 
-(unclear)
+The key here is that sigmoid function normalize raw result into 0 and 1. Then we can construct below likelihood.
+
+{% math %}
+\max P(w|Y) <=> \max P(Y|X, w) = \Pi_{i=1}^n f^{y_i}(x_i; w)(1-f(x_i;w))^{1-y_i}
+{% endmath %}
+
+Apply logarithm on both side.
+{% math %}
+\log P(y|x, w) = \sum_{i=1}^n y_i\log f(x_i;w) + (1-y_i)\log (1-f(x_i; w))
+{% endmath %}
+
+This is equivalent to cross-entropy. And then we can apply gradient descend to optimization.
+
+Check [here](https://tech.meituan.com/intro_to_logistic_regression.html) for details.
+
 
 
 ## Support Vector Machine and Core function
@@ -221,15 +235,46 @@ Will do
 
 
 ## Kalman filter
-Will do
+It is a algorithm for accurately estimating or predicting based on multiple observed data.
+
+A classic example is SLAM in which we have multiple data collecting sensors like odometry, IMU and visual features. The Kalman filter is to solve how to reliably combine all sensor data and estimate a accurate pose.
 
 
 ## Cross-entropy instead of mean square error (MSE) as the loss function in classification?
 when we do classification, we usually apply softmax (this is an important premise) to normalize the output value to 0-1. 
 In this case, the gradient of MSE loss will be prone to 0 when the prediction is closed to 0 or 1. This will lead to slow convergence.
-On the contrary, the gradient of cross-entropy is linear with the prediction changing. When the prediction is closed to the label, the gradient will be small and vice versa 
+On the contrary, the gradient of cross-entropy is linear with the prediction changing. When the prediction is closed to the label, the gradient will be small and vice versa.
 
-(unclear).  
+### * Cross-entropy
+{% math %}
+p(x_i) = softmax(x_i) = \frac{e^{x_i}}{\sum_i e^{x_i}} \\
+f(x) = -\sum_i y_i \log p(x_i)
+{% endmath %}
+where $$f(x)$$ is the objective cross-entropy function. To minimize it, we calculate the gradient w.r.t. $$x_i$$
+
+{% math %} 
+\frac{\partial f(x)}{\partial x_i} = - \frac{y_i}{p(x_i)}p^{'}(x_i) \\ 
+p^{'}(x_i) = \frac{\partial p(x_i)}{\partial x_i} = p(x_i) - p^2(x_i)
+{% endmath %}
+So we have 
+{% math %}
+\frac{\partial f(x)}{\partial x_i} = - \frac{y_i}{p(x_i)}p^{'}(x_i) = -y_i (1-p(x_i))
+{% endmath %}
+When $$p(x_i)$$ is closed to 1, the gradient will be prone to 0. (Remember that we use one-hot encoding to represent $$\mathbf{y}, \mathbf{x}$$)
+
+
+### * MSE
+{% math %}
+f(x) = \sum_i (y_i - p(x_i))^2 \\ 
+\frac{\partial f(x)}{\partial x_i} = 2(y_i - p(x_i))(-p^{'}(x_i)) = -2(y_i - p(x_i))(p(x_i) - p^2(x_i))
+{% endmath %}
+So we have the gradient 
+{% math %}
+\frac{\partial f(x)}{\partial x_i} = -2p(x_i)(1-p(x_i))(y_i - p(x_i))
+{% endmath %}
+When $$p(x_i)$$ is closed to 0 and 1, the gradient will be closed to 0. This is not desirable and will slow down the learning process. Because if $$y_i = 1, p(x_i) = 0$$, we hope the learning step is large, but the gradient is 0.
+
+
 
 
 ## The property of softmax
@@ -238,11 +283,14 @@ On the contrary, the gradient of cross-entropy is linear with the prediction cha
 
 
 ## Covariance and correlation coefficients
-Represent linear correlation
-1. Covariance: represent the unnormalized correlation
-2. Correlation coefficient: represent the normalized correlation
+Covariance is a measure of how two variables change together, but its magnitude is unbounded, so it is difficult to interpret. By dividing covariance by the product of the two standard deviations, one can calculate the normalized version of the statistic. This is the correlation coefficient.
+1. Covariance: represent the unnormalized correlation.
+2. Correlation coefficient: represent the normalized correlation.
+{% math %}
+\rho_{xy} = \frac{Cov(x, y)}{\sigma_x \sigma_y}
+{% endmath %}
 
-(unclear)
+Refer to [here](https://www.investopedia.com/terms/c/correlationcoefficient.asp) for details.
 
 
 ## Normal distribution and multivariate normal distribution
@@ -270,4 +318,4 @@ cov(x_n, x_1) & cov(x_n, x_2) & ... & cov(x_{n}, x_{n})  \\
 \end{pmatrix} 
 {% endmath %}
 
-(unclear, need to find the original introducation)
+Refer to [here](https://en.wikipedia.org/wiki/Multivariate_normal_distribution) for details.
