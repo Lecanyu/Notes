@@ -16,9 +16,11 @@ These notes were recorded various important points for personal review. It conta
 
 2. [Attention neural network](machine_learning/attention_neural_network): Some concepts and principles about attention neural network for quick review.
 
-3. [Reinforcement learning quick points](machine_learning/reinforcement_learning_points): Some important knowledge points about RL.
+3. [Incremental learning](machine_learning/incremental_learning): Some knowledge and paper review about incremental learning (or solving catastrophic forgetting in deep learning).
 
-4. [The review of RL book](machine_learning/reinforcement_learning_book): My notes about the book "Reinforcement Learning: An Introducation" by Richard S. Sutton and Andrew G. Barto, Nov 5, 2017.
+4. [Reinforcement learning quick points](machine_learning/reinforcement_learning_points): Some important knowledge points about RL.
+
+5. [The review of RL book](machine_learning/reinforcement_learning_book): My notes about the book "Reinforcement Learning: An Introducation" by Richard S. Sutton and Andrew G. Barto, Nov 5, 2017.
 
 
 ## SLAM

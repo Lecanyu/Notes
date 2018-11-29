@@ -301,9 +301,9 @@ f(x) = \frac{1}{\sqrt{2\pi} \sigma} e^{-\frac{(x-\mu)^2}{2\sigma^2}}
 
 + Multi-variables
 {% math %}
-f(x) = \frac{1}{\sqrt{2\pi |C(X)|}} e^{-\frac{1}{2}(X-\bar X)^T C^{-1}(X)(X-\bar X)}
+f(X=x_1,...,x_n) = \frac{1}{\sqrt{(2\pi)^n |C(X)|}} e^{-\frac{1}{2}(X-\bar X)^T C^{-1}(X)(X-\bar X)}
 {% endmath %}
-where
+where $$|C(X)|$$ is the determinant of covariance matrix C(X). By the way, C(X) is usually denoted as $$\mathbf{\Sigma}$$ in many literatures.
 
 {% math %}
 X = \left[x_1, x_2, ..., x_n \right]^T \\

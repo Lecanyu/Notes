@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Incremental learning</title>
+  <meta name="description" content="Personal notes (memorandum).">
+
+
+  <link rel="stylesheet" href="/Notes/css/tufte.css">	
+  
+
+  <!-- Google Fonts loaded here depending on setting in _data/options.yml true loads font, blank does not-->
+  
+    <link href='//fonts.googleapis.com/css?family=Lato:400,400italic' rel='stylesheet' type='text/css'>
+  
+  <!-- Load up MathJax script if needed ... specify in /_data/options.yml file-->
+  
+    <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+  <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-75587219-1', 'auto');
+  ga('send', 'pageview');
+
+  </script>
+
+  <link rel="canonical" href="http://localhost:4000/Notes/machine_learning/incremental_learning/">
+  <link rel="alternate" type="application/rss+xml" title="Notes" href="http://localhost:4000/Notes/feed.xml" />
+</head>
+
+  <body>
+    <!--- Header and nav template site-wide -->
+<header>
+    <nav class="group">
+        <a href="/Notes/">Contents</a>
+		<a href="https://lecanyu.github.io/">Resume</a>
+		<a href="https://github.com/Lecanyu/Notes">Github</a>
+	</nav>
+</header>
+
+    <article class="group">
+      <h1>Incremental learning</h1>
+<p class="subtitle"></p>
+
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    TeX: {
+      Macros: {
+        e: "\\epsilon",
+        xti: "x^{(i)}",
+        yti: "y^{(i)}",
+        bfy: "{\\bf y}",
+        bfx: "{\\bf x}",
+        bfg: "{\\bf g}",
+        bfbeta: "{\\bf \\beta}",
+        tp: "\\tilde p",
+        pt: "p_\\theta",
+        Exp: "{\\mathbb{E}}",
+        Ind: "{\\mathbb{I}}",
+        KL: "{\\mathbb{KL}}",
+        Dc: "{\\mathcal{D}}",
+        Tc: "{\\mathcal{T}}",
+        Xc: "{\\mathcal{X}}",
+        note: ["\\textcolor{blue}{[NOTE: #1]}",1]
+      }
+    }
+  });
+</script>
+
+
+<p>Incremental learning mechanism endow the neural network to fastly learn some new tasks without dramatical performance degenerate on old tasks.</p>
+
+<p>Here I put some my understanding about several state of the art paper in this field.</p>
+
+<h2 id="learning-without-forgetting">Learning without forgetting</h2>
+<p><label for="1," class="margin-toggle sidenote-number"></label><input type="checkbox" id="1," class="margin-toggle" /><span class="sidenote">Check <a href="https://arxiv.org/pdf/1606.09282.pdf">here</a> for original paper. </span>
+This paper first give us a good conclusion about the existing methods on incremental learning (or transfer learning) field. I draw a summary here as well.</p>
+
+<h3 id="tuning-categories">Tuning Categories</h3>
+<p>Let’s say we have pre-trained backbone network with parameters <script type="math/tex">\theta_s</script>, task-specific FC parameters <script type="math/tex">\theta_o</script>, and randomly initialized task-specific FC parameters <script type="math/tex">\theta_n</script> for new tasks. Based on the different parameters adjustment strategies, we have below categories:</p>
+<ol>
+  <li>
+    <p>Feature Extraction: <script type="math/tex">\theta_s, \theta_o</script> are unchanged, and only <script type="math/tex">\theta_n</script> will be trained.</p>
+  </li>
+  <li>
+    <p>Fine-tuning: <script type="math/tex">\theta_s, \theta_n</script> will be trained for the new tasks, while <script type="math/tex">\theta_o</script> is fixed. Typically, low learning rate is needed for avoiding the large drift in <script type="math/tex">\theta_s</script>.</p>
+  </li>
+  <li>
+    <p>Fine-tuning FC: <script type="math/tex">\theta_n</script> and only part of <script type="math/tex">\theta_s</script> - the convolutional layers are frozen, and top fully connected layers are tuned.</p>
+  </li>
+  <li>
+    <p>Joint Traning: All parameters <script type="math/tex">\theta_s, \theta_o, \theta_n</script> are jointly optimized. This method requires all of training data are avaliable.</p>
+  </li>
+</ol>
+
+<figure><figcaption></figcaption><img src="/Notes/assets/machine_learning/incremental_learning_category.png" /></figure>
+
+<p>Joint training usually can achieve the best performance on both old tasks and new tasks, but its efficiency is not quite desirable. 
+Here is a performance comparison table. (Duplicating indicates copy the previous network and tune it on new task).</p>
+
+<figure><figcaption></figcaption><img src="/Notes/assets/machine_learning/incremental_learning_comparison.png" /></figure>
+
+<h3 id="proposed-strategy">Proposed strategy</h3>
+<p>The design of proposed stratgy (i.e. learning without forgetting) is very intuitive and easy.</p>
+
+<p>The key idea is that before training, it records the output of old tasks on new data. Then it uses these records as an extra regulariation to limit the parameters changing.</p>
+
+<figure><figcaption></figcaption><img src="/Notes/assets/machine_learning/learning_without_forgetting.png" /></figure>
+<p>(Conbining this algorithm with above figure (e) can give a good sense of this approach)</p>
+
+<div class="mathblock"><script type="math/tex; mode=display">
+\mathcal{L}_{new}(Y_n, \hat{Y}_n) = -Y_n \log \hat{Y}_n \\
+\mathcal{L}_{old}(Y_o, \hat{Y}_o) = -Y_o \log \hat{Y}_o \\
+\mathcal{R}(\hat \theta_s, \hat \theta_o, \hat \theta_n) \mbox{ is the common regularization term (e.g. L2-loss)}
+</script></div>
+
+<h2 id="overcoming-catastropic-forgetting-in-neural-network">Overcoming catastropic forgetting in neural network</h2>
+
+<p>This paper interpret the learning process from probabilistic perspective. 
+<label for="2," class="margin-toggle sidenote-number"></label><input type="checkbox" id="2," class="margin-toggle" /><span class="sidenote">Check <a href="https://arxiv.org/pdf/1612.00796.pdf">here</a> for original paper. </span></p>
+
+<p>First, it says that based on previous research, many different parameter configurations will result in the same performance (this is reasonable since neural network has tons of parameters and many of them may be correlated). So the key to avoid catastropic forgetting is to selectively adjust the pre-trained parameters. The more important parameters are, the more slowly they change.
+The following figure illustrates this idea.</p>
+
+<figure><figcaption></figcaption><img src="/Notes/assets/machine_learning/selectively_adjust_parameter.png" /></figure>
+
+<blockquote>
+  <p>*figure explanation</p>
+</blockquote>
+
+<blockquote>
+  <p>Elastic weight consolidation (EWC, the name of proposed method) ensures task A is remembered whilst training on task B. 
+Training trajectories are illustrated in a schematic parameter space, with parameter regions leading to good performance on task A (gray) and on task B (cream). 
+After learning the first task, the parameters are at <script type="math/tex">\theta_A^{*}</script> .</p>
+</blockquote>
+
+<blockquote>
+  <p>If we take gradient steps according to task B alone (blue arrow), we will minimize the loss of task B but destroy what we have learnt for task A.</p>
+</blockquote>
+
+<blockquote>
+  <p>On the other hand, if we constrain each weight with the same coefficient (green arrow) the restriction imposed is too severe and we can only remember task A at the expense of not learning task B.</p>
+</blockquote>
+
+<blockquote>
+  <p>EWC, conversely, finds a solution for task B without incurring a significant loss on task A (red arrow) by explicitly computing how important weights are for task A.</p>
+</blockquote>
+
+<p>Now, how should we determine which parameter is important?</p>
+
+<p>From the probabilistic point of view, given the training data <script type="math/tex">D</script> our goal is to find the best parameter to maximize a posterior (MAP)</p>
+<div class="mathblock"><script type="math/tex; mode=display">
+\mathop{\arg\max_{\theta}} p(\theta|D)
+</script></div>
+
+<p>Apply log-transform and Beyas’ rule we have</p>
+<div class="mathblock"><script type="math/tex; mode=display">
+\mathop{\arg\max_{\theta}} \log p(\theta|D) = \log p(D|\theta) + log p(\theta) - log p(D)
+</script></div>
+<p>Data <script type="math/tex">D</script> can be splitted into dataset <script type="math/tex">D_A</script> (old task) and <script type="math/tex">D_B</script> (new task). Then we re-arrange the objective to 
+<label for="3," class="margin-toggle sidenote-number"></label><input type="checkbox" id="3," class="margin-toggle" /><span class="sidenote">There is an assumption: the dataset A and B are independent w.r.t. <script type="math/tex">\theta</script>. In other word, <script type="math/tex">p(D|\theta) = p(D_A|\theta)*p(D_B|\theta)</script> </span></p>
+
+<div class="mathblock"><script type="math/tex; mode=display">
+\log p(\theta|D) = \log p(D_B|\theta) + \log p(\theta|D_A) - \log p(D_B)
+</script></div>
+
+<p>Only the second term <span>​<script type="math/tex">p(\theta|D_A)</script></span> is related with old task. We want to explore the parameter importance information from it.</p>
+
+<p>The Fisher information 
+<label for="4," class="margin-toggle sidenote-number"></label><input type="checkbox" id="4," class="margin-toggle" /><span class="sidenote">Fisher information is a way of measuring the amount of information that an observable random variable X carries about an unknown parameter <script type="math/tex">\theta</script> of a distribution that models X. The more information a parameter has, the more influence it can cause to the data X.
+Check <a href="https://en.wikipedia.org/wiki/Fisher_information">here</a> for the details. </span> 
+is the proper metric to model this.</p>
+
+<p>To calculate the Fisher information, we need to know what kind of distribution 
+<span>​<script type="math/tex">p(\theta|D_A)</script></span> satisfy. However, there is usually no close-form to represent <span>​<script type="math/tex">p(\theta|D_A)</script></span>. Whereby the author assume it satisfies Gaussian distribution, and for calculation simplicity they only consider the diagonal elements in Fisher matrix.</p>
+
+<p>Finally, the objective function is</p>
+<div class="mathblock"><script type="math/tex; mode=display">
+\mathop{\arg\min_{\theta}} \mathcal{L}(\theta) = \mathcal{L}_B(\theta) + \sum_i \frac{\lambda}{2}F_i(\theta_i - \theta_{A, i}^{*})^2
+</script></div>
+<p>where <span>​<script type="math/tex"> \mathcal{L}(\theta) = -\log p(\theta|D) </script></span>, <span>​<script type="math/tex"> \mathcal{L}_B(\theta) = -\log p(D_B|\theta) </script></span>, <span>​<script type="math/tex">F_i</script></span> is the corresponding element in Fisher matrix.</p>
+
+
+
+
+    </article>
+    <span class="print-footer">Incremental learning - Canyu Le</span>
+    <footer>
+  <hr class="slender">
+  <!-- <ul class="footer&#45;links"> -->
+  <!--   <li><a href="mailto:hate@spam.net"><span class="icon&#45;mail"></span></a></li>     -->
+  <!--    -->
+  <!--     <li> -->
+  <!--       <a href="//www.twitter.com/twitter_handle"><span class="icon-twitter"></span></a> -->
+  <!--     </li> -->
+  <!--    -->
+  <!--     <li> -->
+  <!--       <a href="//plus.google.com/+googlePlusName"><span class="icon-googleplus"></span></a> -->
+  <!--     </li> -->
+  <!--    -->
+  <!--     <li> -->
+  <!--       <a href="//github.com/GithubHandle"><span class="icon-github"></span></a> -->
+  <!--     </li> -->
+  <!--    -->
+  <!--     <li> -->
+  <!--       <a href="//www.flickr.com/photos/FlickrUserID"><span class="icon-flickr"></span></a> -->
+  <!--     </li> -->
+  <!--    -->
+  <!--     <li> -->
+  <!--       <a href="/feed"><span class="icon-feed"></span></a> -->
+  <!--     </li> -->
+  <!--      -->
+  <!-- </ul> -->
+<div class="credits">
+<!-- <span>&#38;copy; 2018 <!&#45;&#45; &#38;#38;nbsp;&#38;#38;nbsp;CANYU LE &#45;&#45;></span></br> <br> -->
+<span>Site created with <a href="//jekyllrb.com">Jekyll</a> using the <a href="//github.com/clayh53/tufte-jekyll">Tufte theme</a>. &copy; 2018</span> 
+</div>  
+</footer>
+
+  </body>
+</html>
