@@ -77,13 +77,13 @@
 </script>
 
 
-<p>Incremental learning mechanism endow the neural network to fastly learn some new tasks without dramatical performance degenerate on old tasks.</p>
+<p>Incremental learning mechanism endow the neural network to fast learn some new tasks without dramatical performance degeneration on old tasks.</p>
 
-<p>Here I put some my understanding about several state of the art paper in this field.</p>
+<p>Here I put my understanding about several state-of-the-art paper in this field.</p>
 
 <h2 id="learning-without-forgetting">Learning without forgetting</h2>
 <p><label for="1," class="margin-toggle sidenote-number"></label><input type="checkbox" id="1," class="margin-toggle" /><span class="sidenote">Check <a href="https://arxiv.org/pdf/1606.09282.pdf">here</a> for original paper. </span>
-This paper first give us a good conclusion about the existing methods on incremental learning (or transfer learning) field. I draw a summary here as well.</p>
+This paper gives us a good conclusion about the existing methods on incremental learning (or transfer learning) field. I draw that summary here.</p>
 
 <h3 id="tuning-categories">Tuning Categories</h3>
 <p>Let’s say we have pre-trained backbone network with parameters <script type="math/tex">\theta_s</script>, task-specific FC parameters <script type="math/tex">\theta_o</script>, and randomly initialized task-specific FC parameters <script type="math/tex">\theta_n</script> for new tasks. Based on the different parameters adjustment strategies, we have below categories:</p>
@@ -95,7 +95,7 @@ This paper first give us a good conclusion about the existing methods on increme
     <p>Fine-tuning: <script type="math/tex">\theta_s, \theta_n</script> will be trained for the new tasks, while <script type="math/tex">\theta_o</script> is fixed. Typically, low learning rate is needed for avoiding the large drift in <script type="math/tex">\theta_s</script>.</p>
   </li>
   <li>
-    <p>Fine-tuning FC: <script type="math/tex">\theta_n</script> and only part of <script type="math/tex">\theta_s</script> - the convolutional layers are frozen, and top fully connected layers are tuned.</p>
+    <p>Fine-tuning FC: part of <script type="math/tex">\theta_s</script> - the convolutional layers are frozen, and top fully connected layers and <script type="math/tex">\theta_n</script> are tuned.</p>
   </li>
   <li>
     <p>Joint Traning: All parameters <script type="math/tex">\theta_s, \theta_o, \theta_n</script> are jointly optimized. This method requires all of training data are avaliable.</p>
@@ -128,7 +128,7 @@ Here is a performance comparison table. (Duplicating indicates copy the previous
 <p>This paper interpret the learning process from probabilistic perspective. 
 <label for="2," class="margin-toggle sidenote-number"></label><input type="checkbox" id="2," class="margin-toggle" /><span class="sidenote">Check <a href="https://arxiv.org/pdf/1612.00796.pdf">here</a> for original paper. </span></p>
 
-<p>First, it says that based on previous research, many different parameter configurations will result in the same performance (this is reasonable since neural network has tons of parameters and many of them may be correlated). So the key to avoid catastropic forgetting is to selectively adjust the pre-trained parameters. The more important parameters are, the more slowly they change.
+<p>First, it says that based on previous research, many different parameter configurations will result in the same performance (this makes sense since neural network has tons of parameters and many of them may be correlated). So the key to avoid catastropic forgetting is to selectively adjust the pre-trained parameters. The more important parameters are, the more slowly they change.
 The following figure illustrates this idea.</p>
 
 <figure><figcaption></figcaption><img src="/Notes/assets/machine_learning/selectively_adjust_parameter.png" /></figure>

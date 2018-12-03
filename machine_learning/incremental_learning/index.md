@@ -3,13 +3,13 @@ layout: post
 title: Incremental learning
 ---
 
-Incremental learning mechanism endow the neural network to fastly learn some new tasks without dramatical performance degenerate on old tasks.
+Incremental learning mechanism endow the neural network to fast learn some new tasks without dramatical performance degeneration on old tasks.
 
-Here I put some my understanding about several state of the art paper in this field.
+Here I put my understanding about several state-of-the-art paper in this field.
 
 ## Learning without forgetting
 {% sidenote 1, 'Check [here](https://arxiv.org/pdf/1606.09282.pdf) for original paper.'%}
-This paper first give us a good conclusion about the existing methods on incremental learning (or transfer learning) field. I draw a summary here as well.
+This paper gives us a good conclusion about the existing methods on incremental learning (or transfer learning) field. I draw that summary here.
 
 ### Tuning Categories
 Let's say we have pre-trained backbone network with parameters $$\theta_s$$, task-specific FC parameters $$\theta_o$$, and randomly initialized task-specific FC parameters $$\theta_n$$ for new tasks. Based on the different parameters adjustment strategies, we have below categories:
@@ -17,7 +17,7 @@ Let's say we have pre-trained backbone network with parameters $$\theta_s$$, tas
 
 2. Fine-tuning: $$\theta_s, \theta_n$$ will be trained for the new tasks, while $$\theta_o$$ is fixed. Typically, low learning rate is needed for avoiding the large drift in $$\theta_s$$.
 
-3. Fine-tuning FC: $$\theta_n$$ and only part of $$\theta_s$$ - the convolutional layers are frozen, and top fully connected layers are tuned. 
+3. Fine-tuning FC: part of $$\theta_s$$ - the convolutional layers are frozen, and top fully connected layers and $$\theta_n$$ are tuned. 
 
 4. Joint Traning: All parameters $$\theta_s, \theta_o, \theta_n$$ are jointly optimized. This method requires all of training data are avaliable.
 
@@ -51,7 +51,7 @@ The key idea is that before training, it records the output of old tasks on new 
 This paper interpret the learning process from probabilistic perspective. 
 {% sidenote 2, 'Check [here](https://arxiv.org/pdf/1612.00796.pdf) for original paper.'%}
 
-First, it says that based on previous research, many different parameter configurations will result in the same performance (this is reasonable since neural network has tons of parameters and many of them may be correlated). So the key to avoid catastropic forgetting is to selectively adjust the pre-trained parameters. The more important parameters are, the more slowly they change.
+First, it says that based on previous research, many different parameter configurations will result in the same performance (this makes sense since neural network has tons of parameters and many of them may be correlated). So the key to avoid catastropic forgetting is to selectively adjust the pre-trained parameters. The more important parameters are, the more slowly they change.
 The following figure illustrates this idea.
 
 {% maincolumn 'assets/machine_learning/selectively_adjust_parameter.png'%}
