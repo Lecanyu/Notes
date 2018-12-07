@@ -25,6 +25,23 @@ False positive (FP): classify the negative class into positive category.
 
 False negative (FN): classify the positive class into negative category.
 
+## Average precision (AP and mAP)
+AP is a common metric in various object detection paper. 
+It is related with recall and precision. 
+Conceptually, it is the area of recall-precision curve. See below picture.
+{% maincolumn 'assets/machine_learning/AP.png'%}
+
+But for convenience, people usually approximately estimate this area by interpolation. 
+Check [here](https://medium.com/@jonathan_hui/map-mean-average-precision-for-object-detection-45c121a31173) for the specific algorithm. 
+
+
+## Intersection over union (IoU)
+This metric has been widely used on object detection. 
+It is used for measuring how accurate the predicted bounding box is.
+{% maincolumn 'assets/machine_learning/IoU explanation.png'%}
+
+
+
 ## Bias and variance
 Bias is used to describe how close it is between the prediction and true value.
 
