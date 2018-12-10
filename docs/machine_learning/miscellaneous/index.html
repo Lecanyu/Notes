@@ -97,6 +97,20 @@ Precision = \frac{TP}{TP+FP}
 
 <p>False negative (FN): classify the positive class into negative category.</p>
 
+<h2 id="average-precision-ap-and-map">Average precision (AP and mAP)</h2>
+<p>AP is a common metric in various object detection paper. 
+It is related with recall and precision. 
+Conceptually, it is the area of recall-precision curve. See below picture.</p>
+<figure><figcaption></figcaption><img src="/Notes/assets/machine_learning/AP.png" /></figure>
+
+<p>But for convenience, people usually approximately estimate this area by interpolation. 
+Check <a href="https://medium.com/@jonathan_hui/map-mean-average-precision-for-object-detection-45c121a31173">here</a> for the specific algorithm.</p>
+
+<h2 id="intersection-over-union-iou">Intersection over union (IoU)</h2>
+<p>This metric has been widely used on object detection. 
+It is used for measuring how accurate the predicted bounding box is.</p>
+<figure><figcaption></figcaption><img src="/Notes/assets/machine_learning/IoU explanation.png" /></figure>
+
 <h2 id="bias-and-variance">Bias and variance</h2>
 <p>Bias is used to describe how close it is between the prediction and true value.</p>
 
@@ -231,6 +245,25 @@ Sometimes, we may not be able to make such assumption that the prior is a consta
 
 <h2 id="a-systematic-probabilistic-graph-model-course">A systematic probabilistic graph model course</h2>
 <p>https://ermongroup.github.io/cs228-notes/</p>
+
+<h2 id="bayes-rule-and-bayes-network">Bayes rule and Bayes network</h2>
+<p>Bayes rule is widely used on various machine learning problems. Some basic math/probabilistic knowledge need to be clarified.</p>
+
+<p>The general Bayes rule for joint distribution:</p>
+<div class="mathblock"><script type="math/tex; mode=display">
+P(x_1, x_2, ..., x_n) = P(x_1|x_2, ...,x_n)*P(x_2|x_3, ..., x_n)* ... * P(x_{n-1}|x_{n}) * P(x_{n})
+</script></div>
+
+<p>If we have a bayes network which models the problem, we can simplify the calculation. For example, given a simple network as below, we have</p>
+<figure><figcaption></figcaption><img src="/Notes/assets/machine_learning/bayes_net1.png" /></figure>
+<div class="mathblock"><script type="math/tex; mode=display">
+P(A, B, C) = P(A)*P(B|A)*P(C|B)
+</script></div>
+<p>This can work because <span>​<script type="math/tex"> P(C|B) = P(C|A, B) </script></span> (when we know variable B, the variable A and C can be seen independent. But if B is unknown, A and C are dependent. This is because we can use the medium variable B to represent the dependence between A and C.)</p>
+
+<p>From this network, we can have some other property like</p>
+<div class="mathblock"><script type="math/tex; mode=display"> P(C|A) = \int P(C|B)P(B|A) \mathrm{d}B </script></div>
+<p>Because <span>​<script type="math/tex"> P(C|B) = P(C|A, B), P(C|B)P(B|A) = P(C|A, B)*P(B|A) = \frac{P(A, B, C)}{P(A)} </script></span> and <span>​<script type="math/tex"> \int P(A,B,C) \mathrm{d}B = P(A,C) </script></span></p>
 
 <h2 id="several-concepts-need-to-be-distinguished">Several concepts need to be distinguished</h2>
 <ol>

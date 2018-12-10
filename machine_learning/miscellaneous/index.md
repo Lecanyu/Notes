@@ -173,6 +173,26 @@ Sometimes, we may not be able to make such assumption that the prior is a consta
 ## A systematic probabilistic graph model course
 https://ermongroup.github.io/cs228-notes/ 
 
+## Bayes rule and Bayes network
+Bayes rule is widely used on various machine learning problems. Some basic math/probabilistic knowledge need to be clarified.
+
+The general Bayes rule for joint distribution:
+{% math %}
+P(x_1, x_2, ..., x_n) = P(x_1|x_2, ...,x_n)*P(x_2|x_3, ..., x_n)* ... * P(x_{n-1}|x_{n}) * P(x_{n})
+{% endmath %}
+
+If we have a bayes network which models the problem, we can simplify the calculation. For example, given a simple network as below, we have 
+{% maincolumn 'assets/machine_learning/bayes_net1.png'%}
+{% math %}
+P(A, B, C) = P(A)*P(B|A)*P(C|B)
+{% endmath %}
+This can work because {%m%} P(C|B) = P(C|A, B) {%em%} (when we know variable B, the variable A and C can be seen independent. But if B is unknown, A and C are dependent. This is because we can use the medium variable B to represent the dependence between A and C.)
+
+From this network, we can have some other property like 
+{%math%} P(C|A) = \int P(C|B)P(B|A) \mathrm{d}B {%endmath%}
+Because {%m%} P(C|B) = P(C|A, B), P(C|B)P(B|A) = P(C|A, B)*P(B|A) = \frac{P(A, B, C)}{P(A)} {%em%} and {%m%} \int P(A,B,C) \mathrm{d}B = P(A,C) {%em%} 
+
+
 ## Several concepts need to be distinguished
 1. Bayesian Network
 2. Markov Random Field
