@@ -192,6 +192,9 @@ From this network, we can have some other property like
 {%math%} P(C|A) = \int P(C|B)P(B|A) \mathrm{d}B {%endmath%}
 Because {%m%} P(C|B) = P(C|A, B), P(C|B)P(B|A) = P(C|A, B)*P(B|A) = \frac{P(A, B, C)}{P(A)} {%em%} and {%m%} \int P(A,B,C) \mathrm{d}B = P(A,C) {%em%} 
 
+Generally, we also have below property without graph structure if {%m%}A, B{%em%} are independent.
+{%math%} P(A, B|C) = P(A|C)P(B|C) {%endmath%}
+Because {%m%}P(A, B, C) = P(A, B|C)P(C) = P(A|B, C)P(B|C)P(C) = P(A|C)P(B|C)P(C){%em%}
 
 ## Several concepts need to be distinguished
 1. Bayesian Network

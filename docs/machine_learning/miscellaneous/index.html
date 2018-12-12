@@ -265,6 +265,10 @@ P(A, B, C) = P(A)*P(B|A)*P(C|B)
 <div class="mathblock"><script type="math/tex; mode=display"> P(C|A) = \int P(C|B)P(B|A) \mathrm{d}B </script></div>
 <p>Because <span>​<script type="math/tex"> P(C|B) = P(C|A, B), P(C|B)P(B|A) = P(C|A, B)*P(B|A) = \frac{P(A, B, C)}{P(A)} </script></span> and <span>​<script type="math/tex"> \int P(A,B,C) \mathrm{d}B = P(A,C) </script></span></p>
 
+<p>Generally, we also have below property without graph structure if <span>​<script type="math/tex">A, B</script></span> are independent.</p>
+<div class="mathblock"><script type="math/tex; mode=display"> P(A, B|C) = P(A|C)P(B|C) </script></div>
+<p>Because <span>​<script type="math/tex">P(A, B, C) = P(A, B|C)P(C) = P(A|B, C)P(B|C)P(C) = P(A|C)P(B|C)P(C)</script></span></p>
+
 <h2 id="several-concepts-need-to-be-distinguished">Several concepts need to be distinguished</h2>
 <ol>
   <li>Bayesian Network</li>
