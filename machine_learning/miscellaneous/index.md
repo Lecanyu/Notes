@@ -31,7 +31,7 @@ Precision越低，很多负例被错误分类（包进了很多负例）
 
 ## ROC and AUC 
 {% maincolumn 'assets/machine_learning/AUC_ROC.png'%}
-ss
+
 
 ## Average precision (AP and mAP)
 AP is a common metric in various object detection paper. 
