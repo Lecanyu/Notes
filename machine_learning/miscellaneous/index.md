@@ -25,6 +25,14 @@ False positive (FP): classify the negative class into positive category.
 
 False negative (FN): classify the positive class into negative category.
 
+Recall越低，很多正例被错误分类（放走了很多正例）
+Precision越低，很多负例被错误分类（包进了很多负例）
+
+
+## ROC and AUC 
+{% maincolumn 'assets/machine_learning/AUC_ROC.png'%}
+ss
+
 ## Average precision (AP and mAP)
 AP is a common metric in various object detection paper. 
 It is related with recall and precision. 
