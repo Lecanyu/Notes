@@ -70,7 +70,7 @@ Covariance measure the correlation property between two series data
 
 Covariance matrix measure the variance and covariance in n series/dimension data. For example, we have a sample of data as below
 
-{% marginnote 'Table-ID4' 'Table 1: a simple statistic for demonstration.' %}
+<!-- {% marginnote 'Table-ID4' 'Table 1: a simple statistic for demonstration.' %} -->
 
 |          |**Height**|**Weight**|**Grade** |
 |:--------:|:--------:|:--------:|

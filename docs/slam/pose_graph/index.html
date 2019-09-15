@@ -81,6 +81,31 @@
 
 <p>A intuitive tutorial can be found <a href="https://blog.csdn.net/heyijia0327/article/details/47428553">HERE</a>.</p>
 
+<p>In pose graph optimization, the optimized variables are represented by nodes in graph.
+And the error function is represented by edge.</p>
+
+<p>We usually use G2O library to solve pose graph problems.
+This library has implemented several template data structures and you can check the source code for the details.</p>
+
+<p>Here I’d like emphasize the key points when you want to define yourself data structures.</p>
+
+<p>Usually, you need to inherit the basic data structure from G2O library (e.g. BaseVertex, BaseUnaryEdge, BaseMultiEdge and etc.).
+Then you should implement several key functions: 
+<label for="1," class="margin-toggle sidenote-number"></label><input type="checkbox" id="1," class="margin-toggle" /><span class="sidenote">There are some more functions that you need to implement in inheritance. I just give the core functions below.  </span></p>
+
+<p>For Edge data structure:</p>
+<ol>
+  <li>Implement how to calculate the error function (i.e. evaluate error function).</li>
+  <li>Implement how to calculate the gradient of the error function w.r.t. its linked vertices.</li>
+</ol>
+
+<p>For Vertex data structure:</p>
+<ol>
+  <li>Implement how to update the variable.</li>
+  <li>Implement how to set the initial value.</li>
+</ol>
+
+
 
 
     </article>
@@ -112,8 +137,8 @@
   <!--      -->
   <!-- </ul> -->
 <div class="credits">
-<!-- <span>&#38;copy; 2018 <!&#45;&#45; &#38;#38;nbsp;&#38;#38;nbsp;CANYU LE &#45;&#45;></span></br> <br> -->
-<span>Site created with <a href="//jekyllrb.com">Jekyll</a> using the <a href="//github.com/clayh53/tufte-jekyll">Tufte theme</a>. &copy; 2018</span> 
+<!-- <span>&#38;copy; 2019 <!&#45;&#45; &#38;#38;nbsp;&#38;#38;nbsp;CANYU LE &#45;&#45;></span></br> <br> -->
+<span>Site created with <a href="//jekyllrb.com">Jekyll</a> using the <a href="//github.com/clayh53/tufte-jekyll">Tufte theme</a>. &copy; 2019</span> 
 </div>  
 </footer>
 

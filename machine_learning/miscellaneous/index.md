@@ -31,6 +31,15 @@ Precision越低，很多负例被错误分类（包进了很多负例）
 
 ## ROC and AUC 
 {% maincolumn 'assets/machine_learning/AUC_ROC.png'%}
+{% maincolumn 'assets/machine_learning/ROC_curve.png'%}
+ROC is the curve based on TPR and FPR.
+
+AUC is the area under the ROC curve.
+
+AUC作为评价指标，可以有效处理样本不平衡问题。比如：在垃圾邮件分类中，垃圾邮件的label = 1，只占总样本的1%；非垃圾邮件的label = 0，占总样本99%。
+如果一个naive分类器把所有的样本分成0，那么也有99%的精确度。
+但是如果用AUC作为评价指标时，可以得到TPR=0（实际是垃圾邮件的，分对了多少），FPR=0（实际非垃圾邮件，分错了多少），不管分类的阈值怎么取，始终都是坐标系中的点(0, 0)，因此AUC=0 ?
+<span style="color:red"> (需要进一步搞清楚AUC的计算公式)</span>
 
 
 ## Average precision (AP and mAP)
@@ -85,6 +94,17 @@ Wrapper: we can randomly pick some features to train and evaluate the result
 
 Embedded: we can use a machine learning method to train first and then check how important those features are.
 
+## Feature dimensionality reduction
+There two common methods: PCA and LDA.
+PCA is an unsupervised dimensionality reduction method, whereas LDA is supervised.
+
+The main difference between them:
+
+PCA try to extract new feature vector which has big variance.
+LDA try to project original space to low dimensional space so as to maximize the distance between different classes and minimize the within-class variance.
+{% sidenote 1, "Please check [here](https://www.cnblogs.com/pinard/p/6244265.html) for details about LDA. "%}
+
+
 ## Generative model
 All types of generative models aims at learning the true distribution of training data so as to generate new data point with some variations. But it is not always possible to learn the exact data distribution.
 
@@ -129,10 +149,25 @@ Extract the main features.
 {% maincolumn 'assets/machine_learning/batch_normalization.png'%}
 
 Suppose input= [batch, height, width, depth]. 
-If we use axes= [0,1,2] to calculate (e.g. mean, var = tf.nn.moments(input, axes=[0, 1, 2])), then the output will be a 1-D vector with size=depth. 
-If we use axes=[0] to calculate, then the output will be a 3-D vector with size=[height, width, depth]. The picture below demonstrates this 3-D vector case.
+If we use axes= [0,1,2] to calculate (e.g. mean, var = tf.nn.moments(input, axes=[0, 1, 2])), then the output of mean, var will be a 1-D vector with size=depth. 
+If we use axes=[0] to calculate, then the output of mean, var will be a 3-D vector with size=[height, width, depth]. The picture below demonstrates this 3-D vector case.
 
 {% maincolumn 'assets/machine_learning/batch_normalization_ex.png'%}
+
+
+## Group normalization
+The comparison between several normalization methods
+{% maincolumn 'assets/machine_learning/group_normalization.png'%}
+
+Batch normalization has several defects:
+
+1. BN only works fine with large batch size, but this cannot guaranteed on complex tasks (e.g. object detection) due to insufficient memory.
+2. BN use mini-batch's mean and variance to normalize during training, but use moving-average (滑动平均) mean and variance to normalize during testing. It introduces inconsistency, especially when data distribution between training and testing are different.
+
+Unlike BN to normalize on dimension [batch, width, height], 
+the group normalization (GN) try to normalize on dimension [width, height, channel=k] (k is a hyperparameter). It doesn't matter with batch. So it solves the first defect.
+Moreover, GN always use moving-average mean and variance during training and testing. {% sidenote 10, "IN, LN and GN doesn't use batch dimension to normalize."%}
+
 
 
 ## Recurrent Neural Network (RNN)
@@ -256,7 +291,7 @@ Both of them measure how different between distribution $$p(x)$$ and $$q(x)$$. S
 Comparing with cross-entropy, KL-divergence measures the absolute difference. When $$p(x)=q(x)$$, $$H(p||q)=0$$. 
 
 
-## logistic regression
+## Logistic regression
 sigmoid function $$f(x; w)=\frac{1}{1+e^{-wx}}$$: convert linear classification result to a probability.
 
 maximize likelihood => solve the parameters in linear classification. 
@@ -278,14 +313,54 @@ Check [here](https://tech.meituan.com/intro_to_logistic_regression.html) for det
 
 
 
-## Support Vector Machine and Core function
-Will do
+## Support Vector Machine
+Please check [here1](https://blog.csdn.net/u014433413/article/details/78427574) and [here2](https://zhuanlan.zhihu.com/p/31652569) for the details about naive SVM, SVM with kernel and SVM with soft margin.
+
+Here, we give a brief introducation.
+
+In SVM, we want to find a hyperplane $$wx+b = 0$$ (w, b are the parameters to learn), so that this hyperplane can correctly divide two classes (the labels are -1, 1) data points.
+{% maincolumn 'assets/machine_learning/SVM1.png'%}
+We define that the data points which are the nearest ones to hyperplane $$wx+b=0$$ should locate on $$wx+b=1$$ (for positive datapoint) and $$ wx+b=-1 $$ (for negative datapoint). The reason why this definition makes sense is that we can always adjust the learned hyperplane by multiple a factor (e.g. k) without change the hyperplane in space 
+(i.e. $$wx+b=0$$ <=> $$k(wx+b)=0$$).
+
+So our goal is to maximize the distance between $$wx+b=1$$ and $$wx+b=-1$$. Obviously, the distance is 
+$$\frac{2}{||w||}$$. We can write the objective function as below
+{% math %}
+\min \frac{1}{2} w^T w \\
+s.t. \sum_i y_i(wx_i+b) \ge 1
+{% endmath %}
+To solve this objective, we apply Lagrangian multipler to convert original constrained problem to 
+{% math %}
+\max_{\lambda} \min_w \frac{1}{2} w^T w - \sum_i \lambda_i [y_i(wx_i+b)-1] \\
+s.t. \lambda \ge 0
+{% endmath %}
+Then calculate the partial gradients w.r.t. $$w, b$$ first, then $$\lambda$$. {% sidenote 2, "This is the naive SVM" %}
+
+Sometimes, the datasets cannot be divided by linear plane. So we usually use kernel tricks, which introduce nonlinear property in classifier. 
+The main idea of kernel trick is to find a mapping $$\phi(x)$$ to map original space to a higher space. The picture below gives an example. {% sidenote 3, "This is the SVM with kernel. Check [here](https://www.zhihu.com/question/24627666) for the reasons why kernel can map to a higher dimensions. " %}
+{% maincolumn 'assets/machine_learning/SVM_kernal.png'%}
+The P mapping in above picture is the $$\phi(x)$$. You should distinguish the kernel function and dimensional mapping function.
+
+However, sometimes, kernel can still fail. So people introduce the soft margin, which allows misclassification on some data points.
+The objective is {% sidenote 4, "This is soft margin." %}
+{% math %}
+\min \frac{1}{2} w^T w + c\sum_i \xi_i \\
+s.t. \sum_i y_i(wx_i+b) \ge 1 - \xi_i \\
+\xi_i \ge 0
+{% endmath %}
+The $$\xi_i$$ can be seen as hinge loss: $$\xi_i = \max (0, 1-y_i(wx_i+b))$$. And SVM can be explained in hinge loss.
+{% math %}
+\min \frac{1}{m}\sum_i^m \max (0, 1-y_i(wx_i+b)) + k||w||^2
+{% endmath %}
+
 
 
 ## Kalman filter
-It is a algorithm for accurately estimating or predicting based on multiple observed data.
+It is a algorithm for accurately estimating or predicting based on multiple observed data. 
+See [here](https://www.zhihu.com/question/22422121) for an intuitive explanation and example.
 
 A classic example is SLAM in which we have multiple data collecting sensors like odometry, IMU and visual features. The Kalman filter is to solve how to reliably combine all sensor data and estimate a accurate pose.
+
 
 
 ## Cross-entropy instead of mean square error (MSE) as the loss function in classification?

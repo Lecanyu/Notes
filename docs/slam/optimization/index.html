@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Nonlinear Optimization</title>
+  <meta name="description" content="Personal notes (memorandum).">
+
+
+  <link rel="stylesheet" href="/Notes/css/tufte.css">	
+  
+
+  <!-- Google Fonts loaded here depending on setting in _data/options.yml true loads font, blank does not-->
+  
+    <link href='//fonts.googleapis.com/css?family=Lato:400,400italic' rel='stylesheet' type='text/css'>
+  
+  <!-- Load up MathJax script if needed ... specify in /_data/options.yml file-->
+  
+    <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+  <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-75587219-1', 'auto');
+  ga('send', 'pageview');
+
+  </script>
+
+  <link rel="canonical" href="http://localhost:4000/Notes/slam/optimization/">
+  <link rel="alternate" type="application/rss+xml" title="Notes" href="http://localhost:4000/Notes/feed.xml" />
+</head>
+
+  <body>
+    <!--- Header and nav template site-wide -->
+<header>
+    <nav class="group">
+        <a href="/Notes/">Contents</a>
+		<a href="https://lecanyu.github.io/">Resume</a>
+		<a href="https://github.com/Lecanyu/Notes">Github</a>
+	</nav>
+</header>
+
+    <article class="group">
+      <h1>Nonlinear optimization</h1>
+<p class="subtitle"></p>
+
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    TeX: {
+      Macros: {
+        e: "\\epsilon",
+        xti: "x^{(i)}",
+        yti: "y^{(i)}",
+        bfy: "{\\bf y}",
+        bfx: "{\\bf x}",
+        bfg: "{\\bf g}",
+        bfbeta: "{\\bf \\beta}",
+        tp: "\\tilde p",
+        pt: "p_\\theta",
+        Exp: "{\\mathbb{E}}",
+        Ind: "{\\mathbb{I}}",
+        KL: "{\\mathbb{KL}}",
+        Dc: "{\\mathcal{D}}",
+        Tc: "{\\mathcal{T}}",
+        Xc: "{\\mathcal{X}}",
+        note: ["\\textcolor{blue}{[NOTE: #1]}",1]
+      }
+    }
+  });
+</script>
+
+
+<h2 id="nonlinear-optimization">Nonlinear optimization</h2>
+<p>The nonlinear optimization can be written as</p>
+<div class="mathblock"><script type="math/tex; mode=display">
+x = \arg \min_x F(x)	
+</script></div>
+<p>where <script type="math/tex">F(x)</script> is a nonlinear function w.r.t. <script type="math/tex">x</script>. Since the <script type="math/tex">F(x)</script> can be extremely complicated, we may not be able to explicitly figure out the analytical solution of 
+<script type="math/tex">\frac{\partial F}{\partial x} = 0</script>.
+Instead of the analytical solution, we usually apply iteration methods to optimize the objective, even though it may fall into local optimal.</p>
+
+<p>There are four iteration methods: Gradient Descent, Newton method, Gauss-Newton method, Levenberg–Marquardt (LM).</p>
+
+<h3 id="gradient-descent">Gradient Descent</h3>
+<p>Given a step size hyperparameter <script type="math/tex">\alpha</script>, the <script type="math/tex">x</script> update rule is</p>
+<div class="mathblock"><script type="math/tex; mode=display">
+x = x - \alpha \frac{\partial F}{\partial x}	
+</script></div>
+<p>This optimization strategy (but a variant SGD) has been widely adopted in various neural network update.</p>
+
+<h3 id="newton-method">Newton method</h3>
+<p>Newton method try to solve this objective</p>
+<div class="mathblock"><script type="math/tex; mode=display">
+\Delta x = \arg \min_{\Delta x} F(x + \Delta x)	
+</script></div>
+<p>It applies the Taylor expansion <label for="1" class="margin-toggle sidenote-number"></label><input type="checkbox" id="1" class="margin-toggle" /><span class="sidenote">Note that the Jaconbian J(x) and Hessian H(x) are first and second derivation of F(x) w.r.t. x </span></p>
+<div class="mathblock"><script type="math/tex; mode=display">
+F(x + \Delta x)	= F(x) + J(x)\Delta x + \frac{1}{2} \Delta x^T H(x) \Delta x
+</script></div>
+<p>To minimize above equation, we calculate the gradient w.r.t. <script type="math/tex">\Delta x</script> and make it equal to 0.
+We have</p>
+<div class="mathblock"><script type="math/tex; mode=display">
+\Delta x = - H(x)^{-1}J(x)^T
+</script></div>
+<p>However, the second derivation is usually expensive to calculate</p>
+
+<h3 id="gauss-newton">Gauss-Newton</h3>
+<p>Gauss-Newton solve the problem from least-square perspective.
+<script type="math/tex">F(x)</script>, which is a scalar number, usually come from <script type="math/tex">\frac{1}{2}f(x)^Tf(x)</script>, where <script type="math/tex">f(x)</script> is a vector.
+This method apply taylor expansion on <script type="math/tex">f(x)</script> to first derivation.
+We have</p>
+<div class="mathblock"><script type="math/tex; mode=display">
+f(x + \Delta x)	= f(x) + J(x)\Delta x
+</script></div>
+<p>So</p>
+<div class="mathblock"><script type="math/tex; mode=display">
+F(x+\Delta x) = \frac{1}{2} f^T(x + \Delta x) f(x + \Delta x) = \frac{1}{2}f^T(x)f(x) + \Delta x^T J^T(x)f(x) + \frac{1}{2} \Delta x^T J^T(x) J(x) \Delta x
+</script></div>
+<p>Calculating the gradient w.r.t. <script type="math/tex">\Delta x</script>, we have	<label for="2" class="margin-toggle sidenote-number"></label><input type="checkbox" id="2" class="margin-toggle" /><span class="sidenote">Note that the Jaconbian J(x) and Hessian H(x) are first and second derivation of f(x) w.r.t. x. This is different with Newton method. </span></p>
+<div class="mathblock"><script type="math/tex; mode=display">
+\Delta x = - (J^T(x)J(x))^{-1}J(x)^Tf(x)
+</script></div>
+
+<p>However, Gauss-Newton method still has problems. 
+First, the <script type="math/tex">J^T(x)J(x)</script> needs to be invertible , but this is not guaranteed. 
+Second, if <script type="math/tex">\Delta x</script> is big, the above Taylor expansion is a bad approximation. 
+To solve these two problems, LM method is invented.</p>
+
+<h3 id="levenbergmarquardt-lm">Levenberg–Marquardt (LM)</h3>
+<p>The main motivation of LM is to control the size of update step <script type="math/tex">\Delta x</script>.
+It optimizes the below objective</p>
+<div class="mathblock"><script type="math/tex; mode=display">
+\min \frac{1}{2} ||f(x) + J(x)\Delta x||^2 \\
+s.t. ||\Delta x||^2 \le \mu
+</script></div>
+<p>where <script type="math/tex">\mu</script> is the confidence interval, which will be updated for each optimization step.</p>
+
+<p>The update rule:</p>
+
+<p>For each optimization step, we calculate</p>
+<div class="mathblock"><script type="math/tex; mode=display">
+\rho = \frac{f(x+\Delta x) - f(x)}{J(x)\Delta x}
+</script></div>
+<p>If <script type="math/tex">\rho</script> is closed to 1, the local linear is guaranteed and the approximation is good.
+If <script type="math/tex">\rho</script> is larger than 1, the actual decrease is more than the approximation which means the <script type="math/tex">f(x)</script> is accelerated decreasing. And we should set a bigger confidence interval <script type="math/tex">\mu</script> to speed decrease.
+If <script type="math/tex">\rho</script> is smaller than 1, the actual decrease is less than the approximation which means the <script type="math/tex">f(x)</script> is entering a flatted area. And we should set smaller confidence interval <script type="math/tex">\mu</script>.</p>
+
+<p>The above constrained objective can be converted to dual space by applying Lagrange multipler.</p>
+<div class="mathblock"><script type="math/tex; mode=display">
+\max_{\lambda} \min_{\Delta x} \frac{1}{2} ||f(x) + J(x)\Delta x||^2 + \lambda (\Delta x^T \Delta x - \mu)
+</script></div>
+<p>The optimal <script type="math/tex">\Delta x</script> satisfies</p>
+<div class="mathblock"><script type="math/tex; mode=display">
+(J^T(x)J(x) + \lambda I)\Delta x = J^T(x)f(x)
+</script></div>
+<p>If <script type="math/tex">\lambda</script> is big which means <script type="math/tex">\Delta x^T \Delta x - \mu</script>&gt;0 and <script type="math/tex">\Delta x</script> is over the confidence interval, the <script type="math/tex">\Delta x</script> will be <script type="math/tex">\frac{1}{\lambda}J^T(x)f(x)</script> (i.e. Gradient Descent update).
+If <script type="math/tex">\lambda</script> is small, then the update <script type="math/tex">\Delta x</script> is like Gauss-Newton <script type="math/tex">J^T(x)J(x) \Delta x = J^T(x)f(x)</script>.</p>
+
+<h3 id="a-sgd-variant-adam">A SGD variant: Adam</h3>
+<p>The LM method adaptively determines the update step. In gradient descent, there is also a famous adaptive method, called Adam, which has been widely used in neural network optimization.
+Here is Adam update rule <label for="3" class="margin-toggle sidenote-number"></label><input type="checkbox" id="3" class="margin-toggle" /><span class="sidenote">Check <a href="https://www.cnblogs.com/wuliytTaotao/p/11101652.html">here</a> for others introduction. </span>:</p>
+<div class="mathblock"><script type="math/tex; mode=display">
+m_t = \beta_1 m_{t-1} + (1-\beta_1)g_t \\
+v_t = \beta_2 v_{t-1} + (1-\beta_2)g_t^2 \\
+\hat m_t = \frac{m_t}{1-\beta_1^t} \\
+\hat v_t = \frac{v_t}{1-\beta_2^t} \\
+\theta_{t+1} = \theta_t - \frac{\eta}{\sqrt{\hat v_t} + \epsilon} \hat m_t
+</script></div>
+<p>Usually, <script type="math/tex">\beta_1 = 0.9, \beta_2 = 0.99, \eta=0.001</script>, <script type="math/tex">\eta</script> is learning rate.</p>
+
+<p>The first two equations are momentum update (i.e. moving average). 
+The third and fourth equations are bias corrections. Because <script type="math/tex">m_t</script> is underestimated at the beginning (i.e. <script type="math/tex">m_t = 0.1 g_t</script>).
+<script type="math/tex">\beta_1^t, \beta_2^t</script> will gradually decrease to 0 as the optimization proceed.
+The last equation is the parameter update rule. 
+The learning rate <script type="math/tex">\eta</script> will be adjusted by <script type="math/tex">\frac{1}{\sqrt{\hat v_t} + \epsilon}</script>. 
+Obviously, at the beginning <script type="math/tex">\hat v_t</script> is small (<script type="math/tex">\hat v_t</script> is used to accumulate the gradient). But after many iterations, <script type="math/tex">\hat v_t</script> could be big, and thus the learning rate will be adjusted to 0.</p>
+
+
+
+
+    </article>
+    <span class="print-footer">Nonlinear Optimization - Canyu Le</span>
+    <footer>
+  <hr class="slender">
+  <!-- <ul class="footer&#45;links"> -->
+  <!--   <li><a href="mailto:hate@spam.net"><span class="icon&#45;mail"></span></a></li>     -->
+  <!--    -->
+  <!--     <li> -->
+  <!--       <a href="//www.twitter.com/twitter_handle"><span class="icon-twitter"></span></a> -->
+  <!--     </li> -->
+  <!--    -->
+  <!--     <li> -->
+  <!--       <a href="//plus.google.com/+googlePlusName"><span class="icon-googleplus"></span></a> -->
+  <!--     </li> -->
+  <!--    -->
+  <!--     <li> -->
+  <!--       <a href="//github.com/GithubHandle"><span class="icon-github"></span></a> -->
+  <!--     </li> -->
+  <!--    -->
+  <!--     <li> -->
+  <!--       <a href="//www.flickr.com/photos/FlickrUserID"><span class="icon-flickr"></span></a> -->
+  <!--     </li> -->
+  <!--    -->
+  <!--     <li> -->
+  <!--       <a href="/feed"><span class="icon-feed"></span></a> -->
+  <!--     </li> -->
+  <!--      -->
+  <!-- </ul> -->
+<div class="credits">
+<!-- <span>&#38;copy; 2019 <!&#45;&#45; &#38;#38;nbsp;&#38;#38;nbsp;CANYU LE &#45;&#45;></span></br> <br> -->
+<span>Site created with <a href="//jekyllrb.com">Jekyll</a> using the <a href="//github.com/clayh53/tufte-jekyll">Tufte theme</a>. &copy; 2019</span> 
+</div>  
+</footer>
+
+  </body>
+</html>

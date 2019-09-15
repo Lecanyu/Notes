@@ -97,6 +97,21 @@ Precision = \frac{TP}{TP+FP}
 
 <p>False negative (FN): classify the positive class into negative category.</p>
 
+<p>Recall越低，很多正例被错误分类（放走了很多正例）
+Precision越低，很多负例被错误分类（包进了很多负例）</p>
+
+<h2 id="roc-and-auc">ROC and AUC</h2>
+<figure><figcaption></figcaption><img src="/Notes/assets/machine_learning/AUC_ROC.png" /></figure>
+<figure><figcaption></figcaption><img src="/Notes/assets/machine_learning/ROC_curve.png" /></figure>
+<p>ROC is the curve based on TPR and FPR.</p>
+
+<p>AUC is the area under the ROC curve.</p>
+
+<p>AUC作为评价指标，可以有效处理样本不平衡问题。比如：在垃圾邮件分类中，垃圾邮件的label = 1，只占总样本的1%；非垃圾邮件的label = 0，占总样本99%。
+如果一个naive分类器把所有的样本分成0，那么也有99%的精确度。
+但是如果用AUC作为评价指标时，可以得到TPR=0（实际是垃圾邮件的，分对了多少），FPR=0（实际非垃圾邮件，分错了多少），不管分类的阈值怎么取，始终都是坐标系中的点(0, 0)，因此AUC=0 ?
+<span style="color:red"> (需要进一步搞清楚AUC的计算公式)</span></p>
+
 <h2 id="average-precision-ap-and-map">Average precision (AP and mAP)</h2>
 <p>AP is a common metric in various object detection paper. 
 It is related with recall and precision. 
@@ -144,6 +159,16 @@ It is used for measuring how accurate the predicted bounding box is.</p>
 
 <p>Embedded: we can use a machine learning method to train first and then check how important those features are.</p>
 
+<h2 id="feature-dimensionality-reduction">Feature dimensionality reduction</h2>
+<p>There two common methods: PCA and LDA.
+PCA is an unsupervised dimensionality reduction method, whereas LDA is supervised.</p>
+
+<p>The main difference between them:</p>
+
+<p>PCA try to extract new feature vector which has big variance.
+LDA try to project original space to low dimensional space so as to maximize the distance between different classes and minimize the within-class variance.
+<label for="1," class="margin-toggle sidenote-number"></label><input type="checkbox" id="1," class="margin-toggle" /><span class="sidenote">Please check <a href="https://www.cnblogs.com/pinard/p/6244265.html">here</a> for details about LDA.  </span></p>
+
 <h2 id="generative-model">Generative model</h2>
 <p>All types of generative models aims at learning the true distribution of training data so as to generate new data point with some variations. But it is not always possible to learn the exact data distribution.</p>
 
@@ -190,10 +215,25 @@ The global composition in jigsaw puzzle solving can be seen as a SAT problem var
 <figure><figcaption></figcaption><img src="/Notes/assets/machine_learning/batch_normalization.png" /></figure>
 
 <p>Suppose input= [batch, height, width, depth]. 
-If we use axes= [0,1,2] to calculate (e.g. mean, var = tf.nn.moments(input, axes=[0, 1, 2])), then the output will be a 1-D vector with size=depth. 
-If we use axes=[0] to calculate, then the output will be a 3-D vector with size=[height, width, depth]. The picture below demonstrates this 3-D vector case.</p>
+If we use axes= [0,1,2] to calculate (e.g. mean, var = tf.nn.moments(input, axes=[0, 1, 2])), then the output of mean, var will be a 1-D vector with size=depth. 
+If we use axes=[0] to calculate, then the output of mean, var will be a 3-D vector with size=[height, width, depth]. The picture below demonstrates this 3-D vector case.</p>
 
 <figure><figcaption></figcaption><img src="/Notes/assets/machine_learning/batch_normalization_ex.png" /></figure>
+
+<h2 id="group-normalization">Group normalization</h2>
+<p>The comparison between several normalization methods</p>
+<figure><figcaption></figcaption><img src="/Notes/assets/machine_learning/group_normalization.png" /></figure>
+
+<p>Batch normalization has several defects:</p>
+
+<ol>
+  <li>BN only works fine with large batch size, but this cannot guaranteed on complex tasks (e.g. object detection) due to insufficient memory.</li>
+  <li>BN use mini-batch’s mean and variance to normalize during training, but use moving-average (滑动平均) mean and variance to normalize during testing. It introduces inconsistency, especially when data distribution between training and testing are different.</li>
+</ol>
+
+<p>Unlike BN to normalize on dimension [batch, width, height], 
+the group normalization (GN) try to normalize on dimension [width, height, channel=k] (k is a hyperparameter). It doesn’t matter with batch. So it solves the first defect.
+Moreover, GN always use moving-average mean and variance during training and testing. <label for="10," class="margin-toggle sidenote-number"></label><input type="checkbox" id="10," class="margin-toggle" /><span class="sidenote">IN, LN and GN doesn’t use batch dimension to normalize. </span></p>
 
 <h2 id="recurrent-neural-network-rnn">Recurrent Neural Network (RNN)</h2>
 <p>An tutorial and introduction about <a href="http://www.wildml.com/2015/09/recurrent-neural-networks-tutorial-part-1-introduction-to-rnns/">RNN</a></p>
@@ -323,7 +363,7 @@ H(p||q) = \sum_x p(x) \log \frac{p(x)}{q(x)} = H(p,q) - H(p) >= 0
 Both of them measure how different between distribution <script type="math/tex">p(x)</script> and <script type="math/tex">q(x)</script>. So when <script type="math/tex">p(x)</script> is given, the optimization process of <script type="math/tex">H(p||q)</script> and <script type="math/tex">H(p,q)</script> is the same.
 Comparing with cross-entropy, KL-divergence measures the absolute difference. When <script type="math/tex">p(x)=q(x)</script>, <script type="math/tex">H(p||q)=0</script>.</p>
 
-<h2 id="logistic-regression">logistic regression</h2>
+<h2 id="logistic-regression">Logistic regression</h2>
 <p>sigmoid function <script type="math/tex">f(x; w)=\frac{1}{1+e^{-wx}}</script>: convert linear classification result to a probability.</p>
 
 <p>maximize likelihood =&gt; solve the parameters in linear classification.</p>
@@ -343,11 +383,49 @@ Comparing with cross-entropy, KL-divergence measures the absolute difference. Wh
 
 <p>Check <a href="https://tech.meituan.com/intro_to_logistic_regression.html">here</a> for details.</p>
 
-<h2 id="support-vector-machine-and-core-function">Support Vector Machine and Core function</h2>
-<p>Will do</p>
+<h2 id="support-vector-machine">Support Vector Machine</h2>
+<p>Please check <a href="https://blog.csdn.net/u014433413/article/details/78427574">here1</a> and <a href="https://zhuanlan.zhihu.com/p/31652569">here2</a> for the details about naive SVM, SVM with kernel and SVM with soft margin.</p>
+
+<p>Here, we give a brief introducation.</p>
+
+<p>In SVM, we want to find a hyperplane <script type="math/tex">wx+b = 0</script> (w, b are the parameters to learn), so that this hyperplane can correctly divide two classes (the labels are -1, 1) data points.</p>
+<figure><figcaption></figcaption><img src="/Notes/assets/machine_learning/SVM1.png" /></figure>
+<p>We define that the data points which are the nearest ones to hyperplane <script type="math/tex">wx+b=0</script> should locate on <script type="math/tex">wx+b=1</script> (for positive datapoint) and <script type="math/tex">wx+b=-1</script> (for negative datapoint). The reason why this definition makes sense is that we can always adjust the learned hyperplane by multiple a factor (e.g. k) without change the hyperplane in space 
+(i.e. <script type="math/tex">wx+b=0</script> &lt;=&gt; <script type="math/tex">k(wx+b)=0</script>).</p>
+
+<p>So our goal is to maximize the distance between <script type="math/tex">wx+b=1</script> and <script type="math/tex">wx+b=-1</script>. Obviously, the distance is 
+<script type="math/tex">\frac{2}{||w||}</script>. We can write the objective function as below</p>
+<div class="mathblock"><script type="math/tex; mode=display">
+\min \frac{1}{2} w^T w \\
+s.t. \sum_i y_i(wx_i+b) \ge 1
+</script></div>
+<p>To solve this objective, we apply Lagrangian multipler to convert original constrained problem to</p>
+<div class="mathblock"><script type="math/tex; mode=display">
+\max_{\lambda} \min_w \frac{1}{2} w^T w - \sum_i \lambda_i [y_i(wx_i+b)-1] \\
+s.t. \lambda \ge 0
+</script></div>
+<p>Then calculate the partial gradients w.r.t. <script type="math/tex">w, b</script> first, then <script type="math/tex">\lambda</script>. <label for="2," class="margin-toggle sidenote-number"></label><input type="checkbox" id="2," class="margin-toggle" /><span class="sidenote">This is the naive SVM </span></p>
+
+<p>Sometimes, the datasets cannot be divided by linear plane. So we usually use kernel tricks, which introduce nonlinear property in classifier. 
+The main idea of kernel trick is to find a mapping <script type="math/tex">\phi(x)</script> to map original space to a higher space. The picture below gives an example. <label for="3," class="margin-toggle sidenote-number"></label><input type="checkbox" id="3," class="margin-toggle" /><span class="sidenote">This is the SVM with kernel. Check <a href="https://www.zhihu.com/question/24627666">here</a> for the reasons why kernel can map to a higher dimensions.  </span></p>
+<figure><figcaption></figcaption><img src="/Notes/assets/machine_learning/SVM_kernal.png" /></figure>
+<p>The P mapping in above picture is the <script type="math/tex">\phi(x)</script>. You should distinguish the kernel function and dimensional mapping function.</p>
+
+<p>However, sometimes, kernel can still fail. So people introduce the soft margin, which allows misclassification on some data points.
+The objective is <label for="4," class="margin-toggle sidenote-number"></label><input type="checkbox" id="4," class="margin-toggle" /><span class="sidenote">This is soft margin. </span></p>
+<div class="mathblock"><script type="math/tex; mode=display">
+\min \frac{1}{2} w^T w + c\sum_i \xi_i \\
+s.t. \sum_i y_i(wx_i+b) \ge 1 - \xi_i \\
+\xi_i \ge 0
+</script></div>
+<p>The <script type="math/tex">\xi_i</script> can be seen as hinge loss: <script type="math/tex">\xi_i = \max (0, 1-y_i(wx_i+b))</script>. And SVM can be explained in hinge loss.</p>
+<div class="mathblock"><script type="math/tex; mode=display">
+\min \frac{1}{m}\sum_i^m \max (0, 1-y_i(wx_i+b)) + k||w||^2
+</script></div>
 
 <h2 id="kalman-filter">Kalman filter</h2>
-<p>It is a algorithm for accurately estimating or predicting based on multiple observed data.</p>
+<p>It is a algorithm for accurately estimating or predicting based on multiple observed data. 
+See <a href="https://www.zhihu.com/question/22422121">here</a> for an intuitive explanation and example.</p>
 
 <p>A classic example is SLAM in which we have multiple data collecting sensors like odometry, IMU and visual features. The Kalman filter is to solve how to reliably combine all sensor data and estimate a accurate pose.</p>
 
@@ -464,8 +542,8 @@ cov(x_n, x_1) & cov(x_n, x_2) & ... & cov(x_{n}, x_{n})  \\
   <!--      -->
   <!-- </ul> -->
 <div class="credits">
-<!-- <span>&#38;copy; 2018 <!&#45;&#45; &#38;#38;nbsp;&#38;#38;nbsp;CANYU LE &#45;&#45;></span></br> <br> -->
-<span>Site created with <a href="//jekyllrb.com">Jekyll</a> using the <a href="//github.com/clayh53/tufte-jekyll">Tufte theme</a>. &copy; 2018</span> 
+<!-- <span>&#38;copy; 2019 <!&#45;&#45; &#38;#38;nbsp;&#38;#38;nbsp;CANYU LE &#45;&#45;></span></br> <br> -->
+<span>Site created with <a href="//jekyllrb.com">Jekyll</a> using the <a href="//github.com/clayh53/tufte-jekyll">Tufte theme</a>. &copy; 2019</span> 
 </div>  
 </footer>
 

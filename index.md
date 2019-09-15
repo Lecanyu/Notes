@@ -9,10 +9,11 @@ These notes were recorded various important points for personal review. It conta
 1. [Miscellaneous](linear_algebra/miscellaneous): Some knowledge points for quick review.
 
 
-
 ## Machine Learning
 
 1. [Miscellaneous](machine_learning/miscellaneous): Basic knowledge points for quick review.
+
+2. [Metric learning](machine_learning/metric_learning): Some popular metric learning methods.
 
 2. [Attention neural network](machine_learning/attention_neural_network): Some concepts and principles about attention neural network for quick review.
 
@@ -25,20 +26,26 @@ These notes were recorded various important points for personal review. It conta
 
 ## SLAM
 
-1. [Pose graph](slam/pose_graph): The optimization on pose graph.
+1. [Optimizarion](slam/optimization): Nonlinear optimization methods.
 
-2. [Bundle adjustment](slam/bundle_adjustment): The optimization for bundle adjustment.
+2. [Camera model](slam/camera_model): The introducation about camera model, fundamental, essential and homography matrix.
 
-3. [Graph simiplification](slam/graph_simplification): Simplify the dense pose graph.
+2. [Pose graph](slam/pose_graph): The optimization on pose graph and the G2O usage.
 
-4. [Point cloud registration](slam/registration_opt): Introduce the optimization problem in solving least square. It includes a general introduction about Non-linear optimization (Gauss Newton and Levenberg-Marquardt methods).
+3. [Bundle adjustment](slam/bundle_adjustment): The optimization for bundle adjustment.
 
-5. [Lie group and Lie algebra](slam/lie_algebra): An intuitive introduction about Lie algebra.
+4. [Graph simiplification](slam/graph_simplification): Simplify the dense pose graph.
+
+5. [Point cloud registration](slam/registration_opt): Introduce the optimization problem in solving least square. It includes a general introduction about Non-linear optimization (Gauss Newton and Levenberg-Marquardt methods).
+
+6. [Lie group and Lie algebra](slam/lie_algebra): An intuitive introduction about Lie algebra.
 
 
 ## Algorithms
 
 1. [Dynamic programming](algorithm/dp/): An introduction about the dynamic programming algorithm. 
+
+2. [AVL Tree](algorithm/avl_tree/): The self-balancing binary search tree. 
 
 2. [Graph algorithm](algorithm/graph_algorithm/): An introduction about graph-related algorithms.
 

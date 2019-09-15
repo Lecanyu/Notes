@@ -77,15 +77,23 @@
 </script>
 
 
-<h2 id="under-construction">under construction</h2>
+<h2 id="bundle-adjustment-ba">Bundle Adjustment (BA)</h2>
+<p>Bundle adjustment is an important optimization in SLAM system. 
+Unlike pose graph optimization which only optimize the poses, BA can optimize the 3D points and poses simultaneously for minimizing reprojection error.</p>
 
-<h2 id="write-some-equations-for-testing">write some equations for testing</h2>
-
-<p>aaaa bbbb ccc <script type="math/tex">\sum_i^N a_i</script> dddd xxxx, or you can use this <span>​<script type="math/tex"> \Pi_i^N \frac{1}{i} </script></span></p>
-
+<p>Here is the objective function</p>
 <div class="mathblock"><script type="math/tex; mode=display">
-\sum_i^N a_i
+\min \frac{1}{2} \sum_{i=1}^{n} || u_i - \frac{1}{z_i} K (RP_i + t) ||^2
 </script></div>
+<p>where <script type="math/tex">u_i</script> is the image pixel. <script type="math/tex">P_i</script> is 3D point in world coordinate. <script type="math/tex">R, t</script> are the camera pose. <script type="math/tex">K</script> is camera intrinsic parameter. <script type="math/tex">z_i</script> is the last element in <script type="math/tex">P_i</script>.
+The optimized variables could be <script type="math/tex">R, t, P_i</script>.</p>
+
+<p>If we write the objective in Lie Algebra, it will be</p>
+<div class="mathblock"><script type="math/tex; mode=display">
+\min \frac{1}{2} \sum_{i=1}^{n} || u_i - \frac{1}{z_i} e^{\xi} P_i ||^2
+</script></div>
+
+<p>For the details about the gradient calculation, please go to check <a href="https://blog.csdn.net/luohuiwu/article/details/80748174">here</a>.</p>
 
 
 
@@ -118,8 +126,8 @@
   <!--      -->
   <!-- </ul> -->
 <div class="credits">
-<!-- <span>&#38;copy; 2018 <!&#45;&#45; &#38;#38;nbsp;&#38;#38;nbsp;CANYU LE &#45;&#45;></span></br> <br> -->
-<span>Site created with <a href="//jekyllrb.com">Jekyll</a> using the <a href="//github.com/clayh53/tufte-jekyll">Tufte theme</a>. &copy; 2018</span> 
+<!-- <span>&#38;copy; 2019 <!&#45;&#45; &#38;#38;nbsp;&#38;#38;nbsp;CANYU LE &#45;&#45;></span></br> <br> -->
+<span>Site created with <a href="//jekyllrb.com">Jekyll</a> using the <a href="//github.com/clayh53/tufte-jekyll">Tufte theme</a>. &copy; 2019</span> 
 </div>  
 </footer>
 
