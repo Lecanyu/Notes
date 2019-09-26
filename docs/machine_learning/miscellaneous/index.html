@@ -319,14 +319,6 @@ P(A, B, C) = P(A)*P(B|A)*P(C|B)
   <li>Markov Decision Process</li>
 </ol>
 
-<h2 id="how-to-simulate-a-random-number-which-satisfy-a-probabilistic-distribution">How to simulate a random number which satisfy a probabilistic distribution</h2>
-<ol>
-  <li>Inverse transform method</li>
-  <li>Acceptance rejection method</li>
-</ol>
-
-<p>Check <a href="http://blog.codinglabs.org/articles/methods-for-generating-random-number-distributions.html">here</a></p>
-
 <h2 id="why-divide-n-1-to-get-unbiased-variance-estimation-in-sampling-data">Why divide n-1 to get unbiased variance estimation in sampling data</h2>
 <p>http://blog.sina.com.cn/s/blog_c96053d60101n24f.html</p>
 
@@ -428,6 +420,47 @@ s.t. \sum_i y_i(wx_i+b) \ge 1 - \xi_i \\
 See <a href="https://www.zhihu.com/question/22422121">here</a> for an intuitive explanation and example.</p>
 
 <p>A classic example is SLAM in which we have multiple data collecting sensors like odometry, IMU and visual features. The Kalman filter is to solve how to reliably combine all sensor data and estimate a accurate pose.</p>
+
+<p><strong>In linear case, the Kalman filter problem can be formulated as</strong></p>
+<div class="mathblock"><script type="math/tex; mode=display">
+x_k = A_k x_{k-1} + u_k + w_k\\
+z_k = C_k x_{k} + v_k
+</script></div>
+<p>The first equation is motion equation where <script type="math/tex">x_k</script> is the state at <script type="math/tex">k</script>-th moment. <script type="math/tex">u_k</script> is motion measurement with noise <script type="math/tex">w_k</script> which is satisfied a gauss distribution <script type="math/tex">w_k \sim N(0, R_k)</script>.</p>
+
+<p>The second equation is observation equation where <script type="math/tex">z_k</script> is the observation measurement with noise <script type="math/tex">v_k</script> which is also satisfied a gauss distribution <script type="math/tex">v_k \sim N(0, Q_k)</script>.</p>
+
+<p><em>Since the motion and observation measurements are noisy (subject to gauss distribution) which means that the current state estimation is noisy too, our goal now is to find an optimal state estimation which has the minimum uncertainty (i.e. minimum covariance).</em></p>
+
+<p>The way is to calculate Kalman Gain which is the optimal weight between motion and observation. <label for="1," class="margin-toggle sidenote-number"></label><input type="checkbox" id="1," class="margin-toggle" /><span class="sidenote">I ignore the derivation of Kalman Gain, since it is a little bit complicated. You can search online about this. </span></p>
+
+<p>The complete algorithm is:</p>
+
+<p>First, predict currect state from previous state based on motion equation. 
+(The previous state can be represented by gauss distribution <script type="math/tex">N(\hat x_{k-1}, \hat P_{k-1})</script>)</p>
+
+<div class="mathblock"><script type="math/tex; mode=display">
+\bar x_k = A_k \hat x_{k-1} + u_k \\
+\bar P_{k} = A_k \hat P_{k-1} A_{k}^T + R 
+</script></div>
+<p>This equation is easy to understand according to the properties of gauss distribution (The new mean and new covariance from two gauss distribution).</p>
+
+<p>Second, calculate the Kalman Gain</p>
+<div class="mathblock"><script type="math/tex; mode=display">
+K = \bar P_k C_k^T (C_k \bar P_k C_k^T + Q_k)^{-1}
+</script></div>
+
+<p>Finally, correct/modify the rough estimation from motion equation.</p>
+<div class="mathblock"><script type="math/tex; mode=display">
+\hat x_k = \bar x_k + K (z_k - C_k \bar x_k) \\ 
+\hat P_k = (I - KC_k) \bar P_k
+</script></div>
+
+<p>If you derivate a little, you can find that if <script type="math/tex">Q_k = 0</script> (no covariance in observation), then <script type="math/tex">\hat x_k = C_k^{-1} z_k</script>, which means the final estimation is totally depended on observation equation.  There is a similar conclusion when <script type="math/tex">R_k = 0</script>.</p>
+
+<p>Now we know the idea of Kalman filter in linear system.</p>
+
+<p>In reality, the system is usually nonlinear (e.g. SLAM problem). To apply above idea, we need to extend KF to nonlinear case. The Taylor expansion can do this.</p>
 
 <h2 id="cross-entropy-instead-of-mean-square-error-mse-as-the-loss-function-in-classification">Cross-entropy instead of mean square error (MSE) as the loss function in classification?</h2>
 <p>when we do classification, we usually apply softmax (this is an important premise) to normalize the output value to 0-1. 

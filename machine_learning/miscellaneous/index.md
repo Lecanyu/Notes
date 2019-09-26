@@ -247,12 +247,6 @@ Because {%m%}P(A, B, C) = P(A, B|C)P(C) = P(A|B, C)P(B|C)P(C) = P(A|C)P(B|C)P(C)
 5. Hidden Markov Model
 6. Markov Decision Process
 
-## How to simulate a random number which satisfy a probabilistic distribution 
-1. Inverse transform method
-2. Acceptance rejection method
-
-Check [here](http://blog.codinglabs.org/articles/methods-for-generating-random-number-distributions.html)
-
 ## Why divide n-1 to get unbiased variance estimation in sampling data
 http://blog.sina.com.cn/s/blog_c96053d60101n24f.html 
 
@@ -360,6 +354,48 @@ It is a algorithm for accurately estimating or predicting based on multiple obse
 See [here](https://www.zhihu.com/question/22422121) for an intuitive explanation and example.
 
 A classic example is SLAM in which we have multiple data collecting sensors like odometry, IMU and visual features. The Kalman filter is to solve how to reliably combine all sensor data and estimate a accurate pose.
+
+**In linear case, the Kalman filter problem can be formulated as**
+{% math %}
+x_k = A_k x_{k-1} + u_k + w_k\\
+z_k = C_k x_{k} + v_k
+{% endmath %}
+The first equation is motion equation where $$x_k$$ is the state at $$k$$-th moment. $$u_k$$ is motion measurement with noise $$w_k$$ which is satisfied a gauss distribution $$w_k \sim N(0, R_k)$$. 
+
+The second equation is observation equation where $$z_k$$ is the observation measurement with noise $$v_k$$ which is also satisfied a gauss distribution $$v_k \sim N(0, Q_k)$$.
+
+*Since the motion and observation measurements are noisy (subject to gauss distribution) which means that the current state estimation is noisy too, our goal now is to find an optimal state estimation which has the minimum uncertainty (i.e. minimum covariance).*
+
+The way is to calculate Kalman Gain which is the optimal weight between motion and observation. {% sidenote 1, "I ignore the derivation of Kalman Gain, since it is a little bit complicated. You can search online about this."%}
+
+The complete algorithm is:
+
+First, predict currect state from previous state based on motion equation. 
+(The previous state can be represented by gauss distribution $$N(\hat x_{k-1}, \hat P_{k-1})$$)
+
+{% math %}
+\bar x_k = A_k \hat x_{k-1} + u_k \\
+\bar P_{k} = A_k \hat P_{k-1} A_{k}^T + R 
+{% endmath %}
+This equation is easy to understand according to the properties of gauss distribution (The new mean and new covariance from two gauss distribution). 
+
+Second, calculate the Kalman Gain
+{% math %}
+K = \bar P_k C_k^T (C_k \bar P_k C_k^T + Q_k)^{-1}
+{% endmath %}
+
+Finally, correct/modify the rough estimation from motion equation.
+{% math %}
+\hat x_k = \bar x_k + K (z_k - C_k \bar x_k) \\ 
+\hat P_k = (I - KC_k) \bar P_k
+{% endmath %}
+
+If you derivate a little, you can find that if $$Q_k = 0$$ (no covariance in observation), then $$\hat x_k = C_k^{-1} z_k$$, which means the final estimation is totally depended on observation equation.  There is a similar conclusion when $$R_k = 0$$.
+
+Now we know the idea of Kalman filter in linear system.
+
+In reality, the system is usually nonlinear (e.g. SLAM problem). To apply above idea, we need to extend KF to nonlinear case. The Taylor expansion can do this.
+
 
 
 

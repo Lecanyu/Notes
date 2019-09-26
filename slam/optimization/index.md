@@ -3,6 +3,11 @@ layout: post
 title: Nonlinear Optimization
 ---
 
+## The intuitive explanation about Lagrangian duality in optimization
+Please check [here](https://www.zhihu.com/question/58584814/answer/159863739) for the nice geometric explanation.
+And [here](https://masszhou.github.io/2016/09/10/Lagrange-Duality/) for the mathematical explanation.
+
+
 ## Nonlinear optimization
 The nonlinear optimization can be written as 
 {% math %}

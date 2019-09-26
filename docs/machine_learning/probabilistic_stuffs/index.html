@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Probabilistic Stuffs</title>
+  <meta name="description" content="Personal notes (memorandum).">
+
+
+  <link rel="stylesheet" href="/Notes/css/tufte.css">	
+  
+
+  <!-- Google Fonts loaded here depending on setting in _data/options.yml true loads font, blank does not-->
+  
+    <link href='//fonts.googleapis.com/css?family=Lato:400,400italic' rel='stylesheet' type='text/css'>
+  
+  <!-- Load up MathJax script if needed ... specify in /_data/options.yml file-->
+  
+    <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+  <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-75587219-1', 'auto');
+  ga('send', 'pageview');
+
+  </script>
+
+  <link rel="canonical" href="http://localhost:4000/Notes/machine_learning/probabilistic_stuffs/">
+  <link rel="alternate" type="application/rss+xml" title="Notes" href="http://localhost:4000/Notes/feed.xml" />
+</head>
+
+  <body>
+    <!--- Header and nav template site-wide -->
+<header>
+    <nav class="group">
+        <a href="/Notes/">Contents</a>
+		<a href="https://lecanyu.github.io/">Resume</a>
+		<a href="https://github.com/Lecanyu/Notes">Github</a>
+	</nav>
+</header>
+
+    <article class="group">
+      <h1>Probabilistic stuffs</h1>
+<p class="subtitle"></p>
+
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    TeX: {
+      Macros: {
+        e: "\\epsilon",
+        xti: "x^{(i)}",
+        yti: "y^{(i)}",
+        bfy: "{\\bf y}",
+        bfx: "{\\bf x}",
+        bfg: "{\\bf g}",
+        bfbeta: "{\\bf \\beta}",
+        tp: "\\tilde p",
+        pt: "p_\\theta",
+        Exp: "{\\mathbb{E}}",
+        Ind: "{\\mathbb{I}}",
+        KL: "{\\mathbb{KL}}",
+        Dc: "{\\mathcal{D}}",
+        Tc: "{\\mathcal{T}}",
+        Xc: "{\\mathcal{X}}",
+        note: ["\\textcolor{blue}{[NOTE: #1]}",1]
+      }
+    }
+  });
+</script>
+
+
+<h2 id="how-to-simulate-a-random-number-which-satisfy-a-probabilistic-distribution">How to simulate a random number which satisfy a probabilistic distribution</h2>
+<ol>
+  <li>Inverse transform method</li>
+  <li>Acceptance rejection method</li>
+</ol>
+
+<p>Check <a href="http://blog.codinglabs.org/articles/methods-for-generating-random-number-distributions.html">here</a></p>
+
+<h2 id="how-to-shuffle-an-array">How to shuffle an array</h2>
+<p>Given an array <script type="math/tex">a = [1,2,3,...,n]</script>, design an algorithm to evenly and randomly shuffle it.
+There are two algorithms. Which one is correct?</p>
+
+<figure class="highlight"><pre><code class="language-cpp" data-lang="cpp"> 
+<span class="k">for</span> <span class="n">i</span><span class="o">=</span><span class="mi">1</span> <span class="n">to</span> <span class="n">n</span> <span class="k">do</span> <span class="n">swap</span><span class="p">(</span><span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">a</span><span class="p">[</span><span class="n">random</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">n</span><span class="p">)]);</span>
+<span class="k">for</span> <span class="n">i</span><span class="o">=</span><span class="mi">1</span> <span class="n">to</span> <span class="n">n</span> <span class="k">do</span> <span class="n">swap</span><span class="p">(</span><span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">a</span><span class="p">[</span><span class="n">random</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">n</span><span class="p">)]);</span></code></pre></figure>
+
+<p>The second one is correct.</p>
+
+<p>The second algorithm is that you randomly select a number from <script type="math/tex">i</script> to <script type="math/tex">n</script> and put that number on the <script type="math/tex">i</script>-th position.
+Obviously, there are totally <script type="math/tex">n!</script> possible combinations.</p>
+
+<p>In contrast, the first algorithm will generate total <script type="math/tex">n^n</script> combinations. Since <script type="math/tex">\frac{n^n}{n!}</script> is not a integer number, some combinations are more likely appeared.</p>
+
+<h2 id="how-to-calculate-probability-density-function-概率密度函数">How to calculate probability density function (概率密度函数)</h2>
+<p><label for="1," class="margin-toggle sidenote-number"></label><input type="checkbox" id="1," class="margin-toggle" /><span class="sidenote">Put a common conclusion here. If <script type="math/tex">X \sim N(\mu_1, \sigma_1^2), Y \sim N(\mu_2, \sigma_2^2)</script>, then <script type="math/tex">Z=X+Y</script> will satisfy <script type="math/tex">Z \sim N(\mu_1+\mu_2, \sigma_1^2+\sigma_2^2)</script>. The derivation is <a href="https://en.wikipedia.org/wiki/Sum_of_normally_distributed_random_variables">here</a>. </span>
+Given a random variable <script type="math/tex">X</script> and its probability density function <script type="math/tex">f(X)</script>, if another random variable <script type="math/tex">Y=X^2</script>, what is the probability density function of <script type="math/tex">Y</script>?</p>
+
+<p>A common mistake is that you put <script type="math/tex">X = \pm \sqrt Y</script> into <script type="math/tex">f(X)</script>, and then calculate <script type="math/tex">f(\sqrt Y)</script> (when <script type="math/tex">X>0</script>), and <script type="math/tex">f(-\sqrt Y)</script> (when <script type="math/tex">% <![CDATA[
+X<0 %]]></script>).</p>
+
+<p>This is correct when <script type="math/tex">f(X)</script> is a standard function mapping (常规的函数映射).</p>
+
+<p>However, this is wrong in probability density function.</p>
+
+<p>The probability density function represent how possible a random variable drop in a interval <script type="math/tex">[-\infty, x]</script>.</p>
+<div class="mathblock"><script type="math/tex; mode=display">
+P(-\infty \le X \le x) = \int_{-\infty}^x f(X) dX = F(X=x) - F(X=-\infty)
+</script></div>
+<p>where <script type="math/tex">F(X)</script> is the primitive function (原函数).</p>
+
+<p>To calculate the probability density function of <script type="math/tex">f(Y)</script>, you should go from its primitive function.</p>
+<div class="mathblock"><script type="math/tex; mode=display">
+F_Y(y) = P(Y \le y) = P(X^2 \le y ) = P(-\sqrt y \le X \le \sqrt y) = \int_{- \sqrt y}^{\sqrt y} f(X) dX = F_X(\sqrt y) - F_X(-\sqrt y)
+</script></div>
+
+<p>The derivation in Chinese is listed below.</p>
+<figure><figcaption></figcaption><img src="/Notes/assets/machine_learning/probability_dense_function_calculation.png" /></figure>
+
+<p><span style="color:red"> 需要搞清楚一种通用且普适的方法用于计算新随机变量的概率密度函数. 一种可能的做法或许可以参考<a href="https://www.zhihu.com/question/37400689">here</a></span></p>
+
+
+
+    </article>
+    <span class="print-footer">Probabilistic Stuffs - Canyu Le</span>
+    <footer>
+  <hr class="slender">
+  <!-- <ul class="footer&#45;links"> -->
+  <!--   <li><a href="mailto:hate@spam.net"><span class="icon&#45;mail"></span></a></li>     -->
+  <!--    -->
+  <!--     <li> -->
+  <!--       <a href="//www.twitter.com/twitter_handle"><span class="icon-twitter"></span></a> -->
+  <!--     </li> -->
+  <!--    -->
+  <!--     <li> -->
+  <!--       <a href="//plus.google.com/+googlePlusName"><span class="icon-googleplus"></span></a> -->
+  <!--     </li> -->
+  <!--    -->
+  <!--     <li> -->
+  <!--       <a href="//github.com/GithubHandle"><span class="icon-github"></span></a> -->
+  <!--     </li> -->
+  <!--    -->
+  <!--     <li> -->
+  <!--       <a href="//www.flickr.com/photos/FlickrUserID"><span class="icon-flickr"></span></a> -->
+  <!--     </li> -->
+  <!--    -->
+  <!--     <li> -->
+  <!--       <a href="/feed"><span class="icon-feed"></span></a> -->
+  <!--     </li> -->
+  <!--      -->
+  <!-- </ul> -->
+<div class="credits">
+<!-- <span>&#38;copy; 2019 <!&#45;&#45; &#38;#38;nbsp;&#38;#38;nbsp;CANYU LE &#45;&#45;></span></br> <br> -->
+<span>Site created with <a href="//jekyllrb.com">Jekyll</a> using the <a href="//github.com/clayh53/tufte-jekyll">Tufte theme</a>. &copy; 2019</span> 
+</div>  
+</footer>
+
+  </body>
+</html>

@@ -13,15 +13,19 @@ These notes were recorded various important points for personal review. It conta
 
 1. [Miscellaneous](machine_learning/miscellaneous): Basic knowledge points for quick review.
 
-2. [Metric learning](machine_learning/metric_learning): Some popular metric learning methods.
+2. [Probabilistic stuffs](machine_learning/probabilistic_stuffs): Some probabilistic knowledge points.
 
-2. [Attention neural network](machine_learning/attention_neural_network): Some concepts and principles about attention neural network for quick review.
+3. [Metric learning](machine_learning/metric_learning): Some popular metric learning methods.
 
-3. [Incremental learning](machine_learning/incremental_learning): Some knowledge and paper review about incremental learning (or solving catastrophic forgetting in deep learning).
+4. [Attention neural network](machine_learning/attention_neural_network): Some concepts and principles about attention neural network for quick review.
 
-4. [Reinforcement learning quick points](machine_learning/reinforcement_learning_points): Some important knowledge points about RL.
+5. [Incremental learning](machine_learning/incremental_learning): Some knowledge and paper review about incremental learning (or solving catastrophic forgetting in deep learning).
 
-5. [The review of RL book](machine_learning/reinforcement_learning_book): My notes about the book "Reinforcement Learning: An Introducation" by Richard S. Sutton and Andrew G. Barto, Nov 5, 2017.
+6. [Reinforcement learning quick points](machine_learning/reinforcement_learning_points): Some important knowledge points about RL.
+
+7. [The review of RL book](machine_learning/reinforcement_learning_book): My notes about the book "Reinforcement Learning: An Introducation" by Richard S. Sutton and Andrew G. Barto, Nov 5, 2017.
+
+8. [Semantic video segmentation](machine_learning/semantic_video_segmentation): The notes about a little semantic video segmentation.
 
 
 ## SLAM
@@ -63,4 +67,4 @@ These notes were recorded various important points for personal review. It conta
 
 ## English
 
-1. [Words and sentences](english/words/): My vocabulary and sentence records.
+1. [Sentences](english/words/): The sentences for natural daily expression.
