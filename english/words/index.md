@@ -10,7 +10,7 @@ I work in + field. (I work in finance. I work in digital marketing. I work in HR
 
 I run my own business, so I work for myself.
 
-I work for a international company which does market research for other companies.
+I work for an international company which does market research for other companies.
 
 I'm a freelancer (meaning I work independently for different people and companies)
 
@@ -106,7 +106,135 @@ For example, they lost a lot of money when the stock market crashed in 2008.
 You may lose everything and get wiped out. 
 
 
+## How to order coffee
+Types of coffee:
+1. Espresso: a small amount very strong coffee. This small amount is called shot.
+2. Americano = espresso + hot water
+3. Cappucino = espresso + steamed milk + foamed milk on top
+4. Latte = espresso + lots of steamed milk
+5. Mocha = espresso + hot chocolate + steamed milk (sometime with cream on top)
+6. Black coffee = without milk
+
+Types of milk:
+1. Low fat
+2. fat free
+3. soy
+
+Coffee extras:
+1. caramel syrup
+2. chocolate syrup
+3. vanilla syrup
+4. cream
+5. extra shots of espresso
+
+Choose your size:
+1. small
+2. medium
+3. large
+4. extra large
 
 
+The sample sentences for ordering coffee like: 
+Small cappucino with caramel syrup.
+Medium mocha without cream.
+Large iced latte with low-fat milk.
+Medium iced americano with fat-free milk.
 
 
+The barista will say something like:
+May I take your order?
+What would you like?
+What can I get you?
+What will you have?
+Is that for here or to take away? (在店里喝还是带走)
+
+You can make your order like:
+I would like medium hot mocha with low-fat milk to go. (to go means you will take the coffee away)
+
+The barista may ask you if you would like something more like:
+Will that be all?
+Is that everything? 
+Would you like anything else?
+
+The barista will tell you total cost like:
+Your total is ...?
+That comes to ...?
+That will be ...?
+
+
+## Hotel
+I'd like to make a reservation for the 3rd of November for three nights.
+
+Types of room:
+1. single room
+2. double room (one big beds)
+3. twin room (two seperate beds)
+4. triple room
+5. family room
+6. suite (like an apartment with dinning room, kitchen and one or more bedrooms)
+
+Is there any way you can offer a discount?
+
+I think there is a problem in name spelling. I do apologize. (apologize -> noun. apology)
+
+
+Hotel Facilities.
+
+Ask wake-up call: I would like a wake-up call tomorrow, if possible
+
+Ask airport shuttle: Do you offer any airport shuttle? Do you offer dry-cleaning service?
+
+Concierge service
+
+I wanted to ask is it possible to check out one hour late?
+
+
+How to express anger without being rude?
+
+I have to say this is totally unacceptable.
+
+This sort of thing should not happen.
+
+There is dust everywhere and I found the hair in the pillow which definitely isn't mine. I have to say this is unacceptable. If I'm paying this much money, the least I should be able to expect is cleaning bedding.
+
+
+The total seems higher than I expected. What are these addtional charges?
+
+This payment is for the water and snacks you had from the minibar and looks like this is a phone call that was made from united states.
+
+Thank you for staying with us. 
+
+
+## Phone English
+
+How to make a informal phone call
+{% maincolumn 'assets/english/phone_call_1.png'%}
+Some useful phases:
+- Who's this?
+- didn't have your number saved
+- No worries.
+- Brillant! I'll tell you the details
+
+How to make a formal phone call
+{% maincolumn 'assets/english/phone_call_2.png'%}
+Some useful phases:
+- I'm calling concerning XXX (Some other similar sentence structures: I would like to ask about...; I want to discuss ... with you)
+- Is there anything else I can do for you?
+- And to you
+
+A phone call with some problems
+{% maincolumn 'assets/english/phone_call_3.png'%}
+Some useful phases:
+- sorry, say that again; What was that; What did you say; (formal way) sorry, could you repeat that; could you say that again;
+- can you speak up a bit
+
+When you call someone who is not there
+{% maincolumn 'assets/english/phone_call_4.png'%}
+Some useful phases:
+- should I get him to call you back later?
+- Do please make sure he gets it as soon as possible.
+- I'll pass your message on as soon as he's free.
+- Please make sure he get this as soon as possible. It's really important.
+- It's urgent, so please tell her as soon as you can.
+- It's not urgent, so just let him know when he is free.
+- Could you tell her that I'll be arriving at five o'clock, instead of half seven
