@@ -3,6 +3,11 @@ layout: post
 title: Sentences
 ---
 
+## The Apple 1997 Ads
+Here's to the crazy ones. The misfits. The rebels. The troublemakers. The round pegs in the square holes. The ones who see things differently. They're not fond of rules. And they have no respect for the status quo. You can quote them, disagree with them, glorify or vilify them. But the only thing you can't do is ignore them. Because they change things. They push the human race forward. And while some may see them as the crazy ones, we see genius. Because the people who are crazy enough to think they can change the world, are the ones who do.
+
+
+
 ## Talk about jobs
 I work for XX company.
 
@@ -238,3 +243,38 @@ Some useful phases:
 - It's urgent, so please tell her as soon as you can.
 - It's not urgent, so just let him know when he is free.
 - Could you tell her that I'll be arriving at five o'clock, instead of half seven
+
+
+## Vacation
+I went to the countryside with my family for a couple of weeks. Mostly, we went hiking in the hill and mountains nearby. We also just hung out in the village, playing cards and eating.
+
+hang out: you spend time to relax without any particular goal
+
+I went to Thailand with a group of friends for ten days. We did some sightseeing in Bangkok: The Great Palace, Wat Pho and so on. Then we hit on the beaches in Krabi for some sun, swimming and cocktails.
+
+We hit the bars. We hit the clubs. Using hit to decribe you go somewhere for party and have a good time.
+
+Mostly, we went to restaurants and cafes and sampled as much of the local cuisine as we could fit in our stomaches.
+
+We went on a walking tour. (Pay for a guider. Often, tours are in a big group. 旅游团)
+
+We stayed in a very *picturesque*, *sleepy* village surrounded by some *dramatic* mountain scenery.
+
+(Picturesque means beautiful like a painting. Sleepy means quite and peaceful. Dramatic: very impressive and beautiful.)
+
+Bangkok is a very cosmopolitan place but it could be a little overwhelming beacasue there was so much going on. Then we went to Krabi, which has some stunning beaches.
+
+(Cosmopolitan: some places have many different people and cultures)
+
+Rome is a fascinating place but it's quite touisty. The best thing was the food, which was out of the world.
+
+(Touisty: over developed for tourism and lost some original atmosphere. Out of this world: really good and enjoy it very much)
+
+It's fascinating place, I wish it had been less crowded, though.
+
+
+The long sentence examples:
+
+I went to Thailand with a group of friends for ten days. We did some sightseeing in Bangkok: The Grand Palace, Wat Pho and so on. Then we hit the beaches in Krabi for some sun, swimming and cocktails. Bangkok is a very cosmopolitan place but it could be a little overwhelming because there was so much going on. Krabi has some stunning beaches, and I loved it there, because it was like nowhere I had ever been before. On the other hand, I wasn't keen on Bangkok. It's cool place but it's a bit touristy and noisy for my tastes.
+
+

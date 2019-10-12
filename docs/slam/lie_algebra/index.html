@@ -5,7 +5,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Lie algebra</title>
+  <title>Lie Group and Lie Algebra</title>
   <meta name="description" content="Personal notes (memorandum).">
 
 
@@ -47,7 +47,7 @@
 </header>
 
     <article class="group">
-      <h1>Lie algebra</h1>
+      <h1>Lie group and lie algebra</h1>
 <p class="subtitle"></p>
 
 
@@ -77,15 +77,55 @@
 </script>
 
 
-<p>Will write my understanding about Lie algebra.</p>
+<p>Here I try to briefly answer several important but intutive questions about Lie group and algebra.
+<label for="1" class="margin-toggle sidenote-number"></label><input type="checkbox" id="1" class="margin-toggle" /><span class="sidenote">Other explanation is <a href="https://blog.csdn.net/weicao1990/article/details/83375148">here</a>. </span></p>
 
-<p>An intuitive introduction can be found in <a href="https://blog.csdn.net/heyijia0327/article/details/50446140">HERE</a></p>
+<p>For the math, please check <a href="https://blog.csdn.net/heyijia0327/article/details/50446140">here</a> and slambook in chapter 4.</p>
 
+<h2 id="what-are-lie-group-and-lie-algebra">What are Lie group and Lie algebra</h2>
+<p>A set of number and one calculation operation can compose a <em>group</em>, as long as this kind of calculation satisfies 4 conditions (封闭性、结合律、幺元、有逆).</p>
+
+<p>In SLAM, the rotation matrix and transformation matrix satisfy those conditions, and thus, they are also called 旋转群 SO(3) and 欧式群 SE(3).</p>
+
+<p>Every Lie group has its Lie algebra, which describes the local property of Lie group.</p>
+
+<p>On symbols, we usually have</p>
+
+<p>Lie group SO(3) &lt;-&gt; Lie algebra so(3)</p>
+
+<p>Lie group SE(3) &lt;-&gt; Lie algebra se(3)</p>
+
+<h2 id="why-we-need-lie-group-and-lie-algebra">Why we need Lie group and Lie algebra</h2>
+<p>The main motivation is for calculating derivatives w.r.t. matrix.</p>
+
+<p>Since rotation and transformation don’t have add calculation (rotation1 add rotation2 won’t be a rotation anymore), the standard derivative calculation rule cannot be applied directly. You should consider the special properties of rotation and transformation as extra constraints in calculation which brings many limits and inconveniences.</p>
+
+<p>In contrast, Lie algebra can be represented as vector which has add operation, and the standard derivative calculation rule can be applied.
+<label for="2" class="margin-toggle sidenote-number"></label><input type="checkbox" id="2" class="margin-toggle" /><span class="sidenote">The add operation on Lie algebra is equivalent to the multiply on Lie group with a Jacobian term (i.e. BCH approximation, BCH近似). Check the slam book for the detail.  </span></p>
+
+<h2 id="how-to-calculate-derivatives-wrt-pose-in-lie-algebra">How to calculate derivatives w.r.t. pose in Lie algebra</h2>
+<ol>
+  <li>
+    <p>The rotation or transformation matrix can be seen as a Lie group.</p>
+  </li>
+  <li>
+    <p>Find its Lie algebra by Logarithmic mapping.
+<br /> (i.e. The original matrix is represented by Lie algebra in which the variable is vector).</p>
+  </li>
+  <li>
+    <p>Calculate the derivatives w.r.t. those vector variable. 
+<br /> There are two approaches: based on standard derivative rule and based on perturbation model. 
+<br /> The standard derivative rule generates result with BCH approximation jacobian term, and perturbation model can give a more tidy result which is usually used.</p>
+  </li>
+</ol>
+
+<h2 id="the-conversion-between-lie-group-and-lie-algebra">The conversion between Lie group and Lie algebra</h2>
+<figure><figcaption></figcaption><img src="/Notes/assets/slam/Lie_group_and_Lie_algebra.png" /></figure>
 
 
 
     </article>
-    <span class="print-footer">Lie algebra - Canyu Le</span>
+    <span class="print-footer">Lie Group and Lie Algebra - Canyu Le</span>
     <footer>
   <hr class="slender">
   <!-- <ul class="footer&#45;links"> -->
