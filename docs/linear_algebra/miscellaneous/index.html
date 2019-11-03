@@ -283,6 +283,65 @@ We will have below linear equation.</p>
 
 <p>For more details, check <a href="https://www.qiujiawei.com/linear-algebra-16/">HERE</a>.</p>
 
+<h2 id="derivatives-of-scalar-vector-matrix">Derivatives of Scalar, Vector, Matrix</h2>
+<p>Many times, we need to calculate the derivatives of (scalar, vector, matrix) w.r.t. (scalar, vector, matrix). 
+I’d give a comprehensive summary about those calculations. You can see <a href="http://cs231n.stanford.edu/vecDerivs.pdf">here</a> for an intuitive introducation.</p>
+
+<p><strong>Case 1: The derivative of scalar w.r.t. scalar</strong></p>
+
+<p>This is the simplest case that you can apply the standard derivative rules.</p>
+
+<p><br />
+<strong>Case 2: The derivative of scalar w.r.t. vector and matrix</strong></p>
+
+<p>The results are related with the transpose of corresponding coeffcients. <label for="1," class="margin-toggle sidenote-number"></label><input type="checkbox" id="1," class="margin-toggle" /><span class="sidenote">Check <a href="https://blog.csdn.net/acdreamers/article/details/44662633">here</a> for calculation rules. </span></p>
+
+<p>For example, 
+<script type="math/tex">y = x_1^T x_2</script> where <script type="math/tex">y</script> is a scalar, <script type="math/tex">x_1, x_2</script> are vectors. Then <script type="math/tex">\frac{\partial y}{\partial x_2} = x_1, \frac{\partial y}{\partial x_1} = x_2</script>.</p>
+
+<p><script type="math/tex">y= x_1^T M x_2</script> where <script type="math/tex">M</script> is a matrix. In this case, you can consider the trace of matrix as below</p>
+<div class="mathblock"><script type="math/tex; mode=display">
+    \frac{\partial y}{\partial M} = \frac{\partial tr(x_1^T M x_2)}{\partial M} = \frac{\partial tr(x_2 x_1^T M )}{\partial M} = (x_2 x_1^T)^T = x_1 x_2^T
+</script></div>
+
+<p>Note that the second order derivative of scalar w.r.t. vector will be the standard Hessian matrix. (The first order derivative will give a vector result, the second order is to calculate the derivative of vector w.r.t. vector which gives a Jacobian matrix result, but people call it as Hessian) <label for="2," class="margin-toggle sidenote-number"></label><input type="checkbox" id="2," class="margin-toggle" /><span class="sidenote">See wiki <a href="https://en.wikipedia.org/wiki/Jacobian_matrix_and_determinant">Jacobian</a> and <a href="https://en.wikipedia.org/wiki/Hessian_matrix">Hessian</a>.  </span></p>
+
+<p><br />
+<strong>Case 3: The derivative of vector w.r.t. vector</strong></p>
+
+<p>From this case, the above coefficient transpose cannot be applied. You need to explicitly expand vector to scalar representation, and then calculate derivatives.</p>
+
+<p>For example, <script type="math/tex">y = Ax</script> where <script type="math/tex">x, y</script> are vectors and <script type="math/tex">A</script> is a matrix. Then <script type="math/tex">\frac{\partial y}{\partial x} = A</script>. <script type="math/tex">A</script> is also called Jacobian.</p>
+
+<p><br />
+<strong>Case 4: The derivative of vector w.r.t. matrix</strong></p>
+
+<p>This case is little bit complicated. The result will be a hyper-matrix. Let’s take <script type="math/tex">y = Ax</script> as an example, it looks like 
+<script type="math/tex">\begin{pmatrix}
+\frac{\partial y_1}{\partial A} \\
+\frac{\partial y_2}{\partial A} \\
+...  \\
+\frac{\partial y_n}{\partial A}
+\end{pmatrix}</script></p>
+
+<p>The matrix element <script type="math/tex">\frac{\partial y_i}{\partial A}</script> is a matrix too (the same dimension with A).</p>
+
+<p>Let’s look at a simple <script type="math/tex">2 \times 2</script> example in below picture.</p>
+<figure><figcaption></figcaption><img src="/Notes/assets/linear_algebra/marix_derivative.jpg" /></figure>
+
+<p>From this example, we can have another conclusion:</p>
+
+<p>If a function <script type="math/tex">f: R^{m\times n} \rightarrow  R^{p\times q}</script> which map <script type="math/tex">m\times n</script> input to <script type="math/tex">p \times q</script> output. Then the derivative of output w.r.t. input should also be able to map <script type="math/tex">R^{m\times n} \rightarrow  R^{p\times q}</script> (based on the Taylor expansion).</p>
+
+<p><br />
+<strong>Case 5: The derivative of matrix w.r.t. matrix</strong></p>
+
+<p>This case is similar with case 4, but the dimension has increased.
+Again, let’s look at a <script type="math/tex">2 \times 2</script> example</p>
+<figure><figcaption></figcaption><img src="/Notes/assets/linear_algebra/marix_derivative2.jpg" /></figure>
+
+<p><strong>In one word, when we face case 4 or 5, the derivative calculation becomes complicated and there isn’t a simple representation.</strong></p>
+
 
 
 

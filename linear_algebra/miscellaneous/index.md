@@ -194,6 +194,70 @@ Pseudoinverse matrix has two types:
 For more details, check [HERE](https://www.qiujiawei.com/linear-algebra-16/). 
 
 
+## Derivatives of Scalar, Vector, Matrix
+Many times, we need to calculate the derivatives of (scalar, vector, matrix) w.r.t. (scalar, vector, matrix). 
+I'd give a comprehensive summary about those calculations. You can see [here](http://cs231n.stanford.edu/vecDerivs.pdf) for an intuitive introducation.
+
+**Case 1: The derivative of scalar w.r.t. scalar**
+
+This is the simplest case that you can apply the standard derivative rules.
+
+<br/>
+**Case 2: The derivative of scalar w.r.t. vector and matrix**
+
+The results are related with the transpose of corresponding coeffcients. {% sidenote 1, 'Check [here](https://blog.csdn.net/acdreamers/article/details/44662633) for calculation rules.'%}
+
+For example, 
+$$y = x_1^T x_2$$ where $$y$$ is a scalar, $$x_1, x_2$$ are vectors. Then $$\frac{\partial y}{\partial x_2} = x_1, \frac{\partial y}{\partial x_1} = x_2$$.
+
+$$y= x_1^T M x_2$$ where $$M$$ is a matrix. In this case, you can consider the trace of matrix as below
+{% math %}
+    \frac{\partial y}{\partial M} = \frac{\partial tr(x_1^T M x_2)}{\partial M} = \frac{\partial tr(x_2 x_1^T M )}{\partial M} = (x_2 x_1^T)^T = x_1 x_2^T
+{% endmath %}
+
+Note that the second order derivative of scalar w.r.t. vector will be the standard Hessian matrix. (The first order derivative will give a vector result, the second order is to calculate the derivative of vector w.r.t. vector which gives a Jacobian matrix result, but people call it as Hessian) {% sidenote 2, 'See wiki [Jacobian](https://en.wikipedia.org/wiki/Jacobian_matrix_and_determinant) and [Hessian](https://en.wikipedia.org/wiki/Hessian_matrix). '%} 
+
+<br/>
+**Case 3: The derivative of vector w.r.t. vector**
+
+From this case, the above coefficient transpose cannot be applied. You need to explicitly expand vector to scalar representation, and then calculate derivatives.
+
+For example, $$y = Ax$$ where $$x, y$$ are vectors and $$A$$ is a matrix. Then $$\frac{\partial y}{\partial x} = A$$. $$A$$ is also called Jacobian.
+
+
+
+<br/>
+**Case 4: The derivative of vector w.r.t. matrix**
+
+This case is little bit complicated. The result will be a hyper-matrix. Let's take $$y = Ax$$ as an example, it looks like 
+$$
+\begin{pmatrix}
+\frac{\partial y_1}{\partial A} \\
+\frac{\partial y_2}{\partial A} \\
+...  \\
+\frac{\partial y_n}{\partial A}
+\end{pmatrix} 
+$$
+
+The matrix element $$\frac{\partial y_i}{\partial A}$$ is a matrix too (the same dimension with A).
+
+Let's look at a simple $$2 \times 2$$ example in below picture.
+{% maincolumn 'assets/linear_algebra/marix_derivative.jpg'%}
+
+From this example, we can have another conclusion:
+
+If a function $$f: R^{m\times n} \rightarrow  R^{p\times q}$$ which map $$m\times n$$ input to $$p \times q$$ output. Then the derivative of output w.r.t. input should also be able to map $$R^{m\times n} \rightarrow  R^{p\times q}$$ (based on the Taylor expansion).
+
+<br/>
+**Case 5: The derivative of matrix w.r.t. matrix**
+
+This case is similar with case 4, but the dimension has increased.
+Again, let's look at a $$2 \times 2$$ example
+{% maincolumn 'assets/linear_algebra/marix_derivative2.jpg'%}
+
+
+
+**In one word, when we face case 4 or 5, the derivative calculation becomes complicated and there isn't a simple representation.**
 
 
 

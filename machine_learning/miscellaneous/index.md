@@ -166,7 +166,7 @@ Batch normalization has several defects:
 
 Unlike BN to normalize on dimension [batch, width, height], 
 the group normalization (GN) try to normalize on dimension [width, height, channel=k] (k is a hyperparameter). It doesn't matter with batch. So it solves the first defect.
-Moreover, GN always use moving-average mean and variance during training and testing. {% sidenote 10, "IN, LN and GN doesn't use batch dimension to normalize."%}
+Moreover, GN always use group mean and variance during training and testing. {% sidenote 10, "IN, LN and GN doesn't use batch dimension to normalize."%}
 
 
 

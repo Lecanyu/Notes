@@ -233,7 +233,7 @@ If we use axes=[0] to calculate, then the output of mean, var will be a 3-D vect
 
 <p>Unlike BN to normalize on dimension [batch, width, height], 
 the group normalization (GN) try to normalize on dimension [width, height, channel=k] (k is a hyperparameter). It doesn’t matter with batch. So it solves the first defect.
-Moreover, GN always use moving-average mean and variance during training and testing. <label for="10," class="margin-toggle sidenote-number"></label><input type="checkbox" id="10," class="margin-toggle" /><span class="sidenote">IN, LN and GN doesn’t use batch dimension to normalize. </span></p>
+Moreover, GN always use group mean and variance during training and testing. <label for="10," class="margin-toggle sidenote-number"></label><input type="checkbox" id="10," class="margin-toggle" /><span class="sidenote">IN, LN and GN doesn’t use batch dimension to normalize. </span></p>
 
 <h2 id="recurrent-neural-network-rnn">Recurrent Neural Network (RNN)</h2>
 <p>An tutorial and introduction about <a href="http://www.wildml.com/2015/09/recurrent-neural-networks-tutorial-part-1-introduction-to-rnns/">RNN</a></p>
