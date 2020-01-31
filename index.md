@@ -46,6 +46,7 @@ These notes were recorded various important points for personal review. It conta
 6. [Lie group and Lie algebra](slam/lie_algebra): An intuitive introduction about Lie algebra.
 
 
+
 ## Algorithms
 
 1. [Dynamic programming](algorithm/dp/): An introduction about the dynamic programming algorithm. 
