@@ -68,4 +68,4 @@ These notes were recorded various important points for personal review. It conta
 
 ## English
 
-1. [Sentences](english/words/): The sentences for natural daily expression.
+1. [Sentences](english/words/): The sentences for daily expression.
