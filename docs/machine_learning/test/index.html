@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Test knowledge</title>
+  <meta name="description" content="Personal notes (memorandum).">
+
+
+  <link rel="stylesheet" href="/Notes/css/tufte.css">	
+  
+
+  <!-- Google Fonts loaded here depending on setting in _data/options.yml true loads font, blank does not-->
+  
+    <link href='//fonts.googleapis.com/css?family=Lato:400,400italic' rel='stylesheet' type='text/css'>
+  
+  <!-- Load up MathJax script if needed ... specify in /_data/options.yml file-->
+  
+    <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+  <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-75587219-1', 'auto');
+  ga('send', 'pageview');
+
+  </script>
+
+  <link rel="canonical" href="http://localhost:4000/Notes/machine_learning/test/">
+  <link rel="alternate" type="application/rss+xml" title="Notes" href="http://localhost:4000/Notes/feed.xml" />
+</head>
+
+  <body>
+    <!--- Header and nav template site-wide -->
+<header>
+    <nav class="group">
+        <a href="/Notes/">Contents</a>
+		<a href="https://lecanyu.github.io/">Resume</a>
+		<a href="https://github.com/Lecanyu/Notes">Github</a>
+	</nav>
+</header>
+
+    <article class="group">
+      <h1>Test knowledge</h1>
+<p class="subtitle"></p>
+
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    TeX: {
+      Macros: {
+        e: "\\epsilon",
+        xti: "x^{(i)}",
+        yti: "y^{(i)}",
+        bfy: "{\\bf y}",
+        bfx: "{\\bf x}",
+        bfg: "{\\bf g}",
+        bfbeta: "{\\bf \\beta}",
+        tp: "\\tilde p",
+        pt: "p_\\theta",
+        Exp: "{\\mathbb{E}}",
+        Ind: "{\\mathbb{I}}",
+        KL: "{\\mathbb{KL}}",
+        Dc: "{\\mathcal{D}}",
+        Tc: "{\\mathcal{T}}",
+        Xc: "{\\mathcal{X}}",
+        note: ["\\textcolor{blue}{[NOTE: #1]}",1]
+      }
+    }
+  });
+</script>
+
+
+<p>Some basic machine learning knowledge for final test in XMU.
+These knowledge are related with a lot of topics. 
+I just briefly put them here as a reminder. It can be seen as a complementary with <strong>Miscellaneous</strong> section.</p>
+
+<h2 id="searching">Searching</h2>
+<p>Searching is an classic topic in computer science. 
+There are some important searching strategies.</p>
+
+<h3 id="heuristic-searching">Heuristic searching</h3>
+<p>The important property in heuristic searching is heuristic function <script type="math/tex">h(x)</script>.
+The next searching node is selected by <script type="math/tex">\min f(x) = g(x) + h(x)</script>, where <script type="math/tex">g(x)</script> is the cost from root node to current node.
+This algorithm can be easily implemented via mimimum heap (i.e. queue).</p>
+
+<p>Note that there is a concept, called <strong><em>admissible heuristic</em></strong>, which means that the heuristic function <script type="math/tex">h(x)</script> <strong><em>never overestimates the cost of reaching the goal</em></strong>, i.e. the cost it estimates to reach the goal is not higher than the lowest possible cost from the current point in the path.</p>
+
+<h3 id="adversarial-searching">Adversarial searching</h3>
+<p>Adversarial searching is widely adopted in various games.
+One of the most common strategy is min-max searching with <script type="math/tex">\alpha-\beta</script> pruning.</p>
+
+<p><strong>Min-max Searching Tree</strong></p>
+
+<p>It is a strategy to calculate what action need to be taken for maximizing utility.</p>
+
+<p>The idea of min-max searching is simple.
+It iteratively pick up minimum or maximum value (i.e. utility) from bottom to top.</p>
+
+<p>An example is showed in below figure.</p>
+<figure><figcaption></figcaption><img src="/Notes/assets/test/min-max-searching.jpg" /></figure>
+
+<p><strong>Alpha-beta pruning</strong></p>
+
+<p>Alpha-beta pruning is stratgy to reduce the searching space in min-max searching tree.
+Here is the pseudo code for alpha-beta pruning. 
+<label for="1," class="margin-toggle sidenote-number"></label><input type="checkbox" id="1," class="margin-toggle" /><span class="sidenote">Check this <a href="https://www.youtube.com/watch?v=zp3VMe0Jpf8">video</a> for the original code and explanation about alpha-beta pruning.  </span></p>
+
+<p>You may get confused since this algorithm is not quite straightforward. 
+I recommend you use below example to run this algorithm by hand so that you can understand how it works.</p>
+
+<figure class="highlight"><pre><code class="language-cpp" data-lang="cpp"> 
+<span class="c1">// The MaxVal function. It is called by max player.</span>
+<span class="c1">// Parameters: s denotes state, a is alpha value, b is beta value.</span>
+<span class="n">MaxVal</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="n">terminal</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> 
+    	<span class="k">return</span> <span class="n">U</span><span class="p">(</span><span class="n">s</span><span class="p">);</span>
+    <span class="n">v</span><span class="o">=</span> <span class="o">-</span><span class="n">infinity</span><span class="p">;</span>
+    <span class="k">for</span> <span class="n">c</span> <span class="n">in</span> <span class="n">next</span><span class="o">-</span><span class="n">state</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+    <span class="p">{</span>
+    	<span class="n">temp_v</span> <span class="o">=</span> <span class="n">MinVal</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">);</span>
+    	<span class="k">if</span> <span class="n">temp_v</span> <span class="o">&gt;</span> <span class="n">v</span>
+    	   <span class="n">v</span> <span class="o">=</span> <span class="n">temp_v</span><span class="p">;</span>
+    	<span class="k">if</span> <span class="n">temp_v</span> <span class="o">&gt;=</span> <span class="n">b</span>
+    	   <span class="k">return</span> <span class="n">v</span><span class="p">;</span>  <span class="c1">// The pruning happens. It is also called beta pruning</span>
+    	<span class="k">if</span> <span class="n">temp_v</span> <span class="o">&gt;</span> <span class="n">a</span>
+    	   <span class="n">a</span> <span class="o">=</span> <span class="n">temp_v</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">v</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c1">// The MinVal function. It is called by min player.</span>
+<span class="c1">// Parameters: s denotes state, a is alpha value, b is beta value.</span>
+<span class="n">MinVal</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="n">terminal</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> 
+    	<span class="k">return</span> <span class="n">U</span><span class="p">(</span><span class="n">s</span><span class="p">);</span>
+    <span class="n">v</span><span class="o">=</span> <span class="n">infinity</span><span class="p">;</span>
+    <span class="k">for</span> <span class="n">c</span> <span class="n">in</span> <span class="n">next</span><span class="o">-</span><span class="n">state</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+    <span class="p">{</span>
+    	<span class="n">temp_v</span> <span class="o">=</span> <span class="n">MaxVal</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">);</span>
+    	<span class="k">if</span> <span class="n">temp_v</span> <span class="o">&lt;</span> <span class="n">v</span>
+    	   <span class="n">v</span> <span class="o">=</span> <span class="n">temp_v</span><span class="p">;</span>
+    	<span class="k">if</span> <span class="n">temp_v</span> <span class="o">&lt;=</span> <span class="n">a</span>
+    	   <span class="k">return</span> <span class="n">v</span><span class="p">;</span>  <span class="c1">// The pruning happens. It is also called alpha pruning</span>
+    	<span class="k">if</span> <span class="n">temp_v</span> <span class="o">&gt;</span> <span class="n">b</span>
+    	   <span class="n">b</span> <span class="o">=</span> <span class="n">temp_v</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">v</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c1">// Driver function to run this algorithm</span>
+<span class="kt">int</span> <span class="n">main</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">v</span> <span class="o">=</span> <span class="n">MaxVal</span><span class="p">(</span><span class="n">start_s</span><span class="p">,</span> <span class="o">-</span><span class="n">infinity</span><span class="p">,</span> <span class="n">infinity</span><span class="p">);</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>There is a simple alpha-beta pruning example I wrote as below picture.
+I didn’t put the <script type="math/tex">v, temp\_v</script> in draft. With alpha and beta, it is enough for human to figure out whether it should be pruned.</p>
+
+<p>There are some keypoints:</p>
+
+<p>1.The pruning happens whenever alpha&gt;=beta. i.e. Following branches can be ignored.</p>
+
+<p>2.The max node only modifies alpha value and min node only modify beta value.</p>
+
+<p>3.The alpha or beta value in father node will be updated as long as new alpha &gt; alpha or new beta &lt; beta.</p>
+<figure><figcaption></figcaption><img src="/Notes/assets/test/alpha-beta-pruning.jpg" /></figure>
+
+<h2 id="probabilistic-graph-model-pgm">Probabilistic Graph Model (PGM)</h2>
+<p>Generally speaking, PGM consists of two main categories: Beyesian network and Markov network.
+Both contain a lot of models. <label for="2," class="margin-toggle sidenote-number"></label><input type="checkbox" id="2," class="margin-toggle" /><span class="sidenote">I introduce some of them first. If I have time, more content and models will be added in the future.  </span></p>
+
+<h3 id="bayesian-network">Bayesian Network</h3>
+
+<p><strong>Naive bayesian model</strong></p>
+
+<p>Naive bayesian model assumes all features independently affect the output. 
+For saving time, I wrote an simple example by hand to demonstrate how naive bayesian model can be learned and tested for new task</p>
+<figure><figcaption></figcaption><img src="/Notes/assets/test/naive_bayesian.png" /></figure>
+
+<p><strong>More general bayesian model</strong></p>
+
+<p>The core is to analyze relation graph and using marginalization to calculate probability.</p>
+
+<p><strong>Dynamic Bayesian network</strong>
+TODO.</p>
+
+<h3 id="markov-network">Markov Network</h3>
+
+<p><strong>Hidden markov model</strong></p>
+
+<p>Hidden Markov Model is a statistical Markov model in which the system being modeled is assumed to be a Markov process with unobservable states. 
+The hidden Markov model can be represented as the simplest dynamic Bayesian network.</p>
+
+<p>There are several problems to be solved in HMM.</p>
+
+<p>1.- Given the HMM model and a sequence of observations, how to esitimate the probability of an hidden state. (forward, backward algorithm)</p>
+
+<p>2.- Given the HMM model and a sequence of observations, how to estimate what the most possible hidden state sequences are. (Viterbi algorithm, dynamic programming)</p>
+
+<p>3.- Given the observation data, how to estimate the model parameters. (learning problem, Baum–Welch algorithm)</p>
+
+<p>I’d like to give a detailed introduction about forward-backward algorithm, viterbi algorithm, Baum–Welch algorithm.</p>
+
+<p>Let’s use this picture as a HMM example to introduce these algorithms. 
+<label for="3," class="margin-toggle sidenote-number"></label><input type="checkbox" id="3," class="margin-toggle" /><span class="sidenote">The detailed introducation can refer to book 《人工智能 一种现代的方法》第三版 15.2章 时序模型中的推理 </span></p>
+<figure><figcaption></figcaption><img src="/Notes/assets/test/HMM.png" /></figure>
+<p>Here <script type="math/tex">t, f</script> denote true or false. 
+It gives transition model (转移模型) and sensor model (传感器模型，also called emission model)</p>
+
+<p><strong><em>Forward-backward algorithm</em></strong></p>
+
+<p>Formally, the problem 1 can be represented by <script type="math/tex">P(X_k|e_{1:t})</script> where <script type="math/tex">X_k</script> is the hidden state random variable and <script type="math/tex">e_{1:t}</script> are the evidence/observation variable.
+Note that the capitalized letter denotes all possible values and lower case letter denotes a specific value. <br />
+If <script type="math/tex">k=t</script>, solving <script type="math/tex">P(X_t|e_{1:t})</script> is called <strong><em>filtering</em></strong> . It can be solved by forward algorithm.
+If <script type="math/tex">k>t</script>, solving <script type="math/tex">P(X_k|e_{1:t})</script> is called <strong><em>prediction</em></strong> . It can be solved by forward algorithm with some more steps iterations.
+If <script type="math/tex">% <![CDATA[
+k <t %]]></script>, solving <script type="math/tex">P(X_k|e_{1:t})</script> is called <strong><em>smoothing</em></strong> . It can be solved by forward-backward algorithm.</p>
+
+<p>When <script type="math/tex">k=t</script>,
+<strong><em>filtering</em></strong> problem <script type="math/tex">P(X_t|e_{1:t})</script> can be solved iteratively since</p>
+<div class="mathblock"><script type="math/tex; mode=display">
+P(X_t|e_{1:t}) = P(X_t|e_{1:t-1}, e_t) = \alpha P(e_t|X_t, e_{1:t-1})P(X_t, e_{1:t-1})
+</script></div>
+<p>where <script type="math/tex">\alpha = \frac{1}{P(e_{1:t})}</script> is a constant which can be seen as a normalization term. 
+So we only consider <script type="math/tex">\alpha</script> after finishing calculation and want to normalize <script type="math/tex">\sum_{x_t} P(x_t|e_{1:t})</script>.</p>
+
+<p>Since <script type="math/tex">e_t, e_{1:t-1}</script> are independent, <script type="math/tex">P(e_t|X_t, e_{1:t-1}) = P(e_t|X_t)</script>.
+On the other hand,</p>
+<div class="mathblock"><script type="math/tex; mode=display">
+P(X_t, e_{1:t-1}) = \sum_{x_{t-1}} P(X_t, x_{t-1}, e_{1:t-1}) = \alpha \sum_{x_{t-1}} P(X_t|x_{t-1}, e_{1:t-1})P(x_{t-1}|e_{1:t-1})
+</script></div>
+<p>The <script type="math/tex">\alpha</script> here can be ignored too. 
+Because <script type="math/tex">X_t, e_{1:t-1}</script> are independent (Markov property, only <script type="math/tex">X_t, e_t</script> are dependent), we have <script type="math/tex">P(X_t|x_{t-1}, e_{1:t-1})=P(X_t|x_{t-1})</script>.</p>
+
+<p>Finally, we have</p>
+<div class="mathblock"><script type="math/tex; mode=display">
+P(X_t | e_{1:t}) = \alpha P(e_t|X_t) \sum_{x_{t-1}} P(X_t|x_{t-1})P(x_{t-1}|e_{1:t-1})
+</script></div>
+<p>The first and second terms <script type="math/tex">P(e_t|X_t), P(X_t|x_{t-1})</script> are given, and <script type="math/tex">P(x_{t-1}|e_{1:t-1}</script> is the result in previous time.
+So we can iteratively solve <script type="math/tex">P(X_t, e_{1:t})</script> from initial state <script type="math/tex">P(X_0)</script>.</p>
+
+<p>Once we get <script type="math/tex">P(X_t| e_{1:t})</script>, the <strong><em>prediction problem</em></strong> (i.e. <script type="math/tex">k>t</script>) can be easily solved by</p>
+<div class="mathblock"><script type="math/tex; mode=display">
+P(X_{t+1} | e_{1:t}) = \sum_{x_{t}} P(X_{t+1}|x_{t})P(x_{t}|e_{1:t})
+</script></div>
+<p>We can iteratively reach <script type="math/tex">P(X_{t+n}|e_{1:t})</script> via above formulation.</p>
+
+<p>When <script type="math/tex">% <![CDATA[
+k < t %]]></script>, the <strong><em>smoothing</em></strong> problem can be formulated as below</p>
+<figure><figcaption></figcaption><img src="/Notes/assets/test/hmm_smoothing_eq1.png" /></figure>
+<p>As we can see, the first term <script type="math/tex">P(X_k|e_{1:k})</script> can be solved by above formulation (i.e. forward algorithm).</p>
+
+<p>For the second term <script type="math/tex">P(e_{k+1:t}|X_k)</script>, we have</p>
+<figure><figcaption></figcaption><img src="/Notes/assets/test/hmm_smoothing_eq2.png" /></figure>
+<p>Finally, the first and third term are given and the second term is the iteration term 
+i.e. if we have calculated <script type="math/tex">P(e_{k+2:t}|X_{k+1})</script>, then <script type="math/tex">P(e_{k+1:t}|X_{k})</script> can be calculated via above equation. 
+This is the backward algorithm.</p>
+
+<p>Obviously, we must apply forward and backward algorithm simultaneously to solve the smoothing problem.</p>
+
+<p><strong><em>An example</em></strong></p>
+<figure><figcaption></figcaption><img src="/Notes/assets/test/hmm_qa.png" /></figure>
+
+<p><strong><em>Viterbi algorithm</em></strong></p>
+
+<p>Viterbi algorithm is for the second problem which can be formulated as below.</p>
+<figure><figcaption></figcaption><img src="/Notes/assets/test/viterbi.png" /></figure>
+
+<p>Obviously, this formulation is also an iterative algorithm which is quite similar with forward algorithm except it selects the maximum value instead of sum.</p>
+
+<p>A Viterbi algorithm calculation example has been showed in above picture, the question (c).</p>
+
+<p><strong><em>Baum–Welch algorithm</em></strong></p>
+
+<p>TODO</p>
+
+<h2 id="decision-tree">Decision Tree</h2>
+<p>The key concept is information gain (信息增益). 
+In ID-3 algorithm, it uses information gain to decide what property/feature is used for branch generating.</p>
+
+<p>There are also other variants like C4.5 and CART tree.</p>
+
+<p>C4.5 is very similar with ID-3 algorithm and it uses the information gain ratio instead of information gain to build decision tree.
+The information gain ratio relieves the bias drawback (the features with more possible values are prone to high information gain) in information gain.</p>
+
+<p>CART (classification and regression tree) can simultaneously handle classification (discrete values) and regression (continuous values) problems. 
+It usually builds tree by minimizing Gini index for classification and by minimizing square error for regression.
+You can search for some examples when coming across this algorithm.</p>
+
+<h2 id="neural-network">Neural Network</h2>
+<p>Only back propogation algorithm in multilayer perceptron (MLP) is considered in test.</p>
+
+<p>What I want to emphasize here is that the gradient backprop cannot be calculated by using matrix directly. 
+In matrix calculation, it has a lot derivatives of vector w.r.t. matrix. 
+You should be careful when applying chain rule.</p>
+
+<p>(The derivative of vector w.r.t. matrix is a hyper-matrix and the meaning of elements in hyper-matrix need to be carefully maintained. In fact, I have tried and the gradient calculation cannot be simplified by using vector/matrix. Plain scalar formulation is even better.)</p>
+
+
+
+
+    </article>
+    <span class="print-footer">Test knowledge - Canyu Le</span>
+    <footer>
+  <hr class="slender">
+  <!-- <ul class="footer&#45;links"> -->
+  <!--   <li><a href="mailto:hate@spam.net"><span class="icon&#45;mail"></span></a></li>     -->
+  <!--    -->
+  <!--     <li> -->
+  <!--       <a href="//www.twitter.com/twitter_handle"><span class="icon-twitter"></span></a> -->
+  <!--     </li> -->
+  <!--    -->
+  <!--     <li> -->
+  <!--       <a href="//plus.google.com/+googlePlusName"><span class="icon-googleplus"></span></a> -->
+  <!--     </li> -->
+  <!--    -->
+  <!--     <li> -->
+  <!--       <a href="//github.com/GithubHandle"><span class="icon-github"></span></a> -->
+  <!--     </li> -->
+  <!--    -->
+  <!--     <li> -->
+  <!--       <a href="//www.flickr.com/photos/FlickrUserID"><span class="icon-flickr"></span></a> -->
+  <!--     </li> -->
+  <!--    -->
+  <!--     <li> -->
+  <!--       <a href="/feed"><span class="icon-feed"></span></a> -->
+  <!--     </li> -->
+  <!--      -->
+  <!-- </ul> -->
+<div class="credits">
+<!-- <span>&#38;copy; 2020 <!&#45;&#45; &#38;#38;nbsp;&#38;#38;nbsp;CANYU LE &#45;&#45;></span></br> <br> -->
+<span>Site created with <a href="//jekyllrb.com">Jekyll</a> using the <a href="//github.com/clayh53/tufte-jekyll">Tufte theme</a>. &copy; 2020</span> 
+</div>  
+</footer>
+
+  </body>
+</html>

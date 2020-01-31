@@ -183,7 +183,7 @@ Transition matrix, emission matrix, initial state.
 
 Three basic problems:
 1. Given the HMM model, how to calculate the probability of an observation. (forward algorithm)
-2. Given the HMM model and an observation, how to estimate which the most possible hidden state sequences are. (Viterbi algorithm, dynamic programming)
+2. Given the HMM model and a sequence of observations, how to estimate which the most possible hidden state sequences are. (Viterbi algorithm, dynamic programming)
 3. Given the observation data, how to estimate the model parameters. (learning problem, Baum–Welch algorithm)
 
 Note:
@@ -206,11 +206,15 @@ $$ P(X|Y) = \frac{P(Y|X) * P(X)}{P(Y)} $$ <=> $$ Posterior = \frac{Likelihood * 
 Usually given the training data $$D$$, our target is to maximize the posterior $$P(\theta|D)$$, where $$\theta$$ is the model parameters. 
 To do that, we usually have two approaches:
 
+
 1. Maximum likelihood.
-Since $$P(\theta|D)=\frac{P(D|\theta)P(\theta)}{P(D)}$$, if we can assume the prior is a constant, then $$ \max P(\theta|D) = \max P(D|\theta)$$
+Since $$P(\theta|D)=\frac{P(D|\theta)P(\theta)}{P(D)}$$, if we can assume the prior is a constant, then $$ \max P(\theta|D) = \max P(D|\theta)$$.
+Maximum likelihood estimation is widely used in solving various machine learning models, especially when prior is unknown.
+
 
 2. Maximum A Posterior (MAP).
-Sometimes, we may not be able to make such assumption that the prior is a constant. Instead, prior may satisfy an unknown distribution. In this case, the target is  $$P(\theta|D) =  \mathop{\arg\min}_{\theta} P(D|\theta)P(\theta)$$. Since every data is generated independently, we have $$ P(\theta|D) =  \mathop{\arg\min}_{\theta} \Pi_i^n P(D=x_i|\theta)P(\theta) $$.
+Sometimes, we may not be able to make such assumption that the prior is a constant. Instead, prior may satisfy a distribution. In this case, the target is  $$P(\theta|D) =  \mathop{\arg\min}_{\theta} P(D|\theta)P(\theta)$$. Since every data is generated independently, we have $$ P(\theta|D) =  \mathop{\arg\min}_{\theta} \Pi_i^n P(D=x_i|\theta)P(\theta) $$.
+If we use prior $$P(\theta)$$ to represent the complexity of a model, then MAP is linked with structure risk minimization. 
 
 
 ## A systematic probabilistic graph model course
@@ -478,3 +482,63 @@ cov(x_n, x_1) & cov(x_n, x_2) & ... & cov(x_{n}, x_{n})  \\
 {% endmath %}
 
 Refer to [here](https://en.wikipedia.org/wiki/Multivariate_normal_distribution) for details.
+
+
+## Some important concepts in machine learning (statistic learning)
+**1. Hypothesis space**
+
+Hypothesis space is a set of models which map the input to output.
+When hypothesis space is given, the range of learning space is determined.
+For example, if we plan to use a neural network as the model, the hypothesis space consists of all possible parameters of this neural network.
+
+
+**2. Expected risk, Empirical risk, Structure risk**
+
+In machine learning, we usually suppose all data are i.i.d (independently drawn from identical distribution).
+The expected risk is defined as 
+{% math %}
+R_{exp}(f) = E(L(Y, f(X))) = \int_{X, Y} L(y, f(x))P(x, y)dxdy
+{% endmath %}
+where $$(X,Y)$$ are training data. $$L(\cdot, \cdot)$$ is loss function. $$P(X, Y)$$ is joint probability distribution.
+The ideal learning procedure is to find a best $$f$$ which can minimize $$R_{exp}(f)$$.
+However, it is impossible to know joint probability distribution $$P(X, Y)$$ beforehand.
+Because there is no need to learn if we already know $$P(X, Y)$$. 
+{% sidenote 1, "Therefore, machine learning is usually an ill-posed problem. About the ill-posed problem, you can check [here](https://en.wikipedia.org/wiki/Well-posed_problem) and [here](https://stats.stackexchange.com/questions/433692/why-is-pattern-recognition-often-defined-as-an-ill-posed-problem)"%}
+
+In practice, we minimize empirical risk instead of expected risk.
+{% math %}
+R_{emp}(f) = \frac{1}{N} \sum_{i=1}^{N} L(y_i, f(x_i))
+{% endmath %}
+Obviously, $$R_{exp}(f)$$ is the loss w.r.t. joint probability distribution which is absolutely accurate.
+$$R_{emp}(f)$$ is the loss w.r.t. the average of training data which is an approximation.
+According to law of large numbers, this approximation could be accurate when giving enough training data.
+
+Structure risk is similar with empirical risk. The only difference is that it introduces regularization term to penalize complex model to relieve overfitting.
+{% math %}
+R_{str}(f) = \frac{1}{N} \sum_{i=1}^{N} L(y_i, f(x_i)) + \lambda J(f)
+{% endmath %}
+
+
+**3. Cross validation, k-fold cross validation**
+
+Cross validation is a strategy to select a model with best generalization ability.
+When we have enough labeled data, we can simply split them into training, validation, testing sets and use validation set to select model. 
+K-fold cross validation is also a common strategy when data are relatively insufficient.
+
+The general procedure is as follows:
+1. Shuffle the dataset randomly.
+2. Split the dataset into k groups
+3. For each unique group:
+    1. Take the group as a hold out or test data set
+    2. Take the remaining groups as a training data set
+    3. Fit a model on the training set and evaluate it on the test set
+    4. Retain the evaluation score and model
+4. Select a model with best score
+
+
+**4. Generative model, Discriminative model**
+
+If a model try to learn joint probability distribution $$P(X, Y)$$, it is a generative model.
+If a model learn conditional probability distribution $$P(Y|X)$$ (i.e. decision boundary), it is a discriminative model.
+
+These two concepts here are different from they are in GAN (generative adversarial network).

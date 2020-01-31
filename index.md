@@ -27,10 +27,11 @@ These notes were recorded various important points for personal review. It conta
 
 8. [Semantic video segmentation](machine_learning/semantic_video_segmentation): The notes about a little semantic video segmentation.
 
+9. [Test](machine_learning/test): The notes for final test (XMU). It briefly contains several important ML knowledge points like searching, probabilistic graph model, neural network, markov decision process.
 
 ## SLAM
 
-1. [Optimizarion](slam/optimization): Nonlinear optimization methods.
+1. [Optimization](slam/optimization): Nonlinear optimization methods.
 
 2. [Camera model](slam/camera_model): The introducation about camera model, fundamental, essential and homography matrix.
 

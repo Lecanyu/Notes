@@ -249,7 +249,7 @@ Transition matrix, emission matrix, initial state.</p>
 <p>Three basic problems:</p>
 <ol>
   <li>Given the HMM model, how to calculate the probability of an observation. (forward algorithm)</li>
-  <li>Given the HMM model and an observation, how to estimate which the most possible hidden state sequences are. (Viterbi algorithm, dynamic programming)</li>
+  <li>Given the HMM model and a sequence of observations, how to estimate which the most possible hidden state sequences are. (Viterbi algorithm, dynamic programming)</li>
   <li>Given the observation data, how to estimate the model parameters. (learning problem, Baum–Welch algorithm)</li>
 </ol>
 
@@ -275,11 +275,13 @@ To do that, we usually have two approaches:</p>
 <ol>
   <li>
     <p>Maximum likelihood.
-Since <script type="math/tex">P(\theta|D)=\frac{P(D|\theta)P(\theta)}{P(D)}</script>, if we can assume the prior is a constant, then <script type="math/tex">\max P(\theta|D) = \max P(D|\theta)</script></p>
+Since <script type="math/tex">P(\theta|D)=\frac{P(D|\theta)P(\theta)}{P(D)}</script>, if we can assume the prior is a constant, then <script type="math/tex">\max P(\theta|D) = \max P(D|\theta)</script>.
+Maximum likelihood estimation is widely used in solving various machine learning models, especially when prior is unknown.</p>
   </li>
   <li>
     <p>Maximum A Posterior (MAP).
-Sometimes, we may not be able to make such assumption that the prior is a constant. Instead, prior may satisfy an unknown distribution. In this case, the target is  <script type="math/tex">P(\theta|D) =  \mathop{\arg\min}_{\theta} P(D|\theta)P(\theta)</script>. Since every data is generated independently, we have <script type="math/tex">P(\theta|D) =  \mathop{\arg\min}_{\theta} \Pi_i^n P(D=x_i|\theta)P(\theta)</script>.</p>
+Sometimes, we may not be able to make such assumption that the prior is a constant. Instead, prior may satisfy a distribution. In this case, the target is  <script type="math/tex">P(\theta|D) =  \mathop{\arg\min}_{\theta} P(D|\theta)P(\theta)</script>. Since every data is generated independently, we have <script type="math/tex">P(\theta|D) =  \mathop{\arg\min}_{\theta} \Pi_i^n P(D=x_i|\theta)P(\theta)</script>.
+If we use prior <script type="math/tex">P(\theta)</script> to represent the complexity of a model, then MAP is linked with structure risk minimization.</p>
   </li>
 </ol>
 
@@ -544,6 +546,67 @@ cov(x_n, x_1) & cov(x_n, x_2) & ... & cov(x_{n}, x_{n})  \\
 
 <p>Refer to <a href="https://en.wikipedia.org/wiki/Multivariate_normal_distribution">here</a> for details.</p>
 
+<h2 id="some-important-concepts-in-machine-learning-statistic-learning">Some important concepts in machine learning (statistic learning)</h2>
+<p><strong>1. Hypothesis space</strong></p>
+
+<p>Hypothesis space is a set of models which map the input to output.
+When hypothesis space is given, the range of learning space is determined.
+For example, if we plan to use a neural network as the model, the hypothesis space consists of all possible parameters of this neural network.</p>
+
+<p><strong>2. Expected risk, Empirical risk, Structure risk</strong></p>
+
+<p>In machine learning, we usually suppose all data are i.i.d (independently drawn from identical distribution).
+The expected risk is defined as</p>
+<div class="mathblock"><script type="math/tex; mode=display">
+R_{exp}(f) = E(L(Y, f(X))) = \int_{X, Y} L(y, f(x))P(x, y)dxdy
+</script></div>
+<p>where <script type="math/tex">(X,Y)</script> are training data. <script type="math/tex">L(\cdot, \cdot)</script> is loss function. <script type="math/tex">P(X, Y)</script> is joint probability distribution.
+The ideal learning procedure is to find a best <script type="math/tex">f</script> which can minimize <script type="math/tex">R_{exp}(f)</script>.
+However, it is impossible to know joint probability distribution <script type="math/tex">P(X, Y)</script> beforehand.
+Because there is no need to learn if we already know <script type="math/tex">P(X, Y)</script>. 
+<label for="1," class="margin-toggle sidenote-number"></label><input type="checkbox" id="1," class="margin-toggle" /><span class="sidenote">Therefore, machine learning is usually an ill-posed problem. About the ill-posed problem, you can check <a href="https://en.wikipedia.org/wiki/Well-posed_problem">here</a> and <a href="https://stats.stackexchange.com/questions/433692/why-is-pattern-recognition-often-defined-as-an-ill-posed-problem">here</a> </span></p>
+
+<p>In practice, we minimize empirical risk instead of expected risk.</p>
+<div class="mathblock"><script type="math/tex; mode=display">
+R_{emp}(f) = \frac{1}{N} \sum_{i=1}^{N} L(y_i, f(x_i))
+</script></div>
+<p>Obviously, <script type="math/tex">R_{exp}(f)</script> is the loss w.r.t. joint probability distribution which is absolutely accurate.
+<script type="math/tex">R_{emp}(f)</script> is the loss w.r.t. the average of training data which is an approximation.
+According to law of large numbers, this approximation could be accurate when giving enough training data.</p>
+
+<p>Structure risk is similar with empirical risk. The only difference is that it introduces regularization term to penalize complex model to relieve overfitting.</p>
+<div class="mathblock"><script type="math/tex; mode=display">
+R_{str}(f) = \frac{1}{N} \sum_{i=1}^{N} L(y_i, f(x_i)) + \lambda J(f)
+</script></div>
+
+<p><strong>3. Cross validation, k-fold cross validation</strong></p>
+
+<p>Cross validation is a strategy to select a model with best generalization ability.
+When we have enough labeled data, we can simply split them into training, validation, testing sets and use validation set to select model. 
+K-fold cross validation is also a common strategy when data are relatively insufficient.</p>
+
+<p>The general procedure is as follows:</p>
+<ol>
+  <li>Shuffle the dataset randomly.</li>
+  <li>Split the dataset into k groups</li>
+  <li>For each unique group:
+    <ol>
+      <li>Take the group as a hold out or test data set</li>
+      <li>Take the remaining groups as a training data set</li>
+      <li>Fit a model on the training set and evaluate it on the test set</li>
+      <li>Retain the evaluation score and model</li>
+    </ol>
+  </li>
+  <li>Select a model with best score</li>
+</ol>
+
+<p><strong>4. Generative model, Discriminative model</strong></p>
+
+<p>If a model try to learn joint probability distribution <script type="math/tex">P(X, Y)</script>, it is a generative model.
+If a model learn conditional probability distribution <script type="math/tex">P(Y|X)</script> (i.e. decision boundary), it is a discriminative model.</p>
+
+<p>These two concepts here are different from they are in GAN (generative adversarial network).</p>
+
 
 
     </article>
@@ -575,8 +638,8 @@ cov(x_n, x_1) & cov(x_n, x_2) & ... & cov(x_{n}, x_{n})  \\
   <!--      -->
   <!-- </ul> -->
 <div class="credits">
-<!-- <span>&#38;copy; 2019 <!&#45;&#45; &#38;#38;nbsp;&#38;#38;nbsp;CANYU LE &#45;&#45;></span></br> <br> -->
-<span>Site created with <a href="//jekyllrb.com">Jekyll</a> using the <a href="//github.com/clayh53/tufte-jekyll">Tufte theme</a>. &copy; 2019</span> 
+<!-- <span>&#38;copy; 2020 <!&#45;&#45; &#38;#38;nbsp;&#38;#38;nbsp;CANYU LE &#45;&#45;></span></br> <br> -->
+<span>Site created with <a href="//jekyllrb.com">Jekyll</a> using the <a href="//github.com/clayh53/tufte-jekyll">Tufte theme</a>. &copy; 2020</span> 
 </div>  
 </footer>
 
