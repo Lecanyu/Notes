@@ -2,7 +2,7 @@
 layout: post
 title: Notes
 ---
-These notes were recorded various important points for personal review. It contains brief descriptions. {% sidenote 1 'This is a simple testing example.'%}
+These notes were recorded various important points for personal review. It contains brief descriptions.
 
 ## Linear Algbera
 
