@@ -121,6 +121,12 @@ Homogeneous case is similar with non-homogeneous.
 Since $$b=\boldsymbol{0}$$, if $$R(A) = n $$ (full ranked), there is only zero solution. 
 If $$A$$ is not full ranked, we can find a linear combination of colunm vectors to represent the linear dependent ones. Therefore, there are infinite solutions.
 
+## ***Positive and Semi-positive Definite Matrix***
+There are a lot properties of positive and semi-positive definite matrix.
+
+Check [here](https://blog.csdn.net/asd136912/article/details/79146151) for them.
+
+
 
 ## ***Matrix decomposition***
 ### * LU decomposition
