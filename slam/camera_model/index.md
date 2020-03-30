@@ -48,14 +48,23 @@ We left cross product $$t$$ on both sides, and the equation becomes
 where $$[t]_{\times}$$ is the cross product matrix.
 Since $$[t]_{\times} K_2^{-1} p_2^{'}$$ is a vector and it is vertical vector $$K_2^{-1} p_2^{'}$$.
 We left multiply $$(K_2^{-1} p_2^{'})^T$$ on both sides. Then we have 
-{%sidenote 1 'Note that the scale in this estimation is undetermined. Because you can multiply any scalar number on essential matrix without violate the equation. This problem leads to the depth estimation is undetermined too. So monocular vision cannot calculate the exact scale information.'%}
+{%sidenote 1 'Note that the scale in this estimation is undetermined. Because you can multiply any scalar number on essential matrix without violate the equation (i.e. the equation still holds when translation multiply any scalar number). This problem leads to the depth estimation (trianglation) is undetermined too. So monocular vision cannot calculate the exact scale information.'%}
 
 {% math %}
 0 = p_2^{'T} \underbrace{K_2^{-T} \overbrace{ [t]_{\times} R}^{\text{Essential matrix}} K_1^{-1}}_{\text{Fundamental matrix}} p_1^{'}
 {% endmath %}
 If we already have interal camera parameters $$K_1, K_2$$, we can calculate the essential matrix from the a group of feature correspondences and then decomposite essential matrix to the external parameter $$R, t$$.
-If we don't have interal camera parameters, then we need to calculate the fundamental matrix and figure out the interal and external parameters at the same time.
+If we don't have interal camera parameters, then we need to calculate the fundamental matrix and figure out the internal and external parameters at the same time.
 
+I'd like to summarize some important properties about epipolar geometry as below:
+
+1.The degree of freedom (DoF) of essential matrix is 5 (3 rotation + 3 translation - scale invariant), fundamental matrix is 7 (9 elements - scale invariant - determinant=0), homography matrix is 8 (9 elements - scale invariant).
+{%sidenote 2 'When it satisfies scale invariant, we can always marginalize out an element like force translation_Z = 1 or last matrix element = 1. '%}
+
+2.Essential matrix has two eigen values and they are the same. Fundamental matrix has two eigen values but they are different. The rank of E and F are both 2.
+{%sidenote 3 'A linear algebra conclusion: the sum of eigen values = the sum of diagonal elements. The multiplication of eigen values = the value of determinant'%}
+
+3.Fundamental matrix $$F = [e_2]_{\times} H$$. $$e_2$$ is epipolar point in the second image, $$H$$ is homography matrix. The coefficients of epipolar line $$l_2$$ can be represented by $$Fx_1$$.
 
 
 ## Homography matrix

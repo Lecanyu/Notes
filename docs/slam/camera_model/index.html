@@ -119,13 +119,23 @@ K_2^{-1} p_2^{'} = RK_1^{-1}p_1^{'}+t
 <p>where <script type="math/tex">[t]_{\times}</script> is the cross product matrix.
 Since <script type="math/tex">[t]_{\times} K_2^{-1} p_2^{'}</script> is a vector and it is vertical vector <script type="math/tex">K_2^{-1} p_2^{'}</script>.
 We left multiply <script type="math/tex">(K_2^{-1} p_2^{'})^T</script> on both sides. Then we have 
-<label for="1" class="margin-toggle sidenote-number"></label><input type="checkbox" id="1" class="margin-toggle" /><span class="sidenote">Note that the scale in this estimation is undetermined. Because you can multiply any scalar number on essential matrix without violate the equation. This problem leads to the depth estimation is undetermined too. So monocular vision cannot calculate the exact scale information. </span></p>
+<label for="1" class="margin-toggle sidenote-number"></label><input type="checkbox" id="1" class="margin-toggle" /><span class="sidenote">Note that the scale in this estimation is undetermined. Because you can multiply any scalar number on essential matrix without violate the equation (i.e. the equation still holds when translation multiply any scalar number). This problem leads to the depth estimation (trianglation) is undetermined too. So monocular vision cannot calculate the exact scale information. </span></p>
 
 <div class="mathblock"><script type="math/tex; mode=display">
 0 = p_2^{'T} \underbrace{K_2^{-T} \overbrace{ [t]_{\times} R}^{\text{Essential matrix}} K_1^{-1}}_{\text{Fundamental matrix}} p_1^{'}
 </script></div>
 <p>If we already have interal camera parameters <script type="math/tex">K_1, K_2</script>, we can calculate the essential matrix from the a group of feature correspondences and then decomposite essential matrix to the external parameter <script type="math/tex">R, t</script>.
-If we don’t have interal camera parameters, then we need to calculate the fundamental matrix and figure out the interal and external parameters at the same time.</p>
+If we don’t have interal camera parameters, then we need to calculate the fundamental matrix and figure out the internal and external parameters at the same time.</p>
+
+<p>I’d like to summarize some important properties about epipolar geometry as below:</p>
+
+<p>1.The degree of freedom (DoF) of essential matrix is 5 (3 rotation + 3 translation - scale invariant), fundamental matrix is 7 (9 elements - scale invariant - determinant=0), homography matrix is 8 (9 elements - scale invariant).
+<label for="2" class="margin-toggle sidenote-number"></label><input type="checkbox" id="2" class="margin-toggle" /><span class="sidenote">When it satisfies scale invariant, we can always marginalize out an element like force translation_Z = 1 or last matrix element = 1.  </span></p>
+
+<p>2.Essential matrix has two eigen values and they are the same. Fundamental matrix has two eigen values but they are different. The rank of E and F are both 2.
+<label for="3" class="margin-toggle sidenote-number"></label><input type="checkbox" id="3" class="margin-toggle" /><span class="sidenote">A linear algebra conclusion: the sum of eigen values = the sum of diagonal elements. The multiplication of eigen values = the value of determinant </span></p>
+
+<p>3.Fundamental matrix <script type="math/tex">F = [e_2]_{\times} H</script>. <script type="math/tex">e_2</script> is epipolar point in the second image, <script type="math/tex">H</script> is homography matrix. The coefficients of epipolar line <script type="math/tex">l_2</script> can be represented by <script type="math/tex">Fx_1</script>.</p>
 
 <h2 id="homography-matrix">Homography matrix</h2>
 <p>Sometimes, the fundamental or essential matrix could be ill-posed (e.g. no translation <script type="math/tex">t=0</script> or all correspondence points are on a plane). The essential or fundamental decomposition could be degenerated.</p>

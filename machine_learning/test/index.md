@@ -105,9 +105,24 @@ There are some keypoints:
 
 ## Probabilistic Graph Model (PGM)
 Generally speaking, PGM consists of two main categories: Beyesian network and Markov network.
-Both contain a lot of models. {% sidenote 2, "I introduce some of them first. If I have time, more content and models will be added in the future. "%}
+Both contain a lot of models. 
+{% sidenote 2, "I introduce some of them first. If I have time, more content and models will be added in the future. "%}
+[Here](https://blog.statsbot.co/probabilistic-graphical-models-tutorial-and-solutions-e4f1d72af189) is an intuitive introduction.
 
-### Bayesian Network
+There is a simple outline:
+
++ Probabilistic Graph Model
+    + Bayesian Network:
+        1. Ordinary Bayesian Network
+        2. Dynamic Bayesian Network
+            Hidden Markov Model
+            Kalman Fitering    
+    + Markov Network:
+        1. Markov Random Field
+        2. Conditional Random Field
+
+
+### Bayesian Network (directed acyclic graph a.k.a. DAG )
 
 **Naive bayesian model**
 
@@ -117,19 +132,31 @@ For saving time, I wrote an simple example by hand to demonstrate how naive baye
 
 **More general bayesian model**
 
-The core is to analyze relation graph and using marginalization to calculate probability. 
+Why we need bayesian network?
 
-**Dynamic Bayesian network**
-TODO.
+General bayesian network is a simple and elegant tool to represent the relationship among random variables.
+{% maincolumn 'assets/test/why_we_need_beyesian_network.png'%}
 
 
-### Markov Network
+The inference methods in bayesian network.
+
+There are two categories methods: accurate inference and approximate inference.
+In accurate inference, there are some algorithms with the idea of marginalization. However, the accurate inference usually intractable (time complexity is extremely high) when network contains a lot of nodes and edges.
+In practice, the approximate inference (i.e. sampling methods) is widely adopted. 
+There are two common sampling methods: direct sampling and markov chain monte carlo (i.e. MCMC sampling).
+Direct sampling method is straightforward: it starts samples from evidence variable, then transmit to other random variables based on conditional probabilities.
+MCMC method is based on another idea: it starts from a initial state (all random variables have a initial value), then it transmits to next state by modifying one of random variable. Gibbs sampling as a MCMC method is used in bayesian network. 
+
+
+**Dynamic Bayesian Network**
+
+Unlike ordinary bayesian network, dynamic bayesian network takes time dimension into account.
+hidden markov model is the simplest and a typical DBN.
 
 **Hidden markov model**
 
 Hidden Markov Model is a statistical Markov model in which the system being modeled is assumed to be a Markov process with unobservable states. 
 The hidden Markov model can be represented as the simplest dynamic Bayesian network.
-
 There are several problems to be solved in HMM.
 
 1.- Given the HMM model and a sequence of observations, how to esitimate the probability of an hidden state. (forward, backward algorithm)
@@ -210,6 +237,15 @@ A Viterbi algorithm calculation example has been showed in above picture, the qu
 ***Baum–Welch algorithm***  
 
 TODO
+
+
+### Markov Network (undirected graph)
+
+**Markov Random Field**
+
+**Conditional Random Field**
+
+
 
 
 ## Decision Tree

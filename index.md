@@ -64,9 +64,30 @@ These notes were recorded various important points for personal review. It conta
 
 1. [Concepts](data_structure/concepts/): An introduction about the concepts of data structure.
  
-1. [Structures](data_structure/structures/): Various data structure (e.g. stack, graph). 
+2. [Structures](data_structure/structures/): Various data structure (e.g. stack, graph). 
 
 
 ## English
 
-1. [Sentences](english/words/): The sentences for daily expression.
+1. [Sentences](english/sentences/): The sentences for daily expression.
+
+2. [Words](english/words/): The words. 
+
+
+
+## Interview
+
+1. [Overview](interview/overview): The overview of interview questions and algorithms.
+
+
+## Paper
+
+1. [Object detection](paper/object_detection): Academic paper about object detection.
+
+2. [Human pose estimation](paper/human_pose): Academic paper about human pose estimation.
+
+3. [Few-shot learning](paper/few_shot_learning): Academic paper about few-shot learning.
+
+4. [Continual learning](paper/continual_learning): Academic paper about continual learning.
+
+

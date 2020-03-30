@@ -606,6 +606,46 @@ If a model learn conditional probability distribution <script type="math/tex">P(
 
 <p>These two concepts here are different from they are in GAN (generative adversarial network).</p>
 
+<p><strong>5. Learning Bias (Inductive Bias)</strong></p>
+
+<p>The introduction from <a href="https://en.wikipedia.org/wiki/Inductive_bias">wiki</a></p>
+
+<p>In machine learning, models or algorithms are trained on training dataset and make predictions on testing datasets which are unseen data.
+Without any additional assumptions, this problem cannot be solved exactly since unseen situations might have an arbitrary output value. 
+The kind of necessary assumptions about the nature of the target function are subsumed in the phrase inductive bias</p>
+
+<h2 id="the-difference-between-bagging-and-boosting-the-advantage-of-assembly-learning">The difference between bagging and boosting, the advantage of assembly learning</h2>
+
+<p>The difference see <a href="https://www.cnblogs.com/liuwu265/p/4690486.html">here</a>.</p>
+
+<p>I make a brief summary here.</p>
+
+<p>Bagging (usually used in random forest)</p>
+<ol>
+  <li>Bootstrap Sampling from training data (random sampling without replacement).</li>
+  <li>All samples with same weights in training.</li>
+  <li>K seperate models with same importance. So all models can be trained parallelly</li>
+</ol>
+
+<p>Boosting (e.g. adaptive boosting method)</p>
+<ol>
+  <li>Training on all data with weights (misclassified data will be more important in next training round)</li>
+  <li>K seperate models with different importance.</li>
+</ol>
+
+<p>Why Bagging improve performance?</p>
+
+<p>There are two explanations:</p>
+<ol>
+  <li>It can reduce the variance of single decision tree since model may fit some minor features if we use all training data. Minor feature fitting leads to high variance (over-fitting).</li>
+  <li>From probabilistic perspective, the probability of wrong prediction from multiple models is low.</li>
+</ol>
+
+<p>Why Boosting improve performance?</p>
+
+<p>The goal of optimization is to minimize the misclassified data.</p>
+
+
 
 
     </article>

@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Bundle Adjustment</title>
+  <meta name="description" content="Personal notes (memorandum).">
+
+
+  <link rel="stylesheet" href="/Notes/css/tufte.css">	
+  
+
+  <!-- Google Fonts loaded here depending on setting in _data/options.yml true loads font, blank does not-->
+  
+    <link href='//fonts.googleapis.com/css?family=Lato:400,400italic' rel='stylesheet' type='text/css'>
+  
+  <!-- Load up MathJax script if needed ... specify in /_data/options.yml file-->
+  
+    <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+  <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-75587219-1', 'auto');
+  ga('send', 'pageview');
+
+  </script>
+
+  <link rel="canonical" href="http://localhost:4000/Notes/paper/continual_learning/">
+  <link rel="alternate" type="application/rss+xml" title="Notes" href="http://localhost:4000/Notes/feed.xml" />
+</head>
+
+  <body>
+    <!--- Header and nav template site-wide -->
+<header>
+    <nav class="group">
+        <a href="/Notes/">Contents</a>
+		<a href="https://github.com/Lecanyu/Notes">Github</a>
+	</nav>
+</header>
+
+    <article class="group">
+      <h1>Bundle adjustment</h1>
+<p class="subtitle"></p>
+
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    TeX: {
+      Macros: {
+        e: "\\epsilon",
+        xti: "x^{(i)}",
+        yti: "y^{(i)}",
+        bfy: "{\\bf y}",
+        bfx: "{\\bf x}",
+        bfg: "{\\bf g}",
+        bfbeta: "{\\bf \\beta}",
+        tp: "\\tilde p",
+        pt: "p_\\theta",
+        Exp: "{\\mathbb{E}}",
+        Ind: "{\\mathbb{I}}",
+        KL: "{\\mathbb{KL}}",
+        Dc: "{\\mathcal{D}}",
+        Tc: "{\\mathcal{T}}",
+        Xc: "{\\mathcal{X}}",
+        note: ["\\textcolor{blue}{[NOTE: #1]}",1]
+      }
+    }
+  });
+</script>
+
+
+<h2 id="bundle-adjustment-ba">Bundle Adjustment (BA)</h2>
+<p>Bundle adjustment is an important optimization in SLAM system. 
+Unlike pose graph optimization which only optimize the poses, BA can optimize the 3D points and poses simultaneously for minimizing reprojection error.</p>
+
+<p>Here is the objective function</p>
+<div class="mathblock"><script type="math/tex; mode=display">
+\min \frac{1}{2} \sum_{j=1}^{m} \sum_{i=1}^{n} || u_i - \frac{1}{z_{i}} K (R_j P_i + t_j) ||^2
+</script></div>
+<p>where <script type="math/tex">u_i</script> is the image pixel. <script type="math/tex">P_i</script> is 3D point in world coordinate (total n feature points). <script type="math/tex">R_j, t_j</script> are the camera pose (total m frames). <script type="math/tex">K</script> is camera intrinsic parameter. <script type="math/tex">z_i</script> is the last element in <script type="math/tex">P_i</script>.
+The optimized variables could be <script type="math/tex">R_j, t_j, P_i</script>.</p>
+
+<p>If we write the objective in Lie Algebra, it will be</p>
+<div class="mathblock"><script type="math/tex; mode=display">
+\min_{\xi, P} \frac{1}{2} \sum_{j=1}^{m} \sum_{i=1}^{n} || u_i - \frac{1}{z_{i}} K e^{\xi_j^{\wedge}} P_i ||^2
+</script></div>
+
+<p>In fact, we can use a function <script type="math/tex">h(\xi_j, P_i)</script> to represent <script type="math/tex">\frac{1}{z_i} K e^{\xi_j^{\wedge}} P_i</script>. If we want to undistort, those undistortion calculation can be also included in <script type="math/tex">h(\xi_j, P_i)</script>. 
+<label for="1," class="margin-toggle sidenote-number"></label><input type="checkbox" id="1," class="margin-toggle" /><span class="sidenote">Recommend to read the slambook bundle adjustment in Chapter 10.  </span></p>
+
+<p>Anyway, the objective can be</p>
+
+<div class="mathblock"><script type="math/tex; mode=display">
+\min_{\xi, P} \frac{1}{2} \sum_{j=1}^{m} \sum_{i=1}^{n} || u_i - h(\xi_j, P_i) ||^2
+</script></div>
+
+<p>Obviously, there are many variables need to be optimized. We use <script type="math/tex">x = [\xi_1, ..., \xi_m, P_1, ..., P_n]</script> to represent all variables.</p>
+
+<p>we rewrite the objective as below</p>
+
+<div class="mathblock"><script type="math/tex; mode=display">
+\min \frac{1}{2} ||f(x)||^2 = \frac{1}{2} \sum_{j=1}^{m} \sum_{i=1}^{n} ||e_{ij}||^2 = \frac{1}{2} \sum_{j=1}^{m} \sum_{i=1}^{n} || u_i - h(\xi_j, P_i) ||^2
+</script></div>
+
+<p>In nonlinear optimization, we want to get the optimal <script type="math/tex">\Delta x</script>. So apply Taylor expansion, the objective will become</p>
+
+<div class="mathblock"><script type="math/tex; mode=display">
+\min_{\Delta x} \frac{1}{2} ||f(x + \Delta x)||^2 = \frac{1}{2} \sum_{j=1}^{m} \sum_{i=1}^{n} || e_{ij} + F_{ij}\Delta \xi_j + E_{ij} \Delta P_i ||^2
+</script></div>
+<p>where <script type="math/tex">F_{ij}</script> is the jacobian of Lie algebra <script type="math/tex">\xi_j</script>, and <script type="math/tex">E_{ij}</script> is the jacobian of world point <script type="math/tex">P_i</script>.</p>
+
+<p>If we integrate all variable and apply GN or LM, we will still face the equation <label for="1," class="margin-toggle sidenote-number"></label><input type="checkbox" id="1," class="margin-toggle" /><span class="sidenote">If you have problem to understand, go to check the nonlinear optimization section.  </span></p>
+<div class="mathblock"><script type="math/tex; mode=display">
+H \Delta x = g
+</script></div>
+<p><script type="math/tex">H = J^TJ</script> in GN. While <script type="math/tex">H = J^TJ + \lambda I</script> in LM.</p>
+
+<p>In SLAM early stage, people think there are too many variables to optimize in real-time (i.e. those variables will generate a very huge <script type="math/tex">J^T J</script> matrix in nonlinear optimization. It is prohibitive to calculate the <script type="math/tex">\Delta x</script> by inversing <script type="math/tex">J^T J</script>).</p>
+
+<p>Later, researchers find there are some special structures in <script type="math/tex">J^TJ</script>. And <script type="math/tex">J^T J</script> is a <strong>sparse matrix</strong> and there are special methods (so-called <strong>marginalization</strong>) to calculate <script type="math/tex">\Delta x</script> quickly.</p>
+
+<p>For the math detail, go to read the slambook sparse and marginalization (稀疏性和边缘化) in Chapter 10.</p>
+
+
+
+
+    </article>
+    <span class="print-footer">Bundle Adjustment - Canyu Le</span>
+    <footer>
+  <hr class="slender">
+  <!-- <ul class="footer&#45;links"> -->
+  <!--   <li><a href="mailto:hate@spam.net"><span class="icon&#45;mail"></span></a></li>     -->
+  <!--    -->
+  <!--     <li> -->
+  <!--       <a href="//www.twitter.com/twitter_handle"><span class="icon-twitter"></span></a> -->
+  <!--     </li> -->
+  <!--    -->
+  <!--     <li> -->
+  <!--       <a href="//plus.google.com/+googlePlusName"><span class="icon-googleplus"></span></a> -->
+  <!--     </li> -->
+  <!--    -->
+  <!--     <li> -->
+  <!--       <a href="//github.com/GithubHandle"><span class="icon-github"></span></a> -->
+  <!--     </li> -->
+  <!--    -->
+  <!--     <li> -->
+  <!--       <a href="//www.flickr.com/photos/FlickrUserID"><span class="icon-flickr"></span></a> -->
+  <!--     </li> -->
+  <!--    -->
+  <!--     <li> -->
+  <!--       <a href="/feed"><span class="icon-feed"></span></a> -->
+  <!--     </li> -->
+  <!--      -->
+  <!-- </ul> -->
+<div class="credits">
+<!-- <span>&#38;copy; 2020 <!&#45;&#45; &#38;#38;nbsp;&#38;#38;nbsp;CANYU LE &#45;&#45;></span></br> <br> -->
+<span>Site created with <a href="//jekyllrb.com">Jekyll</a> using the <a href="//github.com/clayh53/tufte-jekyll">Tufte theme</a>. &copy; 2020</span> 
+</div>  
+</footer>
+
+  </body>
+</html>

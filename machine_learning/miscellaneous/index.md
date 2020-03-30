@@ -542,3 +542,42 @@ If a model try to learn joint probability distribution $$P(X, Y)$$, it is a gene
 If a model learn conditional probability distribution $$P(Y|X)$$ (i.e. decision boundary), it is a discriminative model.
 
 These two concepts here are different from they are in GAN (generative adversarial network).
+
+
+**5. Learning Bias (Inductive Bias)**
+
+The introduction from [wiki](https://en.wikipedia.org/wiki/Inductive_bias) 
+
+In machine learning, models or algorithms are trained on training dataset and make predictions on testing datasets which are unseen data.
+Without any additional assumptions, this problem cannot be solved exactly since unseen situations might have an arbitrary output value. 
+The kind of necessary assumptions about the nature of the target function are subsumed in the phrase inductive bias
+
+
+
+## The difference between bagging and boosting, the advantage of assembly learning
+
+The difference see [here](https://www.cnblogs.com/liuwu265/p/4690486.html).
+
+I make a brief summary here.
+
+Bagging (usually used in random forest)
+1. Bootstrap Sampling from training data (random sampling without replacement). 
+2. All samples with same weights in training. 
+3. K seperate models with same importance. So all models can be trained parallelly
+
+Boosting (e.g. adaptive boosting method)
+1. Training on all data with weights (misclassified data will be more important in next training round)
+2. K seperate models with different importance. 
+
+
+Why Bagging improve performance?
+
+There are two explanations:
+1. It can reduce the variance of single decision tree since model may fit some minor features if we use all training data. Minor feature fitting leads to high variance (over-fitting). 
+2. From probabilistic perspective, the probability of wrong prediction from multiple models is low. 
+
+
+Why Boosting improve performance?
+
+The goal of optimization is to minimize the misclassified data. 
+

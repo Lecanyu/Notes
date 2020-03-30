@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Object Detection</title>
+  <meta name="description" content="Personal notes (memorandum).">
+
+
+  <link rel="stylesheet" href="/Notes/css/tufte.css">	
+  
+
+  <!-- Google Fonts loaded here depending on setting in _data/options.yml true loads font, blank does not-->
+  
+    <link href='//fonts.googleapis.com/css?family=Lato:400,400italic' rel='stylesheet' type='text/css'>
+  
+  <!-- Load up MathJax script if needed ... specify in /_data/options.yml file-->
+  
+    <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+  <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-75587219-1', 'auto');
+  ga('send', 'pageview');
+
+  </script>
+
+  <link rel="canonical" href="http://localhost:4000/Notes/paper/object_detection/">
+  <link rel="alternate" type="application/rss+xml" title="Notes" href="http://localhost:4000/Notes/feed.xml" />
+</head>
+
+  <body>
+    <!--- Header and nav template site-wide -->
+<header>
+    <nav class="group">
+        <a href="/Notes/">Contents</a>
+		<a href="https://github.com/Lecanyu/Notes">Github</a>
+	</nav>
+</header>
+
+    <article class="group">
+      <h1>Object detection</h1>
+<p class="subtitle"></p>
+
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    TeX: {
+      Macros: {
+        e: "\\epsilon",
+        xti: "x^{(i)}",
+        yti: "y^{(i)}",
+        bfy: "{\\bf y}",
+        bfx: "{\\bf x}",
+        bfg: "{\\bf g}",
+        bfbeta: "{\\bf \\beta}",
+        tp: "\\tilde p",
+        pt: "p_\\theta",
+        Exp: "{\\mathbb{E}}",
+        Ind: "{\\mathbb{I}}",
+        KL: "{\\mathbb{KL}}",
+        Dc: "{\\mathcal{D}}",
+        Tc: "{\\mathcal{T}}",
+        Xc: "{\\mathcal{X}}",
+        note: ["\\textcolor{blue}{[NOTE: #1]}",1]
+      }
+    }
+  });
+</script>
+
+
+<p>There are some popular paper about object detection.
+I briefly introduce them here so that I can review quickly in the future.</p>
+
+<h2 id="atss">ATSS</h2>
+<p>Original paper ‘‘Bridging the Gap Between Anchor-based and Anchor-free Detection via Adaptive Training Sample Selection’’. 
+<label for="1," class="margin-toggle sidenote-number"></label><input type="checkbox" id="1," class="margin-toggle" /><span class="sidenote">Original ATSS paper see <a href="https://arxiv.org/pdf/1912.02424.pdf">here</a>.  </span></p>
+
+<p>Key features:</p>
+
+<p>1.One-stage (i.e. proposal-free) anchor based detector.</p>
+
+<p>2.This paper conduct a lot of ablation experiments to study why there is gap between anchor-based and anchor-free detectors.
+It uses RetinaNet and FCOS as the example to conduct experiments. 
+By those experiments, the authors found that tiling multiple different size anchors in each location is unnecessary.
+And the authors think that how to define positive and negative training samples is the essential difference between anchor-based and anchor-free detectors.</p>
+
+<figure><figcaption></figcaption><img src="/Notes/assets/paper/object_detection/ATSS1.png" /></figure>
+
+<p>3.This paper also gives a nice summary for related object detection works.</p>
+
+<p>4.Based on IOU statistic, the author proposes an adaptive training sample selection strategy which automatically decide what samples should be positive and negative with almost hyperparameter-free.</p>
+
+<figure><figcaption></figcaption><img src="/Notes/assets/paper/object_detection/ATSS2.png" /></figure>
+
+<h2 id="fcos">FCOS</h2>
+<p>Original paper ‘‘FCOS: Fully Convolutional One-Stage Object Detection’’. 
+<label for="1," class="margin-toggle sidenote-number"></label><input type="checkbox" id="1," class="margin-toggle" /><span class="sidenote">Original FCOS paper see <a href="https://arxiv.org/pdf/1904.01355.pdf">here</a>.  </span></p>
+
+<p>Key features:</p>
+
+<p>1.<strong>Proposal free and anchor free.</strong>
+FCOS is an one-stage object detector without anchors. 
+The authors point out that the anchor is an heuristic which is hard to tune hyperparameters.
+Without anchor, FCOS avoids a lot of hyperparameters tuning and complicated IOU calculation.</p>
+
+<p>2.Since there is no anchor, FCOS uses keypoints (i.e. feature map pixels reproject to original image) to regress bounding box.
+To overcome box overlap ambiguity, it arranges the regression size to different feature pyramids.</p>
+
+<figure><figcaption></figcaption><img src="/Notes/assets/paper/object_detection/FCOS1.png" /></figure>
+
+<p>3.It proposes a centerness branch to filter out low-quality predicted boxes whose locations are far away from the center of ground-truth objects.</p>
+
+<figure><figcaption></figcaption><img src="/Notes/assets/paper/object_detection/FCOS2.png" /></figure>
+
+<h2 id="retinanet">RetinaNet</h2>
+<p>Original paper ‘‘Focal Loss for Dense Object Detection’’.
+<label for="1," class="margin-toggle sidenote-number"></label><input type="checkbox" id="1," class="margin-toggle" /><span class="sidenote">Original RetinaNet paper see <a href="https://arxiv.org/pdf/1708.02002.pdf">here</a>.  </span></p>
+
+<p>Key features:</p>
+
+<p>1.One-stage (i.e. proposal-free) anchor-based detector.
+Proposal-free means that it doesn’t require bounding box proposals (candidates). 
+Instead, it directly predicts from feature map (feature pixels).</p>
+
+<p>2.It notices that the massive easy samples can dominate loss optimization (although the loss of easy samples is small, the sum of all easy sample losses is big).
+It proposes the focal loss for addressing the positive and negative imbalance problem. 
+Note that the imbalance problem is not new in object detection.
+In fact, other one-stage detectors like SSD apply hard example mining and heuritsic thresholds to address this problem.</p>
+
+<p>3.The authors also propose RetinaNet architecture.</p>
+
+<h2 id="yolo">YOLO</h2>
+<p>Original paper ‘‘You Only Look Once: Unified, Real-Time Object Detection’’.
+<label for="1," class="margin-toggle sidenote-number"></label><input type="checkbox" id="1," class="margin-toggle" /><span class="sidenote">Original YOLO paper see <a href="https://arxiv.org/pdf/1506.02640.pdf">here</a>.  </span></p>
+
+<p>YOLO has multiple versions.
+I introduce the original version (i.e. YOLOv1).</p>
+
+<p>Key features:</p>
+
+<p>1.One-stage anchor-free detector.</p>
+
+<p>2.Divide image to several cells. Predict and regress from feature map pixels directly.</p>
+
+<h2 id="ssd">SSD</h2>
+<p>Original paper ‘‘SSD: Single Shot MultiBox Detector’’.
+<label for="1," class="margin-toggle sidenote-number"></label><input type="checkbox" id="1," class="margin-toggle" /><span class="sidenote">Original SSD paper see <a href="https://arxiv.org/pdf/1512.02325.pdf">here</a>.  </span></p>
+
+<p>Key features:</p>
+
+<p>1.One-stage anchor-based detector.</p>
+
+<p>2.It predicts and regresses from different feature map levels.</p>
+
+<h2 id="faster-r-cnn">Faster R-CNN</h2>
+<p>Original paper ‘‘Faster R-CNN: Towards Real-Time Object Detection with Region Proposal Networks’’.
+<label for="1," class="margin-toggle sidenote-number"></label><input type="checkbox" id="1," class="margin-toggle" /><span class="sidenote">Original Faster R-CNN paper see <a href="https://arxiv.org/pdf/1506.01497.pdf">here</a>.  </span></p>
+
+<p>Key features:</p>
+
+<p>1.Two-stage anchor-based detector.</p>
+
+<p>2.It proposes region proposal network (RPN)</p>
+
+<p>3.Another paper ‘‘Feature Pyramid Networks for Object Detection’’ proposes FPN based on Faster-RCNN.</p>
+
+<h2 id="mask-r-cnn">Mask R-CNN</h2>
+<p>Original paper ‘‘Mask R-CNN’’.
+<label for="1," class="margin-toggle sidenote-number"></label><input type="checkbox" id="1," class="margin-toggle" /><span class="sidenote">Original Mask R-CNN paper see <a href="https://arxiv.org/pdf/1703.06870.pdf">here</a>.  </span></p>
+
+<p>Key features:</p>
+
+<p>1.Two-stage anchor-based detector.</p>
+
+<p>2.It is similar with Faster-RCNN, but it is with FPN and add a mask branch (i.e. semantic segmentation branch).</p>
+
+<p>3.It proposes RoI align technique instead of RoI pooling.</p>
+
+
+
+
+    </article>
+    <span class="print-footer">Object Detection - Canyu Le</span>
+    <footer>
+  <hr class="slender">
+  <!-- <ul class="footer&#45;links"> -->
+  <!--   <li><a href="mailto:hate@spam.net"><span class="icon&#45;mail"></span></a></li>     -->
+  <!--    -->
+  <!--     <li> -->
+  <!--       <a href="//www.twitter.com/twitter_handle"><span class="icon-twitter"></span></a> -->
+  <!--     </li> -->
+  <!--    -->
+  <!--     <li> -->
+  <!--       <a href="//plus.google.com/+googlePlusName"><span class="icon-googleplus"></span></a> -->
+  <!--     </li> -->
+  <!--    -->
+  <!--     <li> -->
+  <!--       <a href="//github.com/GithubHandle"><span class="icon-github"></span></a> -->
+  <!--     </li> -->
+  <!--    -->
+  <!--     <li> -->
+  <!--       <a href="//www.flickr.com/photos/FlickrUserID"><span class="icon-flickr"></span></a> -->
+  <!--     </li> -->
+  <!--    -->
+  <!--     <li> -->
+  <!--       <a href="/feed"><span class="icon-feed"></span></a> -->
+  <!--     </li> -->
+  <!--      -->
+  <!-- </ul> -->
+<div class="credits">
+<!-- <span>&#38;copy; 2020 <!&#45;&#45; &#38;#38;nbsp;&#38;#38;nbsp;CANYU LE &#45;&#45;></span></br> <br> -->
+<span>Site created with <a href="//jekyllrb.com">Jekyll</a> using the <a href="//github.com/clayh53/tufte-jekyll">Tufte theme</a>. &copy; 2020</span> 
+</div>  
+</footer>
+
+  </body>
+</html>
