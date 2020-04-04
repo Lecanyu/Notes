@@ -6,6 +6,9 @@ title: Object Detection
 There are some popular paper about object detection.
 I briefly introduce them here so that I can review quickly in the future.
 
+Will be updated constantly.
+
+
 
 ## ATSS
 Original paper ''Bridging the Gap Between Anchor-based and Anchor-free Detection via Adaptive Training Sample Selection''. 

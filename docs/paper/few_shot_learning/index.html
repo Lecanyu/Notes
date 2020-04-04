@@ -5,7 +5,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Bundle Adjustment</title>
+  <title>Few-shot Learning</title>
   <meta name="description" content="Personal notes (memorandum).">
 
 
@@ -46,7 +46,7 @@
 </header>
 
     <article class="group">
-      <h1>Bundle adjustment</h1>
+      <h1>Few-shot learning</h1>
 <p class="subtitle"></p>
 
 
@@ -76,63 +76,12 @@
 </script>
 
 
-<h2 id="bundle-adjustment-ba">Bundle Adjustment (BA)</h2>
-<p>Bundle adjustment is an important optimization in SLAM system. 
-Unlike pose graph optimization which only optimize the poses, BA can optimize the 3D points and poses simultaneously for minimizing reprojection error.</p>
-
-<p>Here is the objective function</p>
-<div class="mathblock"><script type="math/tex; mode=display">
-\min \frac{1}{2} \sum_{j=1}^{m} \sum_{i=1}^{n} || u_i - \frac{1}{z_{i}} K (R_j P_i + t_j) ||^2
-</script></div>
-<p>where <script type="math/tex">u_i</script> is the image pixel. <script type="math/tex">P_i</script> is 3D point in world coordinate (total n feature points). <script type="math/tex">R_j, t_j</script> are the camera pose (total m frames). <script type="math/tex">K</script> is camera intrinsic parameter. <script type="math/tex">z_i</script> is the last element in <script type="math/tex">P_i</script>.
-The optimized variables could be <script type="math/tex">R_j, t_j, P_i</script>.</p>
-
-<p>If we write the objective in Lie Algebra, it will be</p>
-<div class="mathblock"><script type="math/tex; mode=display">
-\min_{\xi, P} \frac{1}{2} \sum_{j=1}^{m} \sum_{i=1}^{n} || u_i - \frac{1}{z_{i}} K e^{\xi_j^{\wedge}} P_i ||^2
-</script></div>
-
-<p>In fact, we can use a function <script type="math/tex">h(\xi_j, P_i)</script> to represent <script type="math/tex">\frac{1}{z_i} K e^{\xi_j^{\wedge}} P_i</script>. If we want to undistort, those undistortion calculation can be also included in <script type="math/tex">h(\xi_j, P_i)</script>. 
-<label for="1," class="margin-toggle sidenote-number"></label><input type="checkbox" id="1," class="margin-toggle" /><span class="sidenote">Recommend to read the slambook bundle adjustment in Chapter 10.  </span></p>
-
-<p>Anyway, the objective can be</p>
-
-<div class="mathblock"><script type="math/tex; mode=display">
-\min_{\xi, P} \frac{1}{2} \sum_{j=1}^{m} \sum_{i=1}^{n} || u_i - h(\xi_j, P_i) ||^2
-</script></div>
-
-<p>Obviously, there are many variables need to be optimized. We use <script type="math/tex">x = [\xi_1, ..., \xi_m, P_1, ..., P_n]</script> to represent all variables.</p>
-
-<p>we rewrite the objective as below</p>
-
-<div class="mathblock"><script type="math/tex; mode=display">
-\min \frac{1}{2} ||f(x)||^2 = \frac{1}{2} \sum_{j=1}^{m} \sum_{i=1}^{n} ||e_{ij}||^2 = \frac{1}{2} \sum_{j=1}^{m} \sum_{i=1}^{n} || u_i - h(\xi_j, P_i) ||^2
-</script></div>
-
-<p>In nonlinear optimization, we want to get the optimal <script type="math/tex">\Delta x</script>. So apply Taylor expansion, the objective will become</p>
-
-<div class="mathblock"><script type="math/tex; mode=display">
-\min_{\Delta x} \frac{1}{2} ||f(x + \Delta x)||^2 = \frac{1}{2} \sum_{j=1}^{m} \sum_{i=1}^{n} || e_{ij} + F_{ij}\Delta \xi_j + E_{ij} \Delta P_i ||^2
-</script></div>
-<p>where <script type="math/tex">F_{ij}</script> is the jacobian of Lie algebra <script type="math/tex">\xi_j</script>, and <script type="math/tex">E_{ij}</script> is the jacobian of world point <script type="math/tex">P_i</script>.</p>
-
-<p>If we integrate all variable and apply GN or LM, we will still face the equation <label for="1," class="margin-toggle sidenote-number"></label><input type="checkbox" id="1," class="margin-toggle" /><span class="sidenote">If you have problem to understand, go to check the nonlinear optimization section.  </span></p>
-<div class="mathblock"><script type="math/tex; mode=display">
-H \Delta x = g
-</script></div>
-<p><script type="math/tex">H = J^TJ</script> in GN. While <script type="math/tex">H = J^TJ + \lambda I</script> in LM.</p>
-
-<p>In SLAM early stage, people think there are too many variables to optimize in real-time (i.e. those variables will generate a very huge <script type="math/tex">J^T J</script> matrix in nonlinear optimization. It is prohibitive to calculate the <script type="math/tex">\Delta x</script> by inversing <script type="math/tex">J^T J</script>).</p>
-
-<p>Later, researchers find there are some special structures in <script type="math/tex">J^TJ</script>. And <script type="math/tex">J^T J</script> is a <strong>sparse matrix</strong> and there are special methods (so-called <strong>marginalization</strong>) to calculate <script type="math/tex">\Delta x</script> quickly.</p>
-
-<p>For the math detail, go to read the slambook sparse and marginalization (稀疏性和边缘化) in Chapter 10.</p>
-
+<h2 id="todo">TODO</h2>
 
 
 
     </article>
-    <span class="print-footer">Bundle Adjustment - Canyu Le</span>
+    <span class="print-footer">Few-shot Learning - Canyu Le</span>
     <footer>
   <hr class="slender">
   <!-- <ul class="footer&#45;links"> -->
