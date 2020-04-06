@@ -5,7 +5,7 @@ title: Words
 
 ## Misc
 
-lamb lame lane
+lamb lame lane lime limb (limb articulation)
 
 cripple crippled
 
@@ -76,6 +76,40 @@ euphoria
 susceptibility sensitivity
 
 cock rooster 
+
+As a well-established problem in vision, pose estimation has plagued researchers with a variety of formidable challenges over years.
+
+Cannot get enough of the view? The cliffside glass sidewalk may be perfect for you.
+
+intercity transportation
+
+excavator
+
+de facto
+
+sewage treatment
+
+sewage and drainage
+
+jaywalking
+
+mitigation = alleviation
+
+elbow wrist waist
+
+replenish
+
+There has been a recent surge of interest in something
+
+supportive anatomical structure
+
+albeit. They were getting it, albeit slowly, but the results were mixed to say the least
+
+respiratory respiration
+
+asthma, bronchitis
+
+amortized analysis
 
 
 
