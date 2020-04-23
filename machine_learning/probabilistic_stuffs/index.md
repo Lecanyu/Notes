@@ -10,6 +10,16 @@ title: Probabilistic Stuffs
 Check [here](http://blog.codinglabs.org/articles/methods-for-generating-random-number-distributions.html)
 
 
+## Confidence Interval and variance
+In statistics, confidence interval is a type of estimate computed from the statistics of the observed data. 
+It gives a range of values for an unknown parameter (e.g. the mean). 
+The interval has an associated confidence level that the true parameter (e.g. the mean) is in the proposed range.
+
+Variance is the expectation of the squared deviation of a random variable from its mean. 
+Informally, it measures how far a set of (random) numbers are spread out from their average value
+
+
+
 
 ## How to shuffle an array
 Given an array $$a = [1,2,3,...,n]$$, design an algorithm to evenly and randomly shuffle it.
