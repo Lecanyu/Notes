@@ -11,6 +11,12 @@ Here's to the crazy ones. The misfits. The rebels. The troublemakers. The round 
 I always encourage people to prepare as much as you can even if only one day is left, let alone most people have at least several weeks before their on-site interviews.
 
 
+If the probability of a flamingo being present is higher, we decide this image contains an instance of a flamingo. 
+If it is the other way around, we decide there is no flamingo
+
+
+
+
 ## Talk about jobs
 I work for XX company.
 
@@ -118,7 +124,7 @@ You may lose everything and get wiped out.
 Types of coffee:
 1. Espresso: a small amount very strong coffee. This small amount is called shot.
 2. Americano = espresso + hot water
-3. Cappucino = espresso + steamed milk + foamed milk on top
+3. Cappuccino = espresso + steamed milk + foamed milk on top
 4. Latte = espresso + lots of steamed milk
 5. Mocha = espresso + hot chocolate + steamed milk (sometime with cream on top)
 6. Black coffee = without milk

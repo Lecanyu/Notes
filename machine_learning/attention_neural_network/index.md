@@ -81,3 +81,13 @@ The above example can be seen as a special case of this model, since the CRF all
 
 
 
+## Self-attention 
+
+Self-attention concept may be introduced by paper [Attention is all you need](https://arxiv.org/abs/1706.03762). 
+It is used in NLP task. 
+There is a good and clear introduction [post](https://jalammar.github.io/illustrated-transformer/) about how self-attention works in Transformer. 
+{% sidenote 1, "In NLP, the words are represented by embedded vectors via word2vec technique. There is a [post](https://medium.com/deeper-learning/glossary-of-deep-learning-word-embedding-f90c3cec34ca) to introduce this technique. Basically, the similar words (depends on how to define the similarity, e.g. concurrent appeared words are similar) will have closer distance in embedded space."%}
+
+The core idea behind self-attention is to build some connection between current words with its context or even the whole long sentence.
+In Transformer paper, they design some trainable parameters matrix to convert orginal word embedding into key, value, query vectors. 
+Then use those key/value/query vectors to build the in-between connections via vector-matrix calculation.

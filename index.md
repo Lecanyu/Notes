@@ -29,6 +29,9 @@ These notes were recorded various important points for personal review. It conta
 
 9. [Test](machine_learning/test): The notes for final test (XMU). It briefly contains several important ML knowledge points like searching, probabilistic graph model, neural network, markov decision process.
 
+10. [Expectation maximization](machine_learning/expectation_maximization): A brief and intuitive explanation about EM algorithm.
+
+
 ## SLAM
 
 1. [Optimization](slam/optimization): Nonlinear optimization methods.

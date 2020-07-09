@@ -134,6 +134,38 @@ F_Y(y) = P(Y \le y) = P(X^2 \le y ) = P(-\sqrt y \le X \le \sqrt y) = \int_{- \s
 
 <p><span style="color:red"> 需要搞清楚一种通用且普适的方法用于计算新随机变量的概率密度函数. 一种可能的做法或许可以参考<a href="https://www.zhihu.com/question/37400689">here</a></span></p>
 
+<p>知乎中的回答提供了一种借助狄拉克函数来计算新随机变量的概率密度函数的通用计算方法。
+<label for="1," class="margin-toggle sidenote-number"></label><input type="checkbox" id="1," class="margin-toggle" /><span class="sidenote">狄拉克函数的介绍和性质 <a href="https://www.wikiwand.com/zh-cn/%E7%8B%84%E6%8B%89%E5%85%8B%CE%B4%E5%87%BD%E6%95%B0#/%E7%B8%AE%E6%94%BE%E8%88%87%E5%B0%8D%E7%A8%B1">Dirac delta function</a>. </span></p>
+
+<p>具体表述如下：
+随机变量<script type="math/tex">X</script>符合某概率分布<script type="math/tex">P_X(x)</script>，对<script type="math/tex">X</script>进行某种变换后得到一个新的随机变量<script type="math/tex">Z</script>，即<script type="math/tex">z = f(x)</script>，那么<script type="math/tex">Z</script>对应的概率密度函数<script type="math/tex">P_Z(z)</script>可以如下计算</p>
+<div class="mathblock"><script type="math/tex; mode=display">
+P_Z(z) = \int_{-\infty}^{\infty} P_X(x)\delta(z-f(x)) dx
+</script></div>
+<p>这里<script type="math/tex">\delta(z-f(x))</script>是狄拉克函数，仅在<script type="math/tex">\delta(0)</script>处非0，且<script type="math/tex">\int_{-\infty}^{\infty} \delta(x) dx = 1</script>，上面积分表达式的含义是
+随机变量<script type="math/tex">Z=z</script>处的概率密度函数由所有满足<script type="math/tex">z=f(x)</script>的<script type="math/tex">X</script>概率密度函数求和得到，这是符合概率直觉的。</p>
+
+<p>这里的关键的就是怎么计算带狄拉克函数的积分，下面以上面的<script type="math/tex">Y=X^2</script>为例进行说明，关于多元变量的概率密度函数的计算例子可以参考<a href="https://www.zhihu.com/question/37400689">here</a>。
+根据前面介绍的，我们有</p>
+<div class="mathblock"><script type="math/tex; mode=display">
+f_Y(y) = \int_{-\infty}^{\infty} f_X(x)\delta(y-x^2) dx
+</script></div>
+<p>显然，当<script type="math/tex">x=\pm \sqrt y</script>时，<script type="math/tex">y-x^2=0</script>。
+由于<script type="math/tex">\delta(y-x^2)</script>只在<script type="math/tex">x_0 = \pm \sqrt y</script>时不为0，我们可以将<script type="math/tex">f_X(x)</script>在积分运算中当作常数，也即<script type="math/tex">f_Y(y) = f_X(x_0) \int_{-\infty}^{\infty} \delta(y-x^2) dx</script>。
+令<script type="math/tex">t = y - x^2</script>，那么<script type="math/tex">\frac{dt}{dx}=-2x</script>，所以<script type="math/tex">dx_0 = \frac{dt}{-2x_0}</script></p>
+<div class="mathblock"><script type="math/tex; mode=display">
+f_Y(y) = f_X(x_0) \int_{-\infty}^{\infty} \frac{\delta(t)}{-2x_0} dt = f_X(x_0) \int_{-\infty}^{\infty} \frac{\delta(t)}{|2x_0|} dt
+</script></div>
+<p>这里第二个等号把<script type="math/tex">-2x_0</script>改成了<script type="math/tex">|2x_0|</script>，
+原因在于狄拉克函数积分的几何性质，即坐标轴进行放缩<script type="math/tex">a</script>，为了使积分面积依然是1，其高度也要相应进行<script type="math/tex">\frac{1}{|a|}</script>倍的放缩，具体请阅读上面旁注中的链接。</p>
+
+<p>很显然，由于<script type="math/tex">x_0 = \pm \sqrt y</script></p>
+<div class="mathblock"><script type="math/tex; mode=display">
+f_X(x_0) \int_{-\infty}^{\infty} \frac{\delta(t)}{|2x_0|} dt = \frac{1}{|2\sqrt y|}f_X(\sqrt y) + \frac{1}{|-2\sqrt y|}f_X(-\sqrt y) = \frac{1}{2\sqrt y}[f_X(\sqrt y) + f_X(-\sqrt y)]
+</script></div>
+<p>这与上面的答案是相同的。</p>
+
+
 
 
     </article>
